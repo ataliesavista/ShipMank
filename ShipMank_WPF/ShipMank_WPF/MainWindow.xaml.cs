@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ShipMank_WPF.Models;
+using ShipMank_WPF.Pages;
 
 namespace ShipMank_WPF
 {
@@ -24,12 +25,14 @@ namespace ShipMank_WPF
         public MainWindow()
         {
             InitializeComponent();
-            this.Loaded += MainWindow_Loaded;
+            Loaded += MainWindow_Loaded;
         }
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            // Testing Code (pindahan dari Form1_Load)
+            MainFrame.Navigate(new LoginPage());
+
+            /*// Testing Code (pindahan dari Form1_Load)
             var speedboatType = new ShipType(1, ShipTypeEnum.Speedboat, "Kapal cepat untuk perjalanan singkat");
             var yachtType = new ShipType(2, ShipTypeEnum.Yacht, "Kapal mewah untuk rekreasi");
 
@@ -57,7 +60,7 @@ namespace ShipMank_WPF
             var payment = new Payment(1, booking.BookingID, PaymentMethod.BankTransfer, booking.HitungTotalHarga(), booking);
             payment.ProsesPembayaran(PaymentMethod.BankTransfer, booking.HitungTotalHarga());
 
-            MessageBox.Show(payment.CetakStrukPembayaran(), "Struk Pembayaran");
+            MessageBox.Show(payment.CetakStrukPembayaran(), "Struk Pembayaran");*/
         }
     }
 }

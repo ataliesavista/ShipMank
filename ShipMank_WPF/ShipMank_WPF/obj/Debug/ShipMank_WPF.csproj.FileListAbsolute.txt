@@ -13,3 +13,7 @@ D:\vista~\Semester 5\Junpro_Github_VS\ShipMank_WPF\ShipMank_WPF\obj\Debug\ShipMa
 D:\vista~\Semester 5\Junpro_Github_VS\ShipMank_WPF\ShipMank_WPF\obj\Debug\ShipMank_WPF.csproj.CoreCompileInputs.cache
 D:\vista~\Semester 5\Junpro_Github_VS\ShipMank_WPF\ShipMank_WPF\obj\Debug\ShipMank_WPF.exe
 D:\vista~\Semester 5\Junpro_Github_VS\ShipMank_WPF\ShipMank_WPF\obj\Debug\ShipMank_WPF.pdb
+D:\vista~\Semester 5\Junpro_Github_VS\ShipMank_WPF\ShipMank_WPF\obj\Debug\Pages\LoginPage.g.cs
+D:\vista~\Semester 5\Junpro_Github_VS\ShipMank_WPF\ShipMank_WPF\obj\Debug\Pages\SignUp.g.cs
+D:\vista~\Semester 5\Junpro_Github_VS\ShipMank_WPF\ShipMank_WPF\obj\Debug\Pages\LoginPage.baml
+D:\vista~\Semester 5\Junpro_Github_VS\ShipMank_WPF\ShipMank_WPF\obj\Debug\Pages\SignUp.baml
