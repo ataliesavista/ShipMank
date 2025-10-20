@@ -1,0 +1,34 @@
+﻿<UserControl x:Class="ShipMank_WPF.Components.NavbarWhite"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ShipMank_WPF.Components"
+             mc:Ignorable="d" 
+             Height="70">
+    <Border Background="White" Padding="20,10" Width="380" >
+        <Grid HorizontalAlignment="Right" Width="340">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Image Source="/Assets/logob.png" Height="35" Width="50" VerticalAlignment="Center"/>
+
+            <StackPanel Orientation="Horizontal" Grid.Column="2" VerticalAlignment="Center">
+
+                <TextBlock Text="Help" FontWeight="Bold" VerticalAlignment="Center" Cursor="Hand" Margin="0,0,20,0"/>
+
+                <TextBlock Text="Orders" FontWeight="Bold" VerticalAlignment="Center" Cursor="Hand" Margin="0,0,20,0"/>
+
+                <Border Background="#FFF9AF" Padding="8,4" CornerRadius="20">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Bambas Parungkang" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                        <Ellipse Width="25" Height="25" Fill="Black" Margin="5,0,0,0"/>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </Grid>
+    </Border>
+</UserControl>

@@ -1,0 +1,64 @@
+﻿<UserControl x:Class="ShipMank_WPF.Components.NavbarSearch"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ShipMank_WPF.Components"
+             mc:Ignorable="d" 
+            Height="100">
+    <Border Background="White" Padding="20,10" >
+        <StackPanel>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <Image Source="/Assets/logo.png" Height="35" VerticalAlignment="Center"/>
+
+                <StackPanel Orientation="Horizontal" Grid.Column="2" VerticalAlignment="Center">
+                    <TextBlock Text="Help" FontWeight="Bold" VerticalAlignment="Center" Cursor="Hand" Margin="0,0,20,0"/>
+                    <TextBlock Text="Orders" FontWeight="Bold" VerticalAlignment="Center" Cursor="Hand" Margin="0,0,20,0"/>
+                    <Border Background="#FFF9AF" Padding="8,4" CornerRadius="20">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Bambas Parungkang" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                            <Ellipse Width="25" Height="25" Fill="Black" Margin="5,0,0,0"/>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </Grid>
+
+            <Border Background="#E7F3FF" CornerRadius="10" Margin="0,10,0,0" Padding="15">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel>
+                        <TextBlock Text="From" FontWeight="SemiBold"/>
+                        <TextBox Text="Jakarta (Priok)" Margin="0,5,10,0"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1">
+                        <TextBlock Text="To" FontWeight="SemiBold"/>
+                        <TextBox Text="Surabaya (Perak)" Margin="0,5,10,0"/>
+                    </StackPanel>
+
+                    <Button Content="Search" Background="#1B4E7C" Foreground="White" 
+                            FontWeight="Bold" Padding="20,5" BorderThickness="0" 
+                            Grid.Column="2">
+
+                        <Button.Resources>
+                            <Style TargetType="Border">
+                                <Setter Property="CornerRadius" Value="10"/>
+                            </Style>
+                        </Button.Resources>
+                    </Button>
+                </Grid>
+            </Border>
+        </StackPanel>
+    </Border>
+</UserControl>
