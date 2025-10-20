@@ -1,0 +1,43 @@
+﻿<UserControl x:Class="ShipMank_WPF.Components.NavbarTp"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ShipMank_WPF.Components"
+             mc:Ignorable="d" 
+             Height="60">
+    <Grid Background="Transparent" Margin="20,10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+            <Image Source="/Assets/logo.png" Height="35"/>
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" Grid.Column="2" VerticalAlignment="Center">
+            <TextBlock Text="Help" Foreground="White" FontWeight="Bold" Cursor="Hand" Margin="0,0,15,0"/>
+            <TextBlock Text="Orders" Foreground="White" FontWeight="Bold" Cursor="Hand" Margin="0,0,15,0"/>
+
+            <Button Content="Masuk" Background="#FFF9AF" Foreground="Black" FontWeight="Bold" 
+                    Padding="10,3" Margin="5,0,15,0" Cursor="Hand" BorderThickness="0">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="10"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+
+            <Button Content="Daftar" Background="#2D6A9F" Foreground="White" FontWeight="Bold" 
+                    Padding="10,3" Margin="0,0,10,0" Cursor="Hand" BorderThickness="0">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="10"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+        </StackPanel>
+    </Grid>
+</UserControl>

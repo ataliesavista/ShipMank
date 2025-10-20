@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 D:\vista~\Semester 5\Junpro_Github_VS\ShipMank_WPF\ShipMank_WPF\App.xaml
-3-351956597
+7-1895405835
 
-161769669278
+20751316344
 13-1310406943
-MainWindow.xaml;Pages\LoginPage.xaml;Pages\SignUp.xaml;
+Components\NavbarSearch.xaml;Components\NavbarTp.xaml;Components\NavbarWhite.xaml;MainWindow.xaml;Pages\Home.xaml;Pages\LoginPage.xaml;Pages\SignUp.xaml;
 
-True
+False
 

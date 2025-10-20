@@ -30,7 +30,7 @@ namespace ShipMank_WPF
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            MainFrame.Navigate(new LoginPage());
+            MainFrame.Navigate(new Home());
 
             /*// Testing Code (pindahan dari Form1_Load)
             var speedboatType = new ShipType(1, ShipTypeEnum.Speedboat, "Kapal cepat untuk perjalanan singkat");

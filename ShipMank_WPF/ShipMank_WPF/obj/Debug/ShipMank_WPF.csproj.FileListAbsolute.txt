@@ -17,3 +17,11 @@ D:\vista~\Semester 5\Junpro_Github_VS\ShipMank_WPF\ShipMank_WPF\obj\Debug\Pages\
 D:\vista~\Semester 5\Junpro_Github_VS\ShipMank_WPF\ShipMank_WPF\obj\Debug\Pages\SignUp.g.cs
 D:\vista~\Semester 5\Junpro_Github_VS\ShipMank_WPF\ShipMank_WPF\obj\Debug\Pages\LoginPage.baml
 D:\vista~\Semester 5\Junpro_Github_VS\ShipMank_WPF\ShipMank_WPF\obj\Debug\Pages\SignUp.baml
+D:\vista~\Semester 5\Junpro_Github_VS\ShipMank_WPF\ShipMank_WPF\obj\Debug\Components\NavbarSearch.g.cs
+D:\vista~\Semester 5\Junpro_Github_VS\ShipMank_WPF\ShipMank_WPF\obj\Debug\Components\NavbarTp.g.cs
+D:\vista~\Semester 5\Junpro_Github_VS\ShipMank_WPF\ShipMank_WPF\obj\Debug\Components\NavbarWhite.g.cs
+D:\vista~\Semester 5\Junpro_Github_VS\ShipMank_WPF\ShipMank_WPF\obj\Debug\Pages\Home.g.cs
+D:\vista~\Semester 5\Junpro_Github_VS\ShipMank_WPF\ShipMank_WPF\obj\Debug\Components\NavbarSearch.baml
+D:\vista~\Semester 5\Junpro_Github_VS\ShipMank_WPF\ShipMank_WPF\obj\Debug\Components\NavbarTp.baml
+D:\vista~\Semester 5\Junpro_Github_VS\ShipMank_WPF\ShipMank_WPF\obj\Debug\Components\NavbarWhite.baml
+D:\vista~\Semester 5\Junpro_Github_VS\ShipMank_WPF\ShipMank_WPF\obj\Debug\Pages\Home.baml
