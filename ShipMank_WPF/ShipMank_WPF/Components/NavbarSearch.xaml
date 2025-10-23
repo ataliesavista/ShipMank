@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ShipMank_WPF.Components"
              mc:Ignorable="d" 
-            Height="100">
+             Height="Auto">
     <Border Background="White" Padding="20,10" >
         <StackPanel>
             <Grid>
@@ -15,48 +15,107 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <Image Source="/Assets/logo.png" Height="35" VerticalAlignment="Center"/>
+                <Image Source="/Assets/logob.png" Height="35" VerticalAlignment="Center" Grid.Column="0"/>
 
                 <StackPanel Orientation="Horizontal" Grid.Column="2" VerticalAlignment="Center">
                     <TextBlock Text="Help" FontWeight="Bold" VerticalAlignment="Center" Cursor="Hand" Margin="0,0,20,0"/>
                     <TextBlock Text="Orders" FontWeight="Bold" VerticalAlignment="Center" Cursor="Hand" Margin="0,0,20,0"/>
+
                     <Border Background="#FFF9AF" Padding="8,4" CornerRadius="20">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="Bambas Parungkang" FontWeight="SemiBold" VerticalAlignment="Center"/>
-                            <Ellipse Width="25" Height="25" Fill="Black" Margin="5,0,0,0"/>
+
+                            <Grid Width="25" Height="25" Margin="5,0,0,0">
+                                <Ellipse Fill="Black"/>
+                                <TextBlock Text="&#xE77B;" FontFamily="Segoe MDL2 Assets" 
+                                           Foreground="White" 
+                                           HorizontalAlignment="Center" 
+                                           VerticalAlignment="Center" 
+                                           FontSize="14"/>
+                            </Grid>
                         </StackPanel>
                     </Border>
                 </StackPanel>
             </Grid>
 
-            <Border Background="#E7F3FF" CornerRadius="10" Margin="0,10,0,0" Padding="15">
+            <Border Background="#33A1E0" 
+        CornerRadius="10" 
+        Margin="0,15,0,0" 
+        Padding="15,12"
+        MinWidth="300"
+        MaxWidth="800">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
+
                         <ColumnDefinition Width="Auto"/>
+
+                        <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
-                    <StackPanel>
-                        <TextBlock Text="From" FontWeight="SemiBold"/>
-                        <TextBox Text="Jakarta (Priok)" Margin="0,5,10,0"/>
+                    <Grid Grid.Column="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Column="0" 
+                       Text="Jakarta (Priok)" 
+                       FontWeight="Bold" 
+                       Foreground="Black" 
+                       FontFamily="Dubai" 
+                       VerticalAlignment="Center" 
+                       HorizontalAlignment="Right" 
+                       Margin="5,0"/>
+
+                        <TextBlock Grid.Column="1" 
+                       Text="&#xE895;" 
+                       FontFamily="Segoe MDL2 Assets" 
+                       FontWeight="Bold" 
+                       Foreground="White" 
+                       VerticalAlignment="Center" 
+                       FontSize="18" 
+                       Margin="10,0"/>
+
+                        <TextBlock Grid.Column="2" 
+                       Text="Surabaya (Perak)" 
+                       FontWeight="Bold" 
+                       Foreground="Black"  
+                       FontFamily="Dubai" 
+                       VerticalAlignment="Center" 
+                       HorizontalAlignment="Left" 
+                       Margin="10,0"/>
+                    </Grid>
+
+                    <Border Grid.Column="1" BorderBrush="Black" Opacity="0.5" BorderThickness="2,0,0,0" Height="30" Margin="15,0"/>
+
+                    <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
+
+                        <TextBlock Text="Jumat, 20 September 2025" 
+                       FontWeight="Bold" 
+                       Foreground="Black" 
+                       FontFamily="Dubai" 
+                       VerticalAlignment="Center" 
+                       Margin="15,0"/>
+
+                        <Border BorderBrush="Black" Opacity="0.5" BorderThickness="2,0,0,0" Height="30" Margin="15,0"/>
+
+                        <TextBlock Text="Penumpang" 
+                       FontWeight="Bold" 
+                       Foreground="Black" 
+                       FontFamily="Dubai" 
+                       VerticalAlignment="Center" 
+                       Margin="15,0,10,0"/>
+
+                        <ComboBox VerticalAlignment="Center" MinWidth="60">
+                            <ComboBoxItem Content="20" IsSelected="True"/>
+                            <ComboBoxItem Content="1"/>
+                            <ComboBoxItem Content="2"/>
+                            <ComboBoxItem Content="5"/>
+                        </ComboBox>
+
                     </StackPanel>
-
-                    <StackPanel Grid.Column="1">
-                        <TextBlock Text="To" FontWeight="SemiBold"/>
-                        <TextBox Text="Surabaya (Perak)" Margin="0,5,10,0"/>
-                    </StackPanel>
-
-                    <Button Content="Search" Background="#1B4E7C" Foreground="White" 
-                            FontWeight="Bold" Padding="20,5" BorderThickness="0" 
-                            Grid.Column="2">
-
-                        <Button.Resources>
-                            <Style TargetType="Border">
-                                <Setter Property="CornerRadius" Value="10"/>
-                            </Style>
-                        </Button.Resources>
-                    </Button>
                 </Grid>
             </Border>
         </StackPanel>

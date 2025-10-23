@@ -1,0 +1,203 @@
+﻿<Page x:Class="ShipMank_WPF.Pages.BeliTiket"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:ShipMank_WPF.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="720" d:DesignWidth="1280"
+      Title="BeliTiket">
+
+    <Page.Resources>
+        <Style TargetType="Button" x:Key="BaseButton">
+            <Setter Property="Padding" Value="20,8"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                CornerRadius="8"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="Button" x:Key="PrimaryButton" BasedOn="{StaticResource BaseButton}">
+            <Setter Property="Background" Value="#1B4E7C"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
+
+        <Style TargetType="Button" x:Key="SecondaryButton" BasedOn="{StaticResource BaseButton}">
+            <Setter Property="Background" Value="#BCC6CF"/>
+            <Setter Property="Foreground" Value="#2A3A4A"/>
+        </Style>
+    </Page.Resources>
+
+    <Grid Background="#F0F4F8">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Border Grid.Column="0"
+            Background="White" 
+            CornerRadius="10"
+            Padding="0"
+            ClipToBounds="True"
+            Margin="20"
+            Width="280"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top">
+
+            <StackPanel>
+                <Border Background="#FFF9AF" Padding="25" CornerRadius="10,10,10,10">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Text="Filter" 
+                           FontSize="24" 
+                           FontWeight="Bold"
+                           VerticalAlignment="Center"/>
+
+                        <TextBlock Text="Reset Filter" 
+                           Grid.Column="1"
+                           Foreground="#007BFF"
+                           Cursor="Hand"
+                           VerticalAlignment="Center"
+                           FontWeight="SemiBold"/>
+                    </Grid>
+                </Border>
+
+                <Border Background="White" Padding="25" CornerRadius="0,0,10,10">
+                    <StackPanel>
+                        <TextBlock Text="Fasilitas" 
+                           FontWeight="Bold"
+                           FontSize="16"
+                           Margin="0,0,0,10"/>
+
+                        <StackPanel>
+                            <CheckBox Content="AC" Margin="0,0,0,8"/>
+                            <CheckBox Content="Musholla" Margin="0,0,0,8"/>
+                            <CheckBox Content="Pemanas Air" Margin="0,0,0,8"/>
+                            <CheckBox Content="Dispenser" Margin="0,0,0,8"/>
+                            <CheckBox Content="WiFi" Margin="0,0,0,8"/>
+                            <CheckBox Content="Ruangan Merokok" Margin="0,0,0,8"/>
+                        </StackPanel>
+
+                        <TextBlock Text="Waktu Kedatangan" 
+                           FontWeight="Bold"
+                           FontSize="16"
+                           Margin="0,25,0,10"/>
+
+                        <StackPanel>
+                            <CheckBox Content="00.00 - 06.00" Margin="0,0,0,8"/>
+                            <CheckBox Content="06.00 - 12.00" Margin="0,0,0,8"/>
+                            <CheckBox Content="12.00 - 18.00" Margin="0,0,0,8"/>
+                            <CheckBox Content="18.00 - 00.00" Margin="0,0,0,8"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+            </StackPanel>
+        </Border>
+
+        <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <StackPanel Margin="20,20,20,0">
+
+                <Border Background="White" 
+                        CornerRadius="15" 
+                        Padding="25" 
+                        Margin="0,0,0,20">
+                    <Border.Effect>
+                        <DropShadowEffect ShadowDepth="2" Color="#CCCCCC" Opacity="0.5" BlurRadius="10"/>
+                    </Border.Effect>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Row="0" Grid.Column="0"
+                                   Text="Kapal Api"
+                                   FontSize="28"
+                                   FontWeight="Bold"
+                                   VerticalAlignment="Center"/>
+
+                        <TextBlock Grid.Row="0" Grid.Column="1"
+                                   Text="08.00 - 09.45 WITA"
+                                   FontSize="18"
+                                   FontWeight="SemiBold"
+                                   VerticalAlignment="Center"/>
+
+                        <StackPanel Grid.Row="1" Grid.Column="1"
+                                    Orientation="Horizontal"
+                                    HorizontalAlignment="Right"
+                                    Margin="0,20,0,0">
+                            <Button Content="Pilih Kelas" 
+                                    Style="{StaticResource PrimaryButton}"
+                                    Margin="0,0,10,0"/>
+                            <Button Content="Pilih Tiket"
+                                    Style="{StaticResource SecondaryButton}"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <Border Background="White" 
+                        CornerRadius="15" 
+                        Padding="25" 
+                        Margin="0,0,0,20">
+                    <Border.Effect>
+                        <DropShadowEffect ShadowDepth="2" Color="#CCCCCC" Opacity="0.5" BlurRadius="10"/>
+                    </Border.Effect>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Grid.Row="0" Grid.Column="0"
+                                   Text="Kapal Air"
+                                   FontSize="28"
+                                   FontWeight="Bold"
+                                   VerticalAlignment="Center"/>
+
+                        <TextBlock Grid.Row="0" Grid.Column="1"
+                                   Text="08.00 - 09.45 WITA"
+                                   FontSize="18"
+                                   FontWeight="SemiBold"
+                                   VerticalAlignment="Center"/>
+
+                        <StackPanel Grid.Row="1" Grid.Column="1"
+                                    Orientation="Horizontal"
+                                    HorizontalAlignment="Right"
+                                    Margin="0,20,0,0">
+                            <Button Content="Pilih Kelas" 
+                                    Style="{StaticResource PrimaryButton}"
+                                    Margin="0,0,10,0"/>
+                            <Button Content="Pilih Tiket"
+                                    Style="{StaticResource SecondaryButton}"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+            </StackPanel>
+        </ScrollViewer>
+
+    </Grid>
+</Page>

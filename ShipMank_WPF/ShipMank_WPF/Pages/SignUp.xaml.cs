@@ -15,25 +15,27 @@ using System.Windows.Shapes;
 
 namespace ShipMank_WPF.Pages
 {
-    /// <summary>
-    /// Interaction logic for SignUp.xaml
-    /// </summary>
     public partial class SignUp : Page
     {
         public SignUp()
         {
             InitializeComponent();
         }
+
         private void SignUpButton_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Akun berhasil dibuat 🎉", "Sukses", MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageBox.Show("Akun berhasil dibuat", "Sukses", MessageBoxButton.OK, MessageBoxImage.Information);
+
+            Window parentWindow = Window.GetWindow(this);
+            if (parentWindow is MainWindow mw)
+            {
+                mw.ClosePopup();
+            }
         }
 
-        private void SignUpText_MouseDown(object sender, MouseButtonEventArgs e)
+        private void LoginText_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            // Navigasi ke halaman LoginPage
             this.NavigationService?.Navigate(new LoginPage());
         }
-
     }
 }
