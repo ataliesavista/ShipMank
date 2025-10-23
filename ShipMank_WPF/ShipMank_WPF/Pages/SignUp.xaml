@@ -3,104 +3,129 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:ShipMank_WPF.Pages"
-      mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
-      Title="SignUp">
+      mc:Ignorable="d"
+      Title="SignUp"
+      Background="Transparent">
 
-    <Grid>
-        <Grid.Background>
-            <LinearGradientBrush StartPoint="0,0" EndPoint="0.5,1">
-                <GradientStop Color="#FFF9AF" Offset="0.1"/>
-                <GradientStop Color="#33A1E1" Offset="1.5"/>
-            </LinearGradientBrush>
-        </Grid.Background>
+    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent">
 
-        <Viewbox Stretch="Uniform" StretchDirection="Both">
-            <Grid Width="1000" Height="600">
-                <TextBlock Text="ShipMank" 
-                   FontSize="36" 
-                   FontWeight="Bold" 
-                   Foreground="White"
-                   HorizontalAlignment="Center"
-                   Margin="0,50,0,0"
-                   FontFamily="pack://application:,,,/Fonts/#Konkhmer Sleokchher"/>
+        <Rectangle Fill="#EBF1F5"/>
 
-                <Border 
-                    Background="White"
-                    CornerRadius="10"
-                    Padding="40"
-                    Width="350"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center">     
+        <Border 
+            Background="#F2F8FF"
+            CornerRadius="15"
+            Padding="30"
+            Width="400"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            RenderTransformOrigin="0.5,0.5">
 
-                    <Border.Effect>
-                        <DropShadowEffect BlurRadius="10"
-                                  ShadowDepth="3"
-                                  Opacity="0.3"
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="2"
+                                  ShadowDepth="4"
+                                  Opacity="0.4"
                                   Direction="270"/>
-                    </Border.Effect>
+            </Border.Effect>
 
-                    <StackPanel>
-                        <TextBlock Text="Sign Up" 
+            <StackPanel>
+                <TextBlock Text="Sign Up" 
                            FontSize="28" 
                            FontWeight="Bold" 
-                           Foreground="#333"
+                           Foreground="#000000"
                            HorizontalAlignment="Center"
                            Margin="0 0 0 20"/>
 
-                        <TextBlock Text="Username"
+                <TextBlock Text="Username"
                            FontWeight="SemiBold"
-                           Foreground="#666"/>
-                        <TextBox Name="tbUsername"
-                         Height="35"
-                         Margin="0 5 0 15"
-                         FontFamily="Dubai"
-                         Padding="5"/>
+                           Foreground="#000000"/>
 
-                        <TextBlock Text="Password"
-                           FontWeight="SemiBold"
-                           FontFamily="Dubai"
-                           Foreground="#666"/>
-                        <PasswordBox Name="tbPassword"
-                             Height="35"
-                             Margin="0 5 0 20"
+                <Border Height="35"
+                        Margin="0 5 0 15"
+                        Background="#33A1E0"
+                        Opacity="0.35"
+                        Padding="5"
+                        CornerRadius="8">
+                    <TextBox Name="tbUsername"
                              FontFamily="Dubai"
-                             Padding="5"/>
+                             Background="Transparent"
+                             BorderThickness="0"
+                             VerticalContentAlignment="Center"/>
+                </Border>
 
-                        <Button Content="Sign Up"
-                    Height="35"
-                    Background="#FFF9AF"
-                    Foreground="#000000"
-                    FontFamily="Dubai"
-                    FontWeight="Bold"
-                    BorderBrush="#FFF9AF"
-                    Cursor="Hand"
-                    Click="SignUpButton_Click">
-                            <Button.Resources>
-                                <Style TargetType="Border">
-                                    <Setter Property="CornerRadius" Value="10"/>
-                                </Style>
-                            </Button.Resources>
-                        </Button>
+                <TextBlock Text="Email"
+                           FontWeight="SemiBold"
+                           Foreground="#000000"/>
 
-                        <StackPanel Orientation="Horizontal" 
+                <Border Height="35"
+                        Margin="0 5 0 15"
+                        Background="#33A1E0"
+                        Opacity="0.35"
+                        Padding="5"
+                        CornerRadius="8">
+                    <TextBox Name="tbEmail"
+                             FontFamily="Dubai"
+                             Background="Transparent"
+                             BorderThickness="0"
+                             VerticalContentAlignment="Center"/>
+                </Border>
+
+                <TextBlock Text="Password"
+                           FontWeight="SemiBold"
+                           Foreground="#000000"/>
+
+                <Border Height="35"
+                        Margin="0 5 0 20"
+                        Background="#33A1E0"
+                        Opacity="0.35"
+                        Padding="5"
+                        CornerRadius="8">
+                    <PasswordBox Name="tbPassword"
+                                 FontFamily="Dubai"
+                                 Background="Transparent"
+                                 BorderThickness="0"
+                                 VerticalContentAlignment="Center"/>
+                </Border>
+
+                <Button Content="Daftar"
+                        Height="25"
+                        Background="#FFF9AF"
+                        FontFamily="Dubai"
+                        FontWeight="SemiBold"
+                        Cursor="Hand"
+                        HorizontalAlignment="Center"
+                        BorderThickness="0"
+                        Width="100"
+                        Click="SignUpButton_Click">
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="5"/>
+                            <Setter Property="Effect">
+                                <Setter.Value>
+                                    <DropShadowEffect 
+                                        Color="Gray" 
+                                        Opacity="0.2" 
+                                        ShadowDepth="1"/>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Button.Resources>
+                </Button>
+
+                <StackPanel Orientation="Horizontal" 
                             HorizontalAlignment="Center"
                             Margin="0 15 0 0">
-                            <TextBlock Text="Belum punya akun? "
+                    <TextBlock Text="Sudah punya akun? "
                                FontFamily="Dubai"
                                Foreground="#555"/>
-                            <TextBlock Text="Daftar"
+                    <TextBlock Text="Masuk"
                                FontFamily="Dubai"
                                Foreground="#33A1E0"
                                FontWeight="Bold"
                                Cursor="Hand"
-                               MouseDown="SignUpText_MouseDown"
+                               MouseDown="LoginText_MouseDown" 
                                TextDecorations="Underline"/>
-                        </StackPanel>
-                    </StackPanel>
-                </Border>
-            </Grid>
-        </Viewbox>
+                </StackPanel>
+            </StackPanel>
+        </Border>
     </Grid>
 </Page>
