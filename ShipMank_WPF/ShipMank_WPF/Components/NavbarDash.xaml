@@ -1,0 +1,189 @@
+﻿<UserControl x:Class="ShipMank_WPF.Components.NavbarDash"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ShipMank_WPF.Components"
+             mc:Ignorable="d" 
+             Height="70"
+             HorizontalAlignment="Stretch"
+             VerticalAlignment="Top">
+
+    <Border Background="#FEFDEE" Padding="20,10" HorizontalAlignment="Stretch">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="3*"/>
+                <RowDefinition Height="22*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Image Source="/Assets/logob.png" 
+                   Height="34" 
+                   Width="50" 
+                   VerticalAlignment="Center"
+                   Grid.Column="0"
+                   Margin="30,0,0,0" Grid.Row="1"/>
+
+            <StackPanel Orientation="Horizontal" 
+                        Grid.Column="1" 
+                        VerticalAlignment="Top"
+                        HorizontalAlignment="Center" Margin="0,2,0,0" Grid.Row="1">
+
+                <Button x:Name="HomeButton"
+                        Height="35"
+                        Background="Transparent" 
+                        FontFamily="Dubai"
+                        FontWeight="SemiBold"
+                        Foreground="Black" 
+                        Cursor="Hand"
+                        BorderThickness="0"
+                        Padding="20,0"
+                        Margin="0,0,10,0"
+                        Click="HomeButton_Click">
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="20"/>
+                        </Style>
+                    </Button.Resources>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="🏠" Margin="0,0,5,0" FontSize="14"/>
+                        <TextBlock Text="Home" FontSize="14"/>
+                    </StackPanel>
+                </Button>
+
+                <Button x:Name="RentalsButton"
+                        Height="35"
+                        Background="Transparent"
+                        FontFamily="Dubai"
+                        FontWeight="SemiBold"
+                        Foreground="Black"
+                        Cursor="Hand"
+                        BorderThickness="0"
+                        Padding="15,0"
+                        Margin="0,0,10,0"
+                        Click="RentalsButton_Click">
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="20"/>
+                        </Style>
+                    </Button.Resources>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="⚓" Margin="0,0,5,0" FontSize="14"/>
+                        <TextBlock Text="Rentals" FontSize="14"/>
+                    </StackPanel>
+                </Button>
+
+                <Button x:Name="TicketsButton"
+                        Height="35"
+                        Background="#1E90FF" 
+                        FontFamily="Dubai"
+                        FontWeight="SemiBold"
+                        Foreground="White" 
+                        Cursor="Hand"
+                        BorderThickness="0"
+                        Padding="15,0"
+                        Margin="0,0,10,0"
+                        Click="TicketsButton_Click">
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="20"/>
+                        </Style>
+                    </Button.Resources>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="🎫" Margin="0,0,5,0" FontSize="14"/>
+                        <TextBlock Text="Tickets" FontSize="14"/>
+                    </StackPanel>
+                </Button>
+
+                <Button x:Name="OrdersButton"
+                        Height="35"
+                        Background="Transparent"
+                        FontFamily="Dubai"
+                        FontWeight="SemiBold"
+                        Foreground="Black"
+                        Cursor="Hand"
+                        BorderThickness="0"
+                        Padding="15,0"
+                        Margin="0,0,10,0"
+                        Click="OrdersButton_Click">
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="20"/>
+                        </Style>
+                    </Button.Resources>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="📦" Margin="0,0,5,0" FontSize="14"/>
+                        <TextBlock Text="Orders" FontSize="14"/>
+                    </StackPanel>
+                </Button>
+
+                <Button x:Name="HelpButton"
+                        Height="35"
+                        Background="Transparent"
+                        FontFamily="Dubai"
+                        FontWeight="SemiBold"
+                        Foreground="Black"
+                        Cursor="Hand"
+                        BorderThickness="0"
+                        Padding="15,0"
+                        Click="HelpButton_Click">
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="20"/>
+                        </Style>
+                    </Button.Resources>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="❓" Margin="0,0,5,0" FontSize="14"/>
+                        <TextBlock Text="Help" FontSize="14"/>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+
+            <Button x:Name="ProfileButton"
+                    Grid.Column="2" 
+                    VerticalAlignment="Top"
+                    HorizontalAlignment="Right"
+                    Margin="0,5,50,0"
+                    Height="40"
+                    Background="#FFF9AF"
+                    BorderBrush="Black"
+                    BorderThickness="2"
+                    Cursor="Hand"
+                    FontFamily="Dubai"
+                    FontWeight="SemiBold"
+                    Foreground="Black"
+                    Click="ProfileButton_Click" Grid.RowSpan="2">
+
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="20"/>
+                    </Style>
+                </Button.Resources>
+
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="10,0">
+                    <TextBlock Text="Bambas Pamungkang"
+                               VerticalAlignment="Center"
+                               Margin="5,0,10,0"/>
+
+                    <Border Background="Black"
+                            Height="28"
+                            Width="28"
+                            CornerRadius="14">
+
+                        <TextBlock Text="&#xE77B;" 
+                                   FontFamily="Segoe UI Fluent Icons" 
+                                   FontSize="16"
+                                   Foreground="White"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"/>
+                    </Border>
+                </StackPanel>
+            </Button>
+
+        </Grid>
+    </Border>
+</UserControl>

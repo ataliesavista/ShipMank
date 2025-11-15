@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
@@ -23,6 +20,19 @@ namespace ShipMank_WPF.Pages
         public BeliTiket()
         {
             InitializeComponent();
+
+            LoadInitialData();
         }
+
+        private void LoadInitialData()
+        {
+
+        }
+
+        private void LocationComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            // isi terserah kamu dulu, mungkin masih kosong
+        }
+
     }
 }
