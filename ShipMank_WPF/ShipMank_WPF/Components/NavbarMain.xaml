@@ -17,6 +17,7 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
+            <!-- Logo -->
             <Image Source="/Assets/logob.png" 
                    Height="35" 
                    Width="50" 
@@ -24,23 +25,133 @@
                    Grid.Column="0"
                    Margin="30,0,0,0"/>
 
+            <!-- Navigation Menu -->
+            <StackPanel Orientation="Horizontal" 
+                        Grid.Column="1" 
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center">
+
+                <!-- Home Button (Active State) -->
+                <Button x:Name="HomeButton"
+                        Height="35"
+                        Background="#1E90FF"
+                        FontFamily="Dubai"
+                        FontWeight="SemiBold"
+                        Foreground="White"
+                        Cursor="Hand"
+                        BorderThickness="0"
+                        Padding="20,0"
+                        Margin="0,0,10,0"
+                        Click="HomeButton_Click">
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="20"/>
+                        </Style>
+                    </Button.Resources>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="🏠" Margin="0,0,5,0" FontSize="14"/>
+                        <TextBlock Text="Home" FontSize="14"/>
+                    </StackPanel>
+                </Button>
+
+                <!-- Rentals Button -->
+                <Button x:Name="RentalsButton"
+                        Height="35"
+                        Background="Transparent"
+                        FontFamily="Dubai"
+                        FontWeight="SemiBold"
+                        Foreground="Black"
+                        Cursor="Hand"
+                        BorderThickness="0"
+                        Padding="15,0"
+                        Margin="0,0,10,0"
+                        Click="RentalsButton_Click">
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="20"/>
+                        </Style>
+                    </Button.Resources>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="⚓" Margin="0,0,5,0" FontSize="14"/>
+                        <TextBlock Text="Rentals" FontSize="14"/>
+                    </StackPanel>
+                </Button>
+
+                <!-- Tickets Button -->
+                <Button x:Name="TicketsButton"
+                        Height="35"
+                        Background="Transparent"
+                        FontFamily="Dubai"
+                        FontWeight="SemiBold"
+                        Foreground="Black"
+                        Cursor="Hand"
+                        BorderThickness="0"
+                        Padding="15,0"
+                        Margin="0,0,10,0"
+                        Click="TicketsButton_Click">
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="20"/>
+                        </Style>
+                    </Button.Resources>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="🎫" Margin="0,0,5,0" FontSize="14"/>
+                        <TextBlock Text="Tickets" FontSize="14"/>
+                    </StackPanel>
+                </Button>
+
+                <!-- Orders Button -->
+                <Button x:Name="OrdersButton"
+                        Height="35"
+                        Background="Transparent"
+                        FontFamily="Dubai"
+                        FontWeight="SemiBold"
+                        Foreground="Black"
+                        Cursor="Hand"
+                        BorderThickness="0"
+                        Padding="15,0"
+                        Margin="0,0,10,0"
+                        Click="OrdersButton_Click">
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="20"/>
+                        </Style>
+                    </Button.Resources>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="📦" Margin="0,0,5,0" FontSize="14"/>
+                        <TextBlock Text="Orders" FontSize="14"/>
+                    </StackPanel>
+                </Button>
+
+                <!-- Help Button -->
+                <Button x:Name="HelpButton"
+                        Height="35"
+                        Background="Transparent"
+                        FontFamily="Dubai"
+                        FontWeight="SemiBold"
+                        Foreground="Black"
+                        Cursor="Hand"
+                        BorderThickness="0"
+                        Padding="15,0"
+                        Click="HelpButton_Click">
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="20"/>
+                        </Style>
+                    </Button.Resources>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="❓" Margin="0,0,5,0" FontSize="14"/>
+                        <TextBlock Text="Help" FontSize="14"/>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+
+            <!-- Login/Register Buttons -->
             <StackPanel Orientation="Horizontal" 
                         Grid.Column="2" 
                         VerticalAlignment="Center"
                         HorizontalAlignment="Right"
                         Margin="0,0,50,0">
-
-                <TextBlock Text="Help" 
-                           FontWeight="Bold" 
-                           VerticalAlignment="Center" 
-                           Cursor="Hand" 
-                           Margin="0,0,30,0"/>
-
-                <TextBlock Text="Orders" 
-                           FontWeight="Bold" 
-                           VerticalAlignment="Center" 
-                           Cursor="Hand" 
-                           Margin="0,0,40,0"/>
 
                 <Button Content="Masuk"
                         Height="30"

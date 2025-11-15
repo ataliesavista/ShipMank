@@ -28,7 +28,7 @@ namespace ShipMank_WPF
 
         public void ShowLoggedInState()
         {
-            NavbarContainer.Content = new NavbarSearch();
+            NavbarContainer.Content = new NavbarDash();
             MainFrame.Navigate(new BeliTiket());
         }
 
