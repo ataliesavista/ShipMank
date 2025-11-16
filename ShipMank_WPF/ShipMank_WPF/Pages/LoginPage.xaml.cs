@@ -7,16 +7,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System.Threading;
-using Google.Apis.Auth.OAuth2;
-using Google.Apis.Util.Store;
-using System;
-using Google.Apis.Auth.OAuth2.Flows;
-using Google.Apis.Auth.OAuth2.Responses;
-using Google.Apis.Oauth2.v2;
-using Google.Apis.Oauth2.v2.Data;
-using Google.Apis.Services;
-using Microsoft.Extensions.Configuration;
 
 namespace ShipMank_WPF.Pages
 {
@@ -53,64 +43,6 @@ namespace ShipMank_WPF.Pages
             if (parentWindow is MainWindow mw)
             {
                 mw.ShowPopup(new SignUp());
-            }
-        }
-
-        private async void GoogleLogin_Click(object sender, RoutedEventArgs e)
-        {
-            IConfiguration configuration = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .Build();
-
-            string clientId = configuration["GoogleAuth:ClientId"];
-            string clientSecret = configuration["GoogleAuth:ClientSecret"];
-
-            string[] scopes = { Oauth2Service.Scope.UserinfoEmail, Oauth2Service.Scope.UserinfoProfile };
-            string applicationName = "ShipMank_WPF";
-            var dataStore = new FileDataStore("ShipMank.GoogleAuthStore");
-
-            try
-            {
-                UserCredential credential = await GoogleWebAuthorizationBroker.AuthorizeAsync(
-                    new ClientSecrets
-                    {
-                        ClientId = clientId,
-                        ClientSecret = clientSecret
-                    },
-                        scopes,
-                        "temp_user_id",
-                        CancellationToken.None,
-                        new FileDataStore("ShipMank.GoogleAuthStore")
-                    );
-
-                if (credential != null)
-                {
-                    var oauthService = new Oauth2Service(new BaseClientService.Initializer()
-                    {
-                        HttpClientInitializer = credential,
-                        ApplicationName = applicationName,
-                    });
-
-                    Userinfo profile = await oauthService.Userinfo.Get().ExecuteAsync();
-
-                    string uniqueUserId = profile.Email;
-                    string userName = profile.Name;
-
-                    MessageBox.Show($"Login Google Berhasil!\nNama: {userName}\nEmail: {uniqueUserId}",
-                                    "Sukses", MessageBoxButton.OK, MessageBoxImage.Information);
-
-                    Window parentWindow = Window.GetWindow(this);
-                    if (parentWindow is MainWindow mw)
-                    {
-                        mw.ClosePopup();
-                        mw.ShowLoggedInState();
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Login Google Gagal: {ex.Message}",
-                                "Kesalahan", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
     }
