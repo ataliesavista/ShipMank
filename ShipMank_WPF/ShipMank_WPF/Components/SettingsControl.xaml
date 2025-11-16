@@ -8,7 +8,9 @@
              d:DesignHeight="720" d:DesignWidth="980"
              Padding="40"
              FontFamily="Inter, Segoe UI, sans-serif"
-             Background="Transparent">
+             Background="Transparent"
+             Loaded="SettingsControl_Loaded">
+    <!-- DITAMBAHKAN -->
 
     <UserControl.Resources>
         <!-- Warna -->
@@ -18,7 +20,6 @@
         <SolidColorBrush x:Key="DarkGrayBrush" Color="#4B5563"/>
         <SolidColorBrush x:Key="TextGrayBrush" Color="#6B7280"/>
         <SolidColorBrush x:Key="BorderGrayBrush" Color="#D1D5DB"/>
-        <!-- ✅ Ganti warna background window menjadi transparan -->
         <SolidColorBrush x:Key="WindowBackgroundBrush" Color="#00FFFFFF"/>
 
         <!-- Style untuk Judul Utama -->
@@ -80,7 +81,6 @@
         <!-- Section Container -->
         <Style x:Key="SectionContainer" TargetType="Border">
             <Setter Property="Background" Value="#00FFFFFF"/>
-            <!-- ✅ transparan -->
             <Setter Property="CornerRadius" Value="10"/>
             <Setter Property="Margin" Value="0,20,0,0"/>
             <Setter Property="Effect">
@@ -142,8 +142,14 @@
             <Setter Property="Padding" Value="10,8"/>
             <Setter Property="BorderBrush" Value="{StaticResource BorderGrayBrush}"/>
             <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Background" Value="#00FFFFFF"/>
-            <!-- ✅ transparan -->
+            <Setter Property="Background" Value="Transparent"/>
+            <Style.Triggers>
+                <Trigger Property="IsReadOnly" Value="True">
+                    <Setter Property="BorderThickness" Value="0"/>
+                    <Setter Property="Foreground" Value="{StaticResource DarkGrayBrush}"/>
+                    <Setter Property="Padding" Value="10,8,10,0"/>
+                </Trigger>
+            </Style.Triggers>
         </Style>
 
         <Style x:Key="FormComboBox" TargetType="ComboBox">
@@ -151,8 +157,15 @@
             <Setter Property="Padding" Value="10,8"/>
             <Setter Property="BorderBrush" Value="{StaticResource BorderGrayBrush}"/>
             <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Background" Value="#00FFFFFF"/>
-            <!-- ✅ transparan -->
+            <Setter Property="Background" Value="Transparent"/>
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Opacity" Value="1"/>
+                    <Setter Property="BorderThickness" Value="0"/>
+                    <Setter Property="Foreground" Value="{StaticResource DarkGrayBrush}"/>
+                    <Setter Property="Padding" Value="10,8,10,0"/>
+                </Trigger>
+            </Style.Triggers>
         </Style>
 
         <!-- Tombol Link -->
@@ -173,7 +186,6 @@
                                    FontSize="{TemplateBinding FontSize}"
                                    FontWeight="{TemplateBinding FontWeight}"
                                    TextDecorations="None"/>
-                        <!-- ★★★ PERBAIKAN DI SINI: {x:Null} diubah menjadi "None" ★★★ -->
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter TargetName="TextContent" Property="TextDecorations" Value="Underline"/>
@@ -198,15 +210,15 @@
                             CornerRadius="14"/>
 
                             <Ellipse x:Name="Thumb"
-                             Fill="White"
-                             Width="22"
-                             Height="22"
-                             HorizontalAlignment="Left"
-                             Margin="3">
+                                   Fill="White"
+                                   Width="22"
+                                   Height="22"
+                                   HorizontalAlignment="Left"
+                                   Margin="3">
                                 <Ellipse.Effect>
                                     <DropShadowEffect ShadowDepth="1"
-                                              Opacity="0.1"
-                                              BlurRadius="2"/>
+                                                Opacity="0.1"
+                                                BlurRadius="2"/>
                                 </Ellipse.Effect>
                             </Ellipse>
                         </Grid>
@@ -228,7 +240,7 @@
 
     </UserControl.Resources>
 
-    <!-- ✅ Background utama transparan -->
+    <!-- Background utama transparan -->
     <Grid Background="Transparent">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -258,7 +270,8 @@
                                     <Border Background="{StaticResource PrimaryBlueBrush}" CornerRadius="10,10,0,0">
                                         <Grid>
                                             <TextBlock Text="Personal Information" Style="{StaticResource SectionHeaderTitle}"/>
-                                            <Button Content="Edit" Style="{StaticResource HeaderButton}"/>
+                                            <!-- DITAMBAHKAN: x:Name dan Click -->
+                                            <Button x:Name="EditSaveButton" Content="Edit" Style="{StaticResource HeaderButton}" Click="EditSaveButton_Click"/>
                                         </Grid>
                                     </Border>
                                 </Grid>
@@ -274,7 +287,8 @@
                                     <!-- Full Name -->
                                     <StackPanel Grid.Row="0" Margin="0,0,0,15">
                                         <TextBlock Text="Full Name" Style="{StaticResource FormLabel}"/>
-                                        <TextBox Text="Bambas Pamungkang" Style="{StaticResource FormTextBox}"/>
+                                        <!-- DITAMBAHKAN: x:Name dan IsReadOnly -->
+                                        <TextBox x:Name="FullNameTextBox" Text="Loading..." Style="{StaticResource FormTextBox}" IsReadOnly="True"/>
                                     </StackPanel>
 
                                     <!-- Gender & Birth Date -->
@@ -287,7 +301,8 @@
 
                                         <StackPanel Grid.Column="0">
                                             <TextBlock Text="Gender" Style="{StaticResource FormLabel}"/>
-                                            <ComboBox Style="{StaticResource FormComboBox}" SelectedIndex="0">
+                                            <!-- DITAMBAHKAN: x:Name dan IsEnabled -->
+                                            <ComboBox x:Name="GenderComboBox" Style="{StaticResource FormComboBox}" IsEnabled="False">
                                                 <ComboBoxItem Content="Wanita"/>
                                                 <ComboBoxItem Content="Pria"/>
                                             </ComboBox>
@@ -303,15 +318,10 @@
                                                     <ColumnDefinition Width="10"/>
                                                     <ColumnDefinition Width="*"/>
                                                 </Grid.ColumnDefinitions>
-                                                <ComboBox Grid.Column="0" Style="{StaticResource FormComboBox}" SelectedIndex="0">
-                                                    <ComboBoxItem Content="10"/>
-                                                </ComboBox>
-                                                <ComboBox Grid.Column="2" Style="{StaticResource FormComboBox}" SelectedIndex="0">
-                                                    <ComboBoxItem Content="Juni"/>
-                                                </ComboBox>
-                                                <ComboBox Grid.Column="4" Style="{StaticResource FormComboBox}" SelectedIndex="0">
-                                                    <ComboBoxItem Content="Tahun"/>
-                                                </ComboBox>
+                                                <!-- DITAMBAHKAN: x:Name dan IsEnabled untuk ComboBoxes -->
+                                                <ComboBox x:Name="CmbBirthDay" Grid.Column="0" Style="{StaticResource FormComboBox}" IsEnabled="False" />
+                                                <ComboBox x:Name="CmbBirthMonth" Grid.Column="2" Style="{StaticResource FormComboBox}" IsEnabled="False" />
+                                                <ComboBox x:Name="CmbBirthYear" Grid.Column="4" Style="{StaticResource FormComboBox}" IsEnabled="False" />
                                             </Grid>
                                         </StackPanel>
                                     </Grid>
@@ -319,7 +329,8 @@
                                     <!-- City -->
                                     <StackPanel Grid.Row="2" Margin="0,0,0,15">
                                         <TextBlock Text="City" Style="{StaticResource FormLabel}"/>
-                                        <TextBox Text="Kota Asal" Style="{StaticResource FormTextBox}"/>
+                                        <!-- DITAMBAHKAN: x:Name dan IsReadOnly -->
+                                        <TextBox x:Name="CityTextBox" Text="-" Style="{StaticResource FormTextBox}" IsReadOnly="True"/>
                                     </StackPanel>
 
                                 </Grid>
@@ -348,7 +359,8 @@
                                 <Grid Grid.Row="1" Margin="20">
                                     <StackPanel Margin="0,0,0,15">
                                         <TextBlock Text="Email Address" Style="{StaticResource FormLabel}"/>
-                                        <TextBox Text="BambasGantenks@yahoo.com" Style="{StaticResource FormTextBox}"/>
+                                        <!-- DITAMBAHKAN: x:Name dan IsReadOnly -->
+                                        <TextBox x:Name="EmailTextBox" Text="Loading..." Style="{StaticResource FormTextBox}" IsReadOnly="True"/>
                                     </StackPanel>
                                 </Grid>
                             </Grid>
@@ -418,7 +430,8 @@
                     </StackPanel>
                 </ScrollViewer>
             </TabItem>
-            <CheckBox Content="CheckBox"/>
+
+            <!-- CHECKBOX YANG RUSAK SUDAH DIHAPUS DARI SINI -->
 
         </TabControl>
     </Grid>

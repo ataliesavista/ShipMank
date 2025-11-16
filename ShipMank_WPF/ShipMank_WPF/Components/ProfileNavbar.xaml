@@ -6,11 +6,8 @@
              xmlns:local="clr-namespace:ShipMank_WPF.Components"
              mc:Ignorable="d" 
              d:DesignHeight="320" d:DesignWidth="300"
-             Background="Transparent">
-    <!-- 
-        Background UserControl diatur ke Transparent agar tidak 
-        menghalangi background gradien dari Page di belakangnya.
-    -->
+             Background="Transparent"
+             Loaded="ProfileNavbar_Loaded">
 
     <Border Width="300" 
             Background="White" 
@@ -61,12 +58,6 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <!-- 
-                PERBAIKAN DI SINI:
-                Menambahkan 'CornerRadius="20,20,0,0"'
-                (top-left, top-right, bottom-right, bottom-left)
-                agar sudut atas Border ini pas dengan lekukan Border induknya.
-            -->
             <Border Grid.Row="0" Padding="20" CornerRadius="20,20,0,0">
                 <Border.Background>
                     <LinearGradientBrush StartPoint="0,0.45" EndPoint="1,0.55">
@@ -75,13 +66,24 @@
                     </LinearGradientBrush>
                 </Border.Background>
 
+                <!-- === PERUBAHAN DI SINI === -->
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                    <Border Width="60" Height="60" CornerRadius="30" Background="Gray" Margin="0,0,15,0">
-                        <TextBlock Text="BP" FontSize="24" FontWeight="Bold" 
-                                   HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White"/>
-                    </Border>
-                    <TextBlock Text="Bambas Pamungkang" FontSize="18" FontWeight="Bold" VerticalAlignment="Center"/>
+                    <!-- Border "BP" diganti dengan Ellipse + ImageBrush -->
+                    <Ellipse Width="60" Height="60" Margin="0,0,15,0">
+                        <Ellipse.Fill>
+                            <ImageBrush x:Name="ProfilePictureImageBrush" />
+                        </Ellipse.Fill>
+                    </Ellipse>
+
+                    <!-- TextBlock nama dibuat dinamis -->
+                    <TextBlock x:Name="ProfileNameTextBlock" 
+                               Text="Loading..." 
+                               FontSize="18" 
+                               FontWeight="Bold" 
+                               VerticalAlignment="Center"/>
                 </StackPanel>
+                <!-- === AKHIR PERUBAHAN === -->
+
             </Border>
 
             <!-- Bagian Navigasi Utama -->
@@ -93,7 +95,7 @@
             <StackPanel Grid.Row="2" Margin="0,0,0,20">
                 <Separator Margin="10"/>
                 <RadioButton x:Name="MyAccountButton" Content="My Account" Style="{StaticResource NavButtonStyle}" GroupName="NavMain" IsChecked="True"/>
-                <RadioButton x:Name="LogoutButton" Content="Logout" Style="{StaticResource NavButtonStyle}" GroupName="NavMain"/>
+                <RadioButton x:Name="LogoutButton" Content="Logout" Style="{StaticResource NavButtonStyle}" GroupName="NavMain" Checked="LogoutButton_Checked"/>
             </StackPanel>
         </Grid>
     </Border>
