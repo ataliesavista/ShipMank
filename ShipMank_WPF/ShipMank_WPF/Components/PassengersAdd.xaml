@@ -1,0 +1,268 @@
+﻿<UserControl x:Class="ShipMank_WPF.Components.PassengersAdd"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:ShipMank_WPF.Components"
+             mc:Ignorable="d"
+             d:DesignHeight="720" d:DesignWidth="980"
+             Padding="40" Background="Transparent">
+
+    <UserControl.Resources>
+
+        <!-- Drop Shadow -->
+        <DropShadowEffect x:Key="DropShadow"
+                          Color="Black"
+                          Direction="270"
+                          ShadowDepth="2"
+                          Opacity="0.1"
+                          BlurRadius="5"/>
+
+        <!-- Primary Button -->
+        <Style x:Key="PrimaryButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#1F2937"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="4">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Flat Button -->
+        <Style x:Key="FlatButtonStyle" TargetType="Button" BasedOn="{StaticResource PrimaryButtonStyle}">
+            <Setter Property="Background" Value="#E5E7EB"/>
+            <Setter Property="Foreground" Value="#4B5563"/>
+            <Setter Property="BorderBrush" Value="#E5E7EB"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Passenger Lists"
+                   FontSize="32"
+                   FontWeight="Bold"
+                   Foreground="#111827"
+                   VerticalAlignment="Top"
+                   HorizontalAlignment="Left"
+                   Grid.Row="0"
+                   Margin="0,0,0,20"/>
+
+        <Border Background="White"
+                CornerRadius="8"
+                Padding="30"
+                Grid.Row="1"
+                MaxHeight="550"
+                VerticalAlignment="Top">
+
+            <StackPanel>
+
+                <!-- Form Atas -->
+                <Grid Margin="0,0,0,20">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="15"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="15"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Row="0" Grid.Column="0">
+                        <TextBlock Text="First Name" Margin="0,0,0,5"/>
+                        <TextBox x:Name="TxtFirstName" Text="Bambas" Padding="8"
+                                 BorderThickness="1" BorderBrush="LightGray" Height="35"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="0" Grid.Column="2">
+                        <TextBlock Text="Last Name" Margin="0,0,0,5"/>
+                        <TextBox x:Name="TxtLastName" Text="Pamungkang" Padding="8"
+                                 BorderThickness="1" BorderBrush="LightGray" Height="35"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="2" Grid.Column="0">
+                        <TextBlock Text="Email" Margin="0,0,0,5"/>
+                        <TextBox x:Name="TxtEmail" Text="BambasGanteng@gmail.com" Padding="8"
+                                 BorderThickness="1" BorderBrush="LightGray" Height="35"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="2" Grid.Column="2">
+                        <TextBlock Text="Phone Number" Margin="0,0,0,5"/>
+                        <TextBox x:Name="TxtPhoneNumber" Text="08139010479" Padding="8"
+                                 BorderThickness="1" BorderBrush="LightGray" Height="35"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="4" Grid.Column="0">
+                        <TextBlock Text="Country" Margin="0,0,0,5"/>
+                        <ComboBox x:Name="CmbCountry" SelectedItem="Indonesia" Padding="8"
+                                  BorderThickness="1" BorderBrush="LightGray" Height="35">
+                            <ComboBoxItem Content="Indonesia"/>
+                        </ComboBox>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="4" Grid.Column="2">
+                        <TextBlock Text="Birth Date" Margin="0,0,0,5"/>
+                        <StackPanel Orientation="Horizontal">
+                            <ComboBox x:Name="CmbDay" SelectedItem="21" Width="50"
+                                      Margin="0,0,5,0" Padding="8"
+                                      BorderThickness="1" BorderBrush="LightGray" Height="35">
+                                <ComboBoxItem Content="21"/>
+                            </ComboBox>
+
+                            <ComboBox x:Name="CmbMonth" SelectedItem="Bulan" Width="100"
+                                      Margin="0,0,5,0" Padding="8" 
+                                      BorderThickness="1" BorderBrush="LightGray" Height="35">
+                                <ComboBoxItem Content="Bulan"/>
+                            </ComboBox>
+
+                            <ComboBox x:Name="CmbYear" SelectedItem="1997" Width="60"
+                                      Padding="8" BorderThickness="1" BorderBrush="LightGray" Height="35">
+                                <ComboBoxItem Content="1997"/>
+                            </ComboBox>
+                        </StackPanel>
+                    </StackPanel>
+
+                </Grid>
+
+                <!-- FIXED SEPARATOR (AMAN) -->
+                <Separator Margin="0,10,0,30" Height="1" Background="#D1D5DB"/>
+
+                <TextBlock Text="Identity" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,15"/>
+
+                <!-- Form Identity -->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="15"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Row="0" Grid.Column="0">
+                        <TextBlock Text="Identification Number" Margin="0,0,0,5"/>
+                        <TextBox x:Name="TxtIDNumber" Text="324501211297" Padding="8"
+                                 BorderThickness="1" BorderBrush="LightGray" Height="35"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="0" Grid.Column="2">
+                        <TextBlock Text="Passport Number" Margin="0,0,0,5"/>
+                        <TextBox x:Name="TxtPassportNumber" Text="" Padding="8"
+                                 BorderThickness="1" BorderBrush="LightGray" Height="35"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
+                        <TextBlock Text="Driving License" Margin="0,0,0,5"/>
+                        <TextBox x:Name="TxtDrivingLicense" Text="1234-5678-000123" Padding="8"
+                                 BorderThickness="1" BorderBrush="LightGray" Height="35"/>
+                    </StackPanel>
+
+                </Grid>
+
+            </StackPanel>
+
+        </Border>
+
+        <!-- Button Cancel & Save -->
+        <StackPanel Orientation="Horizontal"
+                    HorizontalAlignment="Right"
+                    Grid.Row="2"
+                    Margin="0,0,0,0">
+
+            <Button x:Name="BtnCancel"
+                Content="Cancel"
+                Background="#33154D71"
+                Foreground="#154D71"
+                Width="100"
+                Height="35"
+                Margin="0,0,10,0">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                            CornerRadius="8"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+
+
+            <Button x:Name="BtnSave"
+                Content="Save"
+                Background="#154D71"
+                Foreground="White"
+                Width="100"
+                Height="35">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                            CornerRadius="8"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                  VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+
+        </StackPanel>
+
+        <!-- Button Add Passenger -->
+        <Grid Grid.Row="2" Margin="0,100,0,0">
+            <Button x:Name="BtnAddPassenger"
+                Content="Add Passenger"
+                HorizontalAlignment="Stretch"
+                Height="50"
+                FontSize="18"
+                FontWeight="Bold"
+                Foreground="White">         
+                <Button.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                        <GradientStop Color="#154D71" Offset="0"/>
+                        <GradientStop Color="#2893D7" Offset="1"/>
+                    </LinearGradientBrush>
+                </Button.Background>
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                            CornerRadius="8"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">        
+                            <ContentPresenter HorizontalAlignment="Center"
+                                VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+
+        </Grid>
+
+    </Grid>
+</UserControl>

@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 D:\vista~\Semester 5\Junpro_Github_VS\ShipMank_WPF\ShipMank_WPF\App.xaml
-7-1895405835
+20537306332
 
-19-1461562334
-13-1310406943
-Components\NavbarSearch.xaml;Components\NavbarTp.xaml;Components\NavbarWhite.xaml;MainWindow.xaml;Pages\Home.xaml;Pages\LoginPage.xaml;Pages\SignUp.xaml;
+32-611909993
+19713359211
+Components\Footer.xaml;Components\NavbarDash.xaml;Components\NavbarMain.xaml;Components\NavbarSearch.xaml;Components\NavbarTp.xaml;Components\NavbarWhite.xaml;Components\PassengersAdd.xaml;Components\PassengersControl.xaml;Components\ProfileNavbar.xaml;Components\SettingsControl.xaml;Components\ShipCard.xaml;MainWindow.xaml;Pages\BeliTiket.xaml;Pages\DetailKapal.xaml;Pages\History.xaml;Pages\Home.xaml;Pages\LoginPage.xaml;Pages\Payment.xaml;Pages\Profile.xaml;Pages\SignUp.xaml;
 
 False
 
