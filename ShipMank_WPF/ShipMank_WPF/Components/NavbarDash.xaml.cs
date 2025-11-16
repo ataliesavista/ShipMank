@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading; 
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -11,17 +11,17 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging; 
+using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Google.Apis.Auth.OAuth2; 
-using Google.Apis.Auth.OAuth2.Flows; 
-using Google.Apis.Auth.OAuth2.Responses; 
-using Google.Apis.Oauth2.v2; 
-using Google.Apis.Oauth2.v2.Data; 
-using Google.Apis.Services; 
-using Google.Apis.Util.Store; 
-using Microsoft.Extensions.Configuration; 
+using Google.Apis.Auth.OAuth2;
+using Google.Apis.Auth.OAuth2.Flows;
+using Google.Apis.Auth.OAuth2.Responses;
+using Google.Apis.Oauth2.v2;
+using Google.Apis.Oauth2.v2.Data;
+using Google.Apis.Services;
+using Google.Apis.Util.Store;
+using Microsoft.Extensions.Configuration;
 
 namespace ShipMank_WPF.Components
 {
@@ -75,7 +75,7 @@ namespace ShipMank_WPF.Components
 
         private void SetActiveButton(Button activeButton)
         {
-            var buttons = new[] { HomeButton, RentalsButton, TicketsButton, OrdersButton, HelpButton, ProfileButton };
+            var buttons = new[] { HomeButton, RentalsButton, OrdersButton, HelpButton, ProfileButton };
             foreach (var button in buttons)
             {
                 if (button != null)
@@ -110,21 +110,22 @@ namespace ShipMank_WPF.Components
         private void HomeButton_Click(object sender, RoutedEventArgs e)
         {
             SetActiveButton(HomeButton);
+            var main = (MainWindow)Application.Current.MainWindow;
+            main.MainFrame.Content = new Home();
         }
 
         private void RentalsButton_Click(object sender, RoutedEventArgs e)
         {
             SetActiveButton(RentalsButton);
-        }
-
-        private void TicketsButton_Click(object sender, RoutedEventArgs e)
-        {
-            SetActiveButton(TicketsButton);
+            var main = (MainWindow)Application.Current.MainWindow;
+            main.MainFrame.Content = new BeliTiket();
         }
 
         private void OrdersButton_Click(object sender, RoutedEventArgs e)
         {
             SetActiveButton(OrdersButton);
+            var main = (MainWindow)Application.Current.MainWindow;
+            main.MainFrame.Content = new History();
         }
 
         private void HelpButton_Click(object sender, RoutedEventArgs e)

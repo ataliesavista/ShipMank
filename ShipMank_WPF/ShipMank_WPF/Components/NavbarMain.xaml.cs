@@ -15,7 +15,7 @@ namespace ShipMank_WPF.Components
         private void SetActiveButton(Button activeButton)
         {
             // Reset semua button
-            var buttons = new[] { HomeButton, RentalsButton, TicketsButton, OrdersButton, HelpButton };
+            var buttons = new[] { HomeButton, HelpButton };
 
             foreach (var button in buttons)
             {
@@ -51,20 +51,20 @@ namespace ShipMank_WPF.Components
             SetActiveButton(HomeButton);
         }
 
-        private void RentalsButton_Click(object sender, RoutedEventArgs e)
-        {
-            SetActiveButton(RentalsButton);
-        }
+        //private void RentalsButton_Click(object sender, RoutedEventArgs e)
+        //{
+        //    SetActiveButton(RentalsButton);
+        //}
 
-        private void TicketsButton_Click(object sender, RoutedEventArgs e)
-        {
-            SetActiveButton(TicketsButton);
-        }
+        //private void TicketsButton_Click(object sender, RoutedEventArgs e)
+        //{
+        //    SetActiveButton(TicketsButton);
+        //}
 
-        private void OrdersButton_Click(object sender, RoutedEventArgs e)
-        {
-            SetActiveButton(OrdersButton);
-        }
+        //private void OrdersButton_Click(object sender, RoutedEventArgs e)
+        //{
+        //    SetActiveButton(OrdersButton);
+        //}
 
         private void HelpButton_Click(object sender, RoutedEventArgs e)
         {
