@@ -49,7 +49,8 @@
             </Setter>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Value="Underline"/>
+                    <!-- INI ADALAH PERBAIKANNYA (Baris 52) -->
+                    <Setter Property="TextBlock.TextDecorations" Value="Underline"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
@@ -145,33 +146,36 @@
         </StackPanel>
 
         <Button x:Name="BtnAddPassenger"
-            Content="Add Passenger"
-            Grid.Row="2"
-            HorizontalAlignment="Stretch"
-            Height="50"
-            FontSize="18"
-            FontWeight="Bold"
-            Foreground="White"
-            Margin="0,20,0,0">
+        Content="Add Passenger"
+        Grid.Row="2"
+        HorizontalAlignment="Stretch"
+        Height="50"
+        FontSize="18"
+        FontWeight="Bold"
+        Foreground="White"
+        Margin="0,20,0,0">
+
             <Button.Background>
                 <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
                     <GradientStop Color="#154D71" Offset="0"/>
                     <GradientStop Color="#2893D7" Offset="1"/>
                 </LinearGradientBrush>
             </Button.Background>
+
             <Button.Template>
                 <ControlTemplate TargetType="Button">
                     <Border Background="{TemplateBinding Background}"
-                        CornerRadius="8"
-                        BorderBrush="{TemplateBinding BorderBrush}"
-                        BorderThickness="{TemplateBinding BorderThickness}">
+                    CornerRadius="8"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}">
                         <ContentPresenter HorizontalAlignment="Center"
-                            VerticalAlignment="Center"/>
+                                  VerticalAlignment="Center"/>
                     </Border>
                 </ControlTemplate>
             </Button.Template>
 
         </Button>
+
 
     </Grid>
 </UserControl>

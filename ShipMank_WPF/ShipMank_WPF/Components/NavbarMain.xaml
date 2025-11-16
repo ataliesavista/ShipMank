@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ShipMank_WPF.Components"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              mc:Ignorable="d" 
              Height="70"
              HorizontalAlignment="Stretch"
@@ -49,13 +50,13 @@
                         </Style>
                     </Button.Resources>
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="🏠" Margin="0,0,5,0" FontSize="14"/>
-                        <TextBlock Text="Home" FontSize="14"/>
+                        <iconPacks:PackIconMaterial Kind="Home" VerticalAlignment="Center" Margin="0,0,5,0" Width="16" Height="16"/>
+                        <TextBlock Text="Home" FontSize="14" VerticalAlignment="Center"/>
                     </StackPanel>
                 </Button>
 
                 <!-- Rentals Button -->
-                <Button x:Name="RentalsButton"
+                <!--<Button x:Name="RentalsButton"
                         Height="35"
                         Background="Transparent"
                         FontFamily="Dubai"
@@ -72,12 +73,13 @@
                         </Style>
                     </Button.Resources>
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="⚓" Margin="0,0,5,0" FontSize="14"/>
-                        <TextBlock Text="Rentals" FontSize="14"/>
+                        --><!-- DIGANTI --><!--
+                        <iconPacks:PackIconMaterial Kind="Anchor" VerticalAlignment="Center" Margin="0,0,5,0" Width="16" Height="16"/>
+                        <TextBlock Text="Rentals" FontSize="14" VerticalAlignment="Center"/>
                     </StackPanel>
                 </Button>
 
-                <!-- Tickets Button -->
+                --><!-- Tickets Button --><!--
                 <Button x:Name="TicketsButton"
                         Height="35"
                         Background="Transparent"
@@ -95,12 +97,13 @@
                         </Style>
                     </Button.Resources>
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="🎫" Margin="0,0,5,0" FontSize="14"/>
-                        <TextBlock Text="Tickets" FontSize="14"/>
+                        --><!-- DIGANTI --><!--
+                        <iconPacks:PackIconMaterial Kind="Ticket" VerticalAlignment="Center" Margin="0,0,5,0" Width="16" Height="16"/>
+                        <TextBlock Text="Tickets" FontSize="14" VerticalAlignment="Center"/>
                     </StackPanel>
                 </Button>
 
-                <!-- Orders Button -->
+                --><!-- Orders Button --><!--
                 <Button x:Name="OrdersButton"
                         Height="35"
                         Background="Transparent"
@@ -118,10 +121,11 @@
                         </Style>
                     </Button.Resources>
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="📦" Margin="0,0,5,0" FontSize="14"/>
-                        <TextBlock Text="Orders" FontSize="14"/>
+                        --><!-- DIGANTI --><!--
+                        <iconPacks:PackIconMaterial Kind="PackageVariant" VerticalAlignment="Center" Margin="0,0,5,0" Width="16" Height="16"/>
+                        <TextBlock Text="Orders" FontSize="14" VerticalAlignment="Center"/>
                     </StackPanel>
-                </Button>
+                </Button>-->
 
                 <!-- Help Button -->
                 <Button x:Name="HelpButton"
@@ -140,13 +144,14 @@
                         </Style>
                     </Button.Resources>
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="❓" Margin="0,0,5,0" FontSize="14"/>
-                        <TextBlock Text="Help" FontSize="14"/>
+                        <!-- DIGANTI -->
+                        <iconPacks:PackIconMaterial Kind="HelpCircleOutline" VerticalAlignment="Center" Margin="0,0,5,0" Width="16" Height="16"/>
+                        <TextBlock Text="Help" FontSize="14" VerticalAlignment="Center"/>
                     </StackPanel>
                 </Button>
             </StackPanel>
 
-            <!-- Login/Register Buttons -->
+            <!-- Login/Register Buttons (Tidak berubah) -->
             <StackPanel Orientation="Horizontal" 
                         Grid.Column="2" 
                         VerticalAlignment="Center"
