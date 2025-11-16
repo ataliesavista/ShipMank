@@ -1,0 +1,29 @@
+# Visual Studio
+.vs/
+*.suo
+*.user
+*.sln.docstates
+
+# Build results
+*.baml
+*.dll
+*.exe
+[Bb]in/
+[Oo]bj/
+[Rr]elease/
+[Rr]eleases/
+[Dd]ebug/
+
+# Rider
+.idea/
+
+# Log files
+*.log
+
+# Paket NuGet
+packages/
+*.nupkg
+
+# File sementara
+*.tmp
+appsettings.json
