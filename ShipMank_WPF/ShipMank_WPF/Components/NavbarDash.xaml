@@ -7,8 +7,8 @@
              mc:Ignorable="d" 
              Height="70"
              HorizontalAlignment="Stretch"
-             VerticalAlignment="Top">
-
+             VerticalAlignment="Top"
+             Loaded="NavbarDash_Loaded">
     <Border Background="#FEFDEE" Padding="20,10" HorizontalAlignment="Stretch">
         <Grid>
             <Grid.RowDefinitions>
@@ -33,17 +33,7 @@
                         VerticalAlignment="Top"
                         HorizontalAlignment="Center" Margin="0,2,0,0" Grid.Row="1">
 
-                <Button x:Name="HomeButton"
-                        Height="35"
-                        Background="Transparent" 
-                        FontFamily="Dubai"
-                        FontWeight="SemiBold"
-                        Foreground="Black" 
-                        Cursor="Hand"
-                        BorderThickness="0"
-                        Padding="20,0"
-                        Margin="0,0,10,0"
-                        Click="HomeButton_Click">
+                <Button x:Name="HomeButton" Height="35" Background="Transparent" FontFamily="Dubai" FontWeight="SemiBold" Foreground="Black" Cursor="Hand" BorderThickness="0" Padding="20,0" Margin="0,0,10,0" Click="HomeButton_Click">
                     <Button.Resources>
                         <Style TargetType="Border">
                             <Setter Property="CornerRadius" Value="20"/>
@@ -55,17 +45,7 @@
                     </StackPanel>
                 </Button>
 
-                <Button x:Name="RentalsButton"
-                        Height="35"
-                        Background="Transparent"
-                        FontFamily="Dubai"
-                        FontWeight="SemiBold"
-                        Foreground="Black"
-                        Cursor="Hand"
-                        BorderThickness="0"
-                        Padding="15,0"
-                        Margin="0,0,10,0"
-                        Click="RentalsButton_Click">
+                <Button x:Name="RentalsButton" Height="35" Background="Transparent" FontFamily="Dubai" FontWeight="SemiBold" Foreground="Black" Cursor="Hand" BorderThickness="0" Padding="15,0" Margin="0,0,10,0" Click="RentalsButton_Click">
                     <Button.Resources>
                         <Style TargetType="Border">
                             <Setter Property="CornerRadius" Value="20"/>
@@ -77,17 +57,7 @@
                     </StackPanel>
                 </Button>
 
-                <Button x:Name="TicketsButton"
-                        Height="35"
-                        Background="#1E90FF" 
-                        FontFamily="Dubai"
-                        FontWeight="SemiBold"
-                        Foreground="White" 
-                        Cursor="Hand"
-                        BorderThickness="0"
-                        Padding="15,0"
-                        Margin="0,0,10,0"
-                        Click="TicketsButton_Click">
+                <Button x:Name="TicketsButton" Height="35" Background="#1E90FF" FontFamily="Dubai" FontWeight="SemiBold" Foreground="White" Cursor="Hand" BorderThickness="0" Padding="15,0" Margin="0,0,10,0" Click="TicketsButton_Click">
                     <Button.Resources>
                         <Style TargetType="Border">
                             <Setter Property="CornerRadius" Value="20"/>
@@ -99,17 +69,7 @@
                     </StackPanel>
                 </Button>
 
-                <Button x:Name="OrdersButton"
-                        Height="35"
-                        Background="Transparent"
-                        FontFamily="Dubai"
-                        FontWeight="SemiBold"
-                        Foreground="Black"
-                        Cursor="Hand"
-                        BorderThickness="0"
-                        Padding="15,0"
-                        Margin="0,0,10,0"
-                        Click="OrdersButton_Click">
+                <Button x:Name="OrdersButton" Height="35" Background="Transparent" FontFamily="Dubai" FontWeight="SemiBold" Foreground="Black" Cursor="Hand" BorderThickness="0" Padding="15,0" Margin="0,0,10,0" Click="OrdersButton_Click">
                     <Button.Resources>
                         <Style TargetType="Border">
                             <Setter Property="CornerRadius" Value="20"/>
@@ -121,16 +81,7 @@
                     </StackPanel>
                 </Button>
 
-                <Button x:Name="HelpButton"
-                        Height="35"
-                        Background="Transparent"
-                        FontFamily="Dubai"
-                        FontWeight="SemiBold"
-                        Foreground="Black"
-                        Cursor="Hand"
-                        BorderThickness="0"
-                        Padding="15,0"
-                        Click="HelpButton_Click">
+                <Button x:Name="HelpButton" Height="35" Background="Transparent" FontFamily="Dubai" FontWeight="SemiBold" Foreground="Black" Cursor="Hand" BorderThickness="0" Padding="15,0" Click="HelpButton_Click">
                     <Button.Resources>
                         <Style TargetType="Border">
                             <Setter Property="CornerRadius" Value="20"/>
@@ -143,47 +94,71 @@
                 </Button>
             </StackPanel>
 
-            <Button x:Name="ProfileButton"
-                    Grid.Column="2" 
-                    VerticalAlignment="Top"
-                    HorizontalAlignment="Right"
-                    Margin="0,5,50,0"
-                    Height="40"
-                    Background="#FFF9AF"
-                    BorderBrush="Black"
-                    BorderThickness="2"
-                    Cursor="Hand"
-                    FontFamily="Dubai"
-                    FontWeight="SemiBold"
-                    Foreground="Black"
-                    Click="ProfileButton_Click" Grid.RowSpan="2">
+            <StackPanel Grid.Column="2" 
+                        Grid.RowSpan="2" 
+                        Orientation="Horizontal" 
+                        HorizontalAlignment="Right" 
+                        VerticalAlignment="Top" 
+                        Margin="0,5,30,0">
 
-                <Button.Resources>
-                    <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="20"/>
-                    </Style>
-                </Button.Resources>
+                <Button x:Name="ProfileButton"
+                        VerticalAlignment="Top"
+                        HorizontalAlignment="Right"
+                        Height="40"
+                        Background="#FFF9AF"
+                        BorderBrush="Black"
+                        BorderThickness="2"
+                        Cursor="Hand"
+                        FontFamily="Dubai"
+                        FontWeight="SemiBold"
+                        Foreground="Black"
+                        Click="ProfileButton_Click">
 
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="10,0">
-                    <TextBlock Text="Bambas Pamungkang"
-                               VerticalAlignment="Center"
-                               Margin="5,0,10,0"/>
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="20"/>
+                        </Style>
+                    </Button.Resources>
 
-                    <Border Background="Black"
-                            Height="28"
-                            Width="28"
-                            CornerRadius="14">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="10,0">
 
-                        <TextBlock Text="&#xE77B;" 
-                                   FontFamily="Segoe UI Fluent Icons" 
-                                   FontSize="16"
-                                   Foreground="White"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"/>
-                    </Border>
-                </StackPanel>
-            </Button>
+                        <TextBlock x:Name="ProfileNameTextBlock"
+                                   Text="Loading..."
+                                   VerticalAlignment="Center"
+                                   Margin="5,0,10,0"/>
 
+                        <Ellipse Height="28" Width="28">
+                            <Ellipse.Fill>
+                                <ImageBrush x:Name="ProfilePictureImageBrush" />
+                            </Ellipse.Fill>
+                        </Ellipse>
+                    </StackPanel>
+                </Button>
+
+                <Button x:Name="LogoutButton"
+                        VerticalAlignment="Top"
+                        Margin="10,0,0,0"
+                        Height="40"
+                        Width="40"
+                        Background="#FFDCDC"
+                        BorderBrush="Black"
+                        BorderThickness="2"
+                        Cursor="Hand"
+                        Click="LogoutButton_Click">
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="20"/>
+                        </Style>
+                    </Button.Resources>
+                    <TextBlock Text="&#xE71B;" 
+                               FontFamily="Segoe UI Fluent Icons" 
+                               FontSize="16"
+                               Foreground="Black"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"/>
+                </Button>
+
+            </StackPanel>
         </Grid>
     </Border>
 </UserControl>

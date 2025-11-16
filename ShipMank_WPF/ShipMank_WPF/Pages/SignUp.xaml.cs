@@ -16,6 +16,8 @@ using System.Threading;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Util.Store;
 using Microsoft.Extensions.Configuration;
+using Google.Apis.Auth.OAuth2.Flows;
+using Google.Apis.Auth.OAuth2.Responses;
 
 namespace ShipMank_WPF.Pages
 {
@@ -33,7 +35,7 @@ namespace ShipMank_WPF.Pages
             Window parentWindow = Window.GetWindow(this);
             if (parentWindow is MainWindow mw)
             {
-                mw.ClosePopup();
+                mw.ShowPopup(new LoginPage());
             }
         }
 
@@ -63,10 +65,10 @@ namespace ShipMank_WPF.Pages
                     new ClientSecrets
                     {
                         ClientId = clientId,
-                        ClientSecret = clientSecret 
+                        ClientSecret = clientSecret
                     },
                     scopes,
-                    "user",
+                    "temp_user_id",
                     CancellationToken.None,
                     new FileDataStore("ShipMank.GoogleAuthStore")
                 );
