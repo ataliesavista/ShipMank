@@ -163,8 +163,6 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <!-- Row 0: Header -->
-            <RowDefinition Height="Auto"/>
-            <!-- Row 1: Tabs -->
             <RowDefinition Height="*"/>
             <!-- Row 2: DataGrid -->
         </Grid.RowDefinitions>
@@ -174,13 +172,6 @@
             <Image Source="/Assets/logob.png" Height="32" Width="32" VerticalAlignment="Center" Margin="0,0,10,0"/>
             <TextBlock Text="Orders" FontSize="32" FontWeight="Bold" VerticalAlignment="Center" Foreground="#333"/>
         </StackPanel>
-
-        <!-- Row 1: Navigasi Tab -->
-        <Border Grid.Row="1" Background="#CBE3F5" CornerRadius="20" Margin="40,0,40,20" Padding="4" HorizontalAlignment="Left">
-            <StackPanel Orientation="Horizontal">
-                <RadioButton Grid.Column="2" Content="Rentals" Style="{StaticResource TabButton}" Tag="⚓"/>
-            </StackPanel>
-        </Border>
 
         <!-- Row 2: DataGrid (Tabel) -->
         <!-- Dibungkus Border agar bisa memiliki CornerRadius dan Shadow -->

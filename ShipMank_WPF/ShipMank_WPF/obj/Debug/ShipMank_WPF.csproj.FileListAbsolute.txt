@@ -192,3 +192,7 @@ D:\vista~\Semester 5\Junpro_Github_VS\ShipMank_WPF\ShipMank_WPF\bin\Debug\MahApp
 D:\vista~\Semester 5\Junpro_Github_VS\ShipMank_WPF\ShipMank_WPF\bin\Debug\MahApps.Metro.IconPacks.VaadinIcons.xml
 D:\vista~\Semester 5\Junpro_Github_VS\ShipMank_WPF\ShipMank_WPF\bin\Debug\MahApps.Metro.IconPacks.WeatherIcons.xml
 D:\vista~\Semester 5\Junpro_Github_VS\ShipMank_WPF\ShipMank_WPF\bin\Debug\MahApps.Metro.IconPacks.Zondicons.xml
+D:\vista~\Semester 5\Junpro_Github_VS\ShipMank_WPF\ShipMank_WPF\bin\Debug\ShipMank_WPF.exe.manifest
+D:\vista~\Semester 5\Junpro_Github_VS\ShipMank_WPF\ShipMank_WPF\bin\Debug\ShipMank_WPF.application
+D:\vista~\Semester 5\Junpro_Github_VS\ShipMank_WPF\ShipMank_WPF\obj\Debug\ShipMank_WPF.exe.manifest
+D:\vista~\Semester 5\Junpro_Github_VS\ShipMank_WPF\ShipMank_WPF\obj\Debug\ShipMank_WPF.application
