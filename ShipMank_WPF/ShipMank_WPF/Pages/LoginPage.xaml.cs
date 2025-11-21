@@ -17,6 +17,7 @@ using Google.Apis.Oauth2.v2;
 using Google.Apis.Oauth2.v2.Data;
 using Google.Apis.Services; 
 using Microsoft.Extensions.Configuration;
+using ShipMank_WPF.Models;
 
 namespace ShipMank_WPF.Pages
 {
@@ -29,26 +30,43 @@ namespace ShipMank_WPF.Pages
 
         private void LoginButton_Click(object sender, RoutedEventArgs e)
         {
+            // Ambil input wajib: Username dan Password
             string username = tbUsername.Text;
             string password = tbPassword.Password;
 
-            if (username == "admin" && password == "1234")
+            if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
             {
+                MessageBox.Show("Mohon isi Username dan Password.", "Gagal", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            // Panggil metode Login dari Model User
+            User loggedInUser = User.Login(username, password);
+
+            if (loggedInUser != null)
+            {
+                loggedInUser.IsGoogleLogin = false;
+                MessageBox.Show($"Selamat datang!", "Sukses", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                // Lanjut ke Logged In State (Asumsi MainWindow memiliki metode untuk ini)
                 Window parentWindow = Window.GetWindow(this);
                 if (parentWindow is MainWindow mw)
                 {
+                    // Anda mungkin ingin menyimpan objek user ini di MainWindow atau ViewModel
+                    mw.CurrentUser = loggedInUser;
                     mw.ClosePopup();
                     mw.ShowLoggedInState();
                 }
             }
             else
             {
-                MessageBox.Show("Username atau password salah", "Login Gagal", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Login gagal. Username atau Password salah.", "Gagal", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
         private void SignUpText_MouseDown(object sender, MouseButtonEventArgs e)
         {
+            // Navigasi ke halaman Sign Up
             Window parentWindow = Window.GetWindow(this);
             if (parentWindow is MainWindow mw)
             {
@@ -87,19 +105,45 @@ namespace ShipMank_WPF.Pages
                     var oauthService = new Oauth2Service(new BaseClientService.Initializer()
                     {
                         HttpClientInitializer = credential,
-                        ApplicationName = applicationName,
+                        ApplicationName = "ShipMank_WPF",
                     });
 
                     Userinfo profile = await oauthService.Userinfo.Get().ExecuteAsync();
 
-                    MessageBox.Show($"Login Google Berhasil!\nNama: {profile.Name}\nEmail: {profile.Email}",
-                                    "Sukses", MessageBoxButton.OK, MessageBoxImage.Information);
+                    // ----------------------------------------------------
+                    // INTEGRASI DATABASE GOOGLE LOGIN
+                    // ----------------------------------------------------
 
-                    Window parentWindow = Window.GetWindow(this);
-                    if (parentWindow is MainWindow mw)
+                    // 1. Cek apakah user sudah terdaftar di DB
+                    User existingUser = User.GetUserByEmail(profile.Email);
+
+                    if (existingUser != null)
                     {
-                        mw.ClosePopup();
-                        mw.ShowLoggedInState();
+                        // SET KE TRUE KARENA INI GOOGLE
+                        existingUser.IsGoogleLogin = true;
+
+                        MessageBox.Show($"Login Google Berhasil!...", "Sukses", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                        Window parentWindow = Window.GetWindow(this);
+                        if (parentWindow is MainWindow mw)
+                        {
+                            mw.CurrentUser = existingUser; // Oper user
+                            mw.ClosePopup();
+                            mw.ShowLoggedInState();
+                        }
+                    }
+                    else
+                    {
+                        // 3. User belum terdaftar (WAJIB SIGN UP DAHULU)
+                        MessageBox.Show($"Email {profile.Email} belum terdaftar. Silakan Sign Up terlebih dahulu.",
+                                        "Gagal", MessageBoxButton.OK, MessageBoxImage.Warning);
+
+                        // Opsional: Langsung arahkan ke halaman Sign Up
+                        Window parentWindow = Window.GetWindow(this);
+                        if (parentWindow is MainWindow mw)
+                        {
+                            mw.ShowPopup(new SignUp());
+                        }
                     }
                 }
             }
