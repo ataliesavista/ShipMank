@@ -20,9 +20,20 @@ namespace ShipMank_WPF.Pages
     /// </summary>
     public partial class DetailKapal : Page
     {
+        public string KapalStatus { get; set; }
+
         public DetailKapal()
         {
             InitializeComponent();
+
+            // CONTOH 1: Set Status Unavailable (Pesan akan MUNCUL)
+            KapalStatus = "Unavailable";
+
+            // CONTOH 2: Set Status Available (Pesan akan HILANG)
+            // KapalStatus = "Available";
+
+            // PENTING: Set DataContext ke diri sendiri agar Binding di XAML jalan
+            this.DataContext = this;
         }
     }
 }

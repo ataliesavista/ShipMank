@@ -3,6 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ShipMank_WPF.Components"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="380"
              Width="Auto" Height="Auto">
@@ -21,11 +23,55 @@
         </Style>
     </UserControl.Resources>
 
-    <!-- Hapus Width="380" di sini agar lebar mengikuti konten atau container -->
-    <Border Background="White" CornerRadius="15" Margin="0,0,20,20" 
-            MaxWidth="380">
-        <!-- Catatan: Saya menambahkan MaxWidth="380" agar kartu tetap terlihat seperti kartu dan tidak memanjang 
-             secara tak terbatas jika diletakkan di container yang sangat lebar. -->
+    <!-- ANIMASI ZOOM GAMBAR SAAT HOVER -->
+    <UserControl.Triggers>
+        <EventTrigger RoutedEvent="MouseEnter">
+            <BeginStoryboard>
+                <Storyboard>
+                    <!-- Scale X membesar ke 1.1 -->
+                    <DoubleAnimation Storyboard.TargetName="ShipImage"
+                                     Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                                     To="1.1" Duration="0:0:0.4">
+                        <DoubleAnimation.EasingFunction>
+                            <CubicEase EasingMode="EaseOut"/>
+                        </DoubleAnimation.EasingFunction>
+                    </DoubleAnimation>
+                    <!-- Scale Y membesar ke 1.1 -->
+                    <DoubleAnimation Storyboard.TargetName="ShipImage"
+                                     Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                                     To="1.1" Duration="0:0:0.4">
+                        <DoubleAnimation.EasingFunction>
+                            <CubicEase EasingMode="EaseOut"/>
+                        </DoubleAnimation.EasingFunction>
+                    </DoubleAnimation>
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+
+        <EventTrigger RoutedEvent="MouseLeave">
+            <BeginStoryboard>
+                <Storyboard>
+                    <!-- Kembali ke ukuran normal (1.0) -->
+                    <DoubleAnimation Storyboard.TargetName="ShipImage"
+                                     Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                                     To="1.0" Duration="0:0:0.4">
+                        <DoubleAnimation.EasingFunction>
+                            <CubicEase EasingMode="EaseOut"/>
+                        </DoubleAnimation.EasingFunction>
+                    </DoubleAnimation>
+                    <DoubleAnimation Storyboard.TargetName="ShipImage"
+                                     Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                                     To="1.0" Duration="0:0:0.4">
+                        <DoubleAnimation.EasingFunction>
+                            <CubicEase EasingMode="EaseOut"/>
+                        </DoubleAnimation.EasingFunction>
+                    </DoubleAnimation>
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+    </UserControl.Triggers>
+
+    <Border Background="White" CornerRadius="15" Margin="0,0,20,20" MaxWidth="380">
         <Border.Effect>
             <DropShadowEffect ShadowDepth="2" Color="#CCCCCC" Opacity="0.5" BlurRadius="10"/>
         </Border.Effect>
@@ -33,15 +79,24 @@
         <StackPanel>
             <!-- Bagian Gambar dan Badge Kelas -->
             <Grid>
+                <!-- ClipToBounds="True" Wajib agar zoom tidak keluar dari border -->
                 <Border CornerRadius="15,15,0,0" Height="220" ClipToBounds="True">
-                    <!-- ImageSource adalah Dependency Property -->
-                    <Image Source="{Binding ImageSource, RelativeSource={RelativeSource AncestorType=UserControl}}" Stretch="UniformToFill" />
+
+                    <!-- Tambahkan x:Name dan RenderTransform -->
+                    <Image x:Name="ShipImage" 
+                           Source="{Binding ImageSource, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                           Stretch="UniformToFill"
+                           RenderTransformOrigin="0.5, 0.5">
+                        <Image.RenderTransform>
+                            <ScaleTransform ScaleX="1.0" ScaleY="1.0"/>
+                        </Image.RenderTransform>
+                    </Image>
+
                 </Border>
 
-                <!-- Badge Kelas (misalnya: Yacht) -->
+                <!-- Badge Kelas -->
                 <Border Background="{StaticResource PrimaryBlue}"
                         CornerRadius="10" Padding="15,7" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="15">
-                    <!-- ShipClass adalah Dependency Property -->
                     <TextBlock Text="{Binding ShipClass, RelativeSource={RelativeSource AncestorType=UserControl}}" 
                                FontWeight="Bold" FontSize="14" Foreground="White"/>
                 </Border>
@@ -54,7 +109,7 @@
                 <TextBlock Text="{Binding ShipName, RelativeSource={RelativeSource AncestorType=UserControl}}" 
                            FontSize="28" FontWeight="ExtraBold" Margin="0,0,0,10"/>
 
-                <!-- Lokasi, Kapasitas, dan Rating (Menggunakan Grid 2 kolom) -->
+                <!-- Lokasi, Kapasitas, dan Rating -->
                 <Grid Margin="0,0,0,15">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -64,16 +119,24 @@
                     <StackPanel Grid.Column="0">
                         <!-- Lokasi Kapal -->
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
-                            <TextBlock Text="&#xE707;" FontFamily="Segoe MDL2 Assets" FontSize="18" Margin="0,0,8,0" VerticalAlignment="Center" Foreground="{StaticResource DarkGrayText}"/>
-                            <!-- Location adalah Dependency Property -->
+                            <iconPacks:PackIconMaterial Kind="MapMarker" 
+                                                        Width="16" Height="16" 
+                                                        Margin="0,0,8,0" 
+                                                        VerticalAlignment="Center" 
+                                                        Foreground="{StaticResource DarkGrayText}"/>
+
                             <TextBlock Text="{Binding Location, RelativeSource={RelativeSource AncestorType=UserControl}}" 
                                        FontSize="16" Foreground="{StaticResource DarkGrayText}"/>
                         </StackPanel>
 
                         <!-- Kapasitas Orang -->
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="&#xE734;" FontFamily="Segoe MDL2 Assets" FontSize="18" Margin="0,0,8,0" VerticalAlignment="Center" Foreground="{StaticResource DarkGrayText}"/>
-                            <!-- Capacity adalah Dependency Property -->
+                            <iconPacks:PackIconMaterial Kind="AccountGroup" 
+                                                        Width="18" Height="18" 
+                                                        Margin="0,0,8,0" 
+                                                        VerticalAlignment="Center" 
+                                                        Foreground="{StaticResource DarkGrayText}"/>
+
                             <TextBlock Text="{Binding Capacity, RelativeSource={RelativeSource AncestorType=UserControl}}" 
                                        FontSize="16" Foreground="{StaticResource DarkGrayText}"/>
                         </StackPanel>
@@ -81,8 +144,12 @@
 
                     <!-- Rating Kapal -->
                     <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right">
-                        <TextBlock Text="&#xE735;" FontFamily="Segoe MDL2 Assets" FontSize="20" Foreground="{StaticResource AccentYellow}" Margin="0,0,5,0"/>
-                        <!-- Rating adalah Dependency Property -->
+                        <iconPacks:PackIconMaterial Kind="Star" 
+                                                    Width="18" Height="18" 
+                                                    Foreground="{StaticResource AccentYellow}" 
+                                                    Margin="0,0,5,0" 
+                                                    VerticalAlignment="Center"/>
+
                         <TextBlock Text="{Binding Rating, RelativeSource={RelativeSource AncestorType=UserControl}}" 
                                    FontSize="18" FontWeight="SemiBold" VerticalAlignment="Center"/>
                     </StackPanel>
@@ -90,7 +157,7 @@
 
                 <!-- Fasilitas Kapal (Amenities) -->
                 <ItemsControl ItemsSource="{Binding Facilities, RelativeSource={RelativeSource AncestorType=UserControl}}" 
-                    Margin="0,0,0,20">
+                              Margin="0,0,0,20">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <WrapPanel/>
@@ -122,10 +189,8 @@
                     </Grid.ColumnDefinitions>
 
                     <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
-                        <!-- Price adalah Dependency Property -->
                         <TextBlock>
                             <Run Text="{Binding Price, RelativeSource={RelativeSource AncestorType=UserControl}}" FontSize="28" FontWeight="Bold"/>
-                            <!-- PriceUnit adalah Dependency Property -->
                             <Run Text="{Binding PriceUnit, RelativeSource={RelativeSource AncestorType=UserControl}}" FontSize="16" Foreground="{StaticResource LightGrayText}"/>
                         </TextBlock>
                     </StackPanel>

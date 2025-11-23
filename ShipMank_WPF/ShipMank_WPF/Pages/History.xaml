@@ -4,11 +4,11 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:ShipMank_WPF.Pages"
+      xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
       mc:Ignorable="d" 
       d:DesignHeight="720" d:DesignWidth="1280"
       Title="History" FontFamily="Segoe UI">
 
-    <!-- Latar belakang gradien dari Payment.xaml -->
     <Page.Background>
         <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
             <GradientStop Color="#FFF9AF" Offset="0"/>
@@ -16,242 +16,269 @@
         </LinearGradientBrush>
     </Page.Background>
 
-    <Page.Resources>
-        <!-- Style untuk Tombol Tab (All, Tickets, Rentals) -->
-        <Style TargetType="RadioButton" x:Key="TabButton">
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="Foreground" Value="#333"/>
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="Padding" Value="20,10"/>
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="RadioButton">
-                        <Border Background="{TemplateBinding Background}" 
-                                CornerRadius="18" 
-                                Padding="{TemplateBinding Padding}">
-                            <!-- Menambahkan ikon dari gambar. Ganti dengan ikon Anda -->
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding Path=Tag, RelativeSource={RelativeSource TemplatedParent}}" Margin="0,0,5,0" FontSize="16"/>
-                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                            </StackPanel>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Style.Triggers>
-                <!-- Saat Dipilih -->
-                <Trigger Property="IsChecked" Value="True">
-                    <Setter Property="Background" Value="#1C4B71"/>
-                    <!-- Warna biru tua dari gambar -->
-                    <Setter Property="Foreground" Value="White"/>
-                </Trigger>
-                <!-- Menggunakan MultiTrigger untuk IsChecked=False DAN IsMouseOver=True -->
-                <MultiTrigger>
-                    <MultiTrigger.Conditions>
-                        <Condition Property="IsChecked" Value="False" />
-                        <Condition Property="IsMouseOver" Value="True" />
-                    </MultiTrigger.Conditions>
-                    <Setter Property="Background" Value="#DDEAF4"/>
-                    <!-- Hover biru muda -->
-                </MultiTrigger>
-            </Style.Triggers>
-        </Style>
+    <Page.Triggers>
+        <EventTrigger RoutedEvent="Page.Loaded">
+            <BeginStoryboard>
+                <Storyboard>
+                    <DoubleAnimation Storyboard.TargetName="HeaderPanel" 
+                                     Storyboard.TargetProperty="Opacity" 
+                                     From="0" To="1" Duration="0:0:0.6"/>
 
-        <!-- Style untuk Tombol 'View Details' di dalam grid -->
+                    <ThicknessAnimation Storyboard.TargetName="HeaderPanel" 
+                                        Storyboard.TargetProperty="Margin" 
+                                        From="40,50,40,20" To="40,30,40,20" Duration="0:0:0.6">
+                        <ThicknessAnimation.EasingFunction>
+                            <CubicEase EasingMode="EaseOut"/>
+                        </ThicknessAnimation.EasingFunction>
+                    </ThicknessAnimation>
+
+                    <DoubleAnimation Storyboard.TargetName="MainBorder" 
+                                     Storyboard.TargetProperty="Opacity" 
+                                     From="0" To="1" Duration="0:0:0.8" BeginTime="0:0:0.15"/>
+
+                    <ThicknessAnimation Storyboard.TargetName="MainBorder" 
+                                        Storyboard.TargetProperty="Margin" 
+                                        From="40,40,40,30" To="40,0,40,30" Duration="0:0:0.8" BeginTime="0:0:0.15">
+                        <ThicknessAnimation.EasingFunction>
+                            <CubicEase EasingMode="EaseOut"/>
+                        </ThicknessAnimation.EasingFunction>
+                    </ThicknessAnimation>
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+    </Page.Triggers>
+
+    <Page.Resources>
         <Style TargetType="Button" x:Key="ViewDetailsButton">
             <Setter Property="Background" Value="White"/>
             <Setter Property="Foreground" Value="#333"/>
-            <Setter Property="BorderBrush" Value="#CCC"/>
+            <Setter Property="BorderBrush" Value="#D1D5DB"/>
             <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Padding" Value="10,5"/>
-            <!-- PERBAIKAN: CornerRadius telah dihapus dari sini -->
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Padding" Value="15,5"/>
             <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+            <Setter Property="RenderTransform">
+                <Setter.Value>
+                    <ScaleTransform ScaleX="1" ScaleY="1"/>
+                </Setter.Value>
+            </Setter>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <!-- CornerRadius diatur di sini, di dalam Template -->
-                        <Border Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="5">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}"/>
+                        <Border x:Name="border"
+                                Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" 
+                                CornerRadius="8"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#F0F0F0"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-
-        <!-- Mengubah TargetType dari TextBlock ke Label -->
-        <!-- Style Dasar untuk Status Pill (bulat) -->
-        <Style TargetType="Label" x:Key="StatusBadge">
-            <Setter Property="Padding" Value="10,5"/>
-            <Setter Property="FontSize" Value="12"/>
-            <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="HorizontalAlignment" Value="Center"/>
-            <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <!-- Mengubah TargetType dari TextBlock ke Label -->
-                    <ControlTemplate TargetType="Label">
-                        <!-- Border ini yang membuat tampilan 'pill' -->
-                        <Border Background="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Background}" 
-                                CornerRadius="12">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}"/>
-                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#F3F4F6"/>
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)" To="1.05" Duration="0:0:0.2"/>
+                                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)" To="1.05" Duration="0:0:0.2"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)" To="1.0" Duration="0:0:0.2"/>
+                                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)" To="1.0" Duration="0:0:0.2"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.ExitActions>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
 
-        <!-- Style untuk DataGrid agar terlihat bersih dan modern -->
         <Style TargetType="DataGrid">
             <Setter Property="Background" Value="White"/>
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="GridLinesVisibility" Value="None"/>
-            <!-- Menghilangkan garis grid -->
             <Setter Property="AlternatingRowBackground" Value="#F9F9F9"/>
-            <!-- Warna belang-seling -->
             <Setter Property="AutoGenerateColumns" Value="False"/>
-            <!-- Kita definisikan kolom secara manual -->
             <Setter Property="HeadersVisibility" Value="Column"/>
             <Setter Property="CanUserAddRows" Value="False"/>
             <Setter Property="CanUserDeleteRows" Value="False"/>
             <Setter Property="CanUserResizeRows" Value="False"/>
-            <Setter Property="RowHeight" Value="50"/>
+            <Setter Property="RowHeight" Value="60"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
         </Style>
-
-        <!-- Style untuk Header Kolom DataGrid -->
-        <Style TargetType="DataGridColumnHeader">
-            <Setter Property="Background" Value="#EBF1F5"/>
-            <!-- Latar belakang header abu-abu muda -->
-            <Setter Property="Foreground" Value="#555"/>
-            <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="Padding" Value="10,15"/>
-            <Setter Property="BorderThickness" Value="0,0,0,1"/>
-            <Setter Property="BorderBrush" Value="#DDD"/>
-        </Style>
-
-        <!-- Style untuk Sel DataGrid -->
-        <Style TargetType="DataGridCell">
-            <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Padding" Value="10"/>
-            <Setter Property="VerticalAlignment" Value="Center"/>
-            <!-- Menghilangkan highlight biru saat sel diklik -->
-            <Setter Property="Focusable" Value="False"/>
-            <Style.Triggers>
-                <Trigger Property="IsSelected" Value="True">
-                    <Setter Property="Background" Value="{x:Null}"/>
-                    <Setter Property="BorderBrush" Value="{x:Null}"/>
-                    <Setter Property="Foreground" Value="#333"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-
     </Page.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <!-- Row 0: Header -->
             <RowDefinition Height="*"/>
-            <!-- Row 2: DataGrid -->
         </Grid.RowDefinitions>
 
-        <!-- Row 0: Header (Dari Payment, diubah teksnya) -->
-        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="40,30,40,20">
+        <StackPanel x:Name="HeaderPanel" 
+                    Opacity="0"
+                    Grid.Row="0" 
+                    Orientation="Horizontal" 
+                    Margin="40,30,40,20">
             <Image Source="/Assets/logob.png" Height="32" Width="32" VerticalAlignment="Center" Margin="0,0,10,0"/>
             <TextBlock Text="Orders" FontSize="32" FontWeight="Bold" VerticalAlignment="Center" Foreground="#333"/>
         </StackPanel>
 
-        <!-- Row 2: DataGrid (Tabel) -->
-        <!-- Dibungkus Border agar bisa memiliki CornerRadius dan Shadow -->
-        <Border Grid.Row="2" Margin="40,0,40,30" CornerRadius="10" Background="White"
-                ClipToBounds="True">
+        <Border x:Name="MainBorder" 
+                Opacity="0"
+                Grid.Row="1" 
+                Margin="40,0,40,30" 
+                CornerRadius="15" 
+                Background="White">
+
             <Border.Effect>
-                <DropShadowEffect ShadowDepth="1" BlurRadius="10" Color="#000000" Opacity="0.1" />
+                <DropShadowEffect ShadowDepth="2" BlurRadius="15" Color="#000000" Opacity="0.08" />
             </Border.Effect>
 
+            <Border.OpacityMask>
+                <VisualBrush>
+                    <VisualBrush.Visual>
+                        <Border Background="Black"
+                                Width="{Binding ActualWidth, ElementName=MainBorder}"
+                                Height="{Binding ActualHeight, ElementName=MainBorder}"
+                                CornerRadius="15"/>
+                    </VisualBrush.Visual>
+                </VisualBrush>
+            </Border.OpacityMask>
+
             <DataGrid x:Name="HistoryDataGrid"
-                      IsReadOnly="True" SelectionChanged="HistoryDataGrid_SelectionChanged">
+                      IsReadOnly="True" 
+                      SelectionChanged="HistoryDataGrid_SelectionChanged">
+
+                <DataGrid.Resources>
+                    <Style TargetType="DataGridColumnHeader">
+                        <Setter Property="Padding" Value="20,15"/>
+                        <Setter Property="Background" Value="#33A1E0"/>
+                        <Setter Property="FontWeight" Value="Bold"/>
+                        <Setter Property="Foreground" Value="White"/>
+                        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+                        <Setter Property="BorderThickness" Value="0"/>
+                    </Style>
+
+                    <Style TargetType="DataGridCell">
+                        <Setter Property="Padding" Value="20,0"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="DataGridCell">
+                                    <Border Padding="{TemplateBinding Padding}" 
+                                            BorderBrush="{TemplateBinding BorderBrush}" 
+                                            BorderThickness="0" 
+                                            Background="{TemplateBinding Background}" 
+                                            SnapsToDevicePixels="True">
+                                        <ContentPresenter VerticalAlignment="Center" />
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Background" Value="#E3F2FD"/>
+                                <Setter Property="Foreground" Value="Black"/>
+                                <Setter Property="BorderThickness" Value="0"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.Resources>
+
                 <DataGrid.Columns>
-                    <!-- Kolom 1: Order ID -->
-                    <DataGridTextColumn Header="Order ID" Binding="{Binding OrderID}" FontWeight="Bold"/>
+                    <DataGridTextColumn Header="Order ID" Binding="{Binding OrderID}" FontWeight="Bold" Width="Auto">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                <Setter Property="Foreground" Value="Black"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
 
-                    <!-- Kolom 2: Item (dengan ikon) -->
-                    <DataGridTemplateColumn Header="Item" Width="*">
+                    <DataGridTemplateColumn Header="Item" Width="2*">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                    <TextBlock Text="⚓" FontSize="16" Margin="0,0,8,0" VerticalAlignment="Center"/>
-                                    <TextBlock Text="{Binding ItemName}" VerticalAlignment="Center" FontWeight="SemiBold"/>
+                                    <iconPacks:PackIconMaterial Kind="SailBoat" Width="16" Height="16" Margin="0,0,10,0" VerticalAlignment="Center" Foreground="#555"/>
+                                    <TextBlock Text="{Binding ItemName}" VerticalAlignment="Center" FontWeight="Bold" Foreground="Black"/>
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
 
-                    <!-- Kolom 3: Date (dengan ikon) -->
-                    <DataGridTemplateColumn Header="Date" Width="*">
+                    <DataGridTemplateColumn Header="Date" Width="1.2*">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                    <TextBlock Text="📅" FontSize="16" Margin="0,0,8,0" VerticalAlignment="Center"/>
-                                    <TextBlock Text="{Binding Date, StringFormat='yyyy-MM-dd'}" VerticalAlignment="Center"/>
+                                    <iconPacks:PackIconMaterial Kind="CalendarRange" Width="16" Height="16" Margin="0,0,10,0" VerticalAlignment="Center" Foreground="#555"/>
+                                    <TextBlock Text="{Binding Date, StringFormat='yyyy-MM-dd'}" FontWeight="Bold" VerticalAlignment="Center"/>
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
 
-                    <!-- Kolom 4: Location/Route (dengan ikon) -->
-                    <DataGridTemplateColumn Header="Location/Route" Width="*">
+                    <DataGridTemplateColumn Header="Location/Route" Width="2.5*">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                    <TextBlock Text="📍" FontSize="16" Margin="0,0,8,0" VerticalAlignment="Center"/>
-                                    <TextBlock Text="{Binding Route}" VerticalAlignment="Center"/>
+                                    <iconPacks:PackIconMaterial Kind="MapMarker" Width="16" Height="16" Margin="0,0,10,0" VerticalAlignment="Center" Foreground="#E74C3C"/>
+                                    <TextBlock Text="{Binding Route}" FontWeight="Bold" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
 
-                    <!-- Kolom 5: Total -->
-                    <DataGridTextColumn Header="Total" Binding="{Binding TotalString}" FontWeight="SemiBold"/>
+                    <DataGridTextColumn Header="Total" Binding="{Binding TotalString}" FontWeight="Bold" Width="Auto">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
 
-                    <!-- Kolom 6: Status (Pills) -->
-                    <DataGridTemplateColumn Header="Status" Width="Auto">
+                    <DataGridTemplateColumn Header="Status" Width="140">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <!-- Menggunakan Label, bukan TextBlock, untuk status pill -->
-                                <Label Content="{Binding Status}">
+                                <Label Content="{Binding Status}" 
+                                       HorizontalAlignment="Center" 
+                                       VerticalAlignment="Center"
+                                       Padding="15,5"
+                                       FontSize="12"
+                                       FontWeight="Bold">
                                     <Label.Style>
-                                        <!-- TargetType sekarang adalah Label -->
-                                        <Style TargetType="Label" BasedOn="{StaticResource StatusBadge}">
+                                        <Style TargetType="Label">
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate TargetType="Label">
+                                                        <Border Background="{TemplateBinding Background}" CornerRadius="15" Padding="{TemplateBinding Padding}">
+                                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                        </Border>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
                                             <Style.Triggers>
-                                                <!-- DataTrigger akan mengubah style berdasarkan nilai Binding -->
                                                 <DataTrigger Binding="{Binding Status}" Value="Completed">
-                                                    <Setter Property="Background" Value="#28A745"/>
+                                                    <Setter Property="Background" Value="#22C55E"/>
                                                     <Setter Property="Foreground" Value="White"/>
                                                 </DataTrigger>
                                                 <DataTrigger Binding="{Binding Status}" Value="Upcoming">
-                                                    <Setter Property="Background" Value="#17A2B8"/>
+                                                    <Setter Property="Background" Value="#3B82F6"/>
                                                     <Setter Property="Foreground" Value="White"/>
                                                 </DataTrigger>
                                                 <DataTrigger Binding="{Binding Status}" Value="Cancelled">
-                                                    <Setter Property="Background" Value="#DC3545"/>
+                                                    <Setter Property="Background" Value="#EF4444"/>
                                                     <Setter Property="Foreground" Value="White"/>
                                                 </DataTrigger>
                                                 <DataTrigger Binding="{Binding Status}" Value="Unpaid">
-                                                    <Setter Property="Background" Value="#FFC107"/>
-                                                    <Setter Property="Foreground" Value="#333"/>
+                                                    <Setter Property="Background" Value="#FDE047"/>
+                                                    <Setter Property="Foreground" Value="#854D0E"/>
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>
@@ -261,13 +288,14 @@
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
 
-                    <!-- Kolom 7: Tombol 'View Details' -->
-                    <DataGridTemplateColumn Header="" Width="Auto">
+                    <DataGridTemplateColumn Header="" Width="150">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <Button Content="View Details" Style="{StaticResource ViewDetailsButton}"/>
+                                <Button Content="View Details" 
+                                        Style="{StaticResource ViewDetailsButton}"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"/>
                             </DataTemplate>
-                            <!-- PERBAIKAN: Tag penutup yang salah telah diperbaiki -->
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
 

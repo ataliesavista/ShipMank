@@ -70,18 +70,18 @@
                     </StackPanel>
                 </Button>
 
-                <Button x:Name="HelpButton" Height="35" Background="Transparent" FontFamily="Dubai" FontWeight="SemiBold" Foreground="Black" Cursor="Hand" BorderThickness="0" Padding="15,0" Click="HelpButton_Click">
+                <!--<Button x:Name="HelpButton" Height="35" Background="Transparent" FontFamily="Dubai" FontWeight="SemiBold" Foreground="Black" Cursor="Hand" BorderThickness="0" Padding="15,0" Click="HelpButton_Click">
                     <Button.Resources>
                         <Style TargetType="Border">
                             <Setter Property="CornerRadius" Value="20"/>
                         </Style>
                     </Button.Resources>
                     <StackPanel Orientation="Horizontal">
-                        <!-- === DIGANTI === -->
+                        --><!-- === DIGANTI === --><!--
                         <iconPacks:PackIconMaterial Kind="HelpCircleOutline" VerticalAlignment="Center" Margin="0,0,5,0" Width="16" Height="16"/>
                         <TextBlock Text="Help" FontSize="14" VerticalAlignment="Center"/>
                     </StackPanel>
-                </Button>
+                </Button>-->
             </StackPanel>
 
             <StackPanel Grid.Column="2" 

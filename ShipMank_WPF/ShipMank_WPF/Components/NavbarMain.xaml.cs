@@ -12,21 +12,21 @@ namespace ShipMank_WPF.Components
             InitializeComponent();
         }
 
-        private void SetActiveButton(Button activeButton)
-        {
-            // Reset semua button
-            var buttons = new[] { HomeButton, HelpButton };
+        //private void SetActiveButton(Button activeButton)
+        //{
+        //    // Reset semua button
+        //    //var buttons = new[] { HomeButton, HelpButton };
 
-            foreach (var button in buttons)
-            {
-                button.Background = new SolidColorBrush(Colors.Transparent);
-                button.Foreground = new SolidColorBrush(Colors.Black);
-            }
+        //    foreach (var button in buttons)
+        //    {
+        //        button.Background = new SolidColorBrush(Colors.Transparent);
+        //        button.Foreground = new SolidColorBrush(Colors.Black);
+        //    }
 
-            // Set button aktif
-            activeButton.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#1E90FF"));
-            activeButton.Foreground = new SolidColorBrush(Colors.White);
-        }
+        //    // Set button aktif
+        //    activeButton.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#1E90FF"));
+        //    activeButton.Foreground = new SolidColorBrush(Colors.White);
+        //}
 
         private void LoginButton_Click(object sender, RoutedEventArgs e)
         {
@@ -46,10 +46,10 @@ namespace ShipMank_WPF.Components
             }
         }
 
-        private void HomeButton_Click(object sender, RoutedEventArgs e)
-        {
-            SetActiveButton(HomeButton);
-        }
+        //private void HomeButton_Click(object sender, RoutedEventArgs e)
+        //{
+        //    SetActiveButton(HomeButton);
+        //}
 
         //private void RentalsButton_Click(object sender, RoutedEventArgs e)
         //{
@@ -66,9 +66,9 @@ namespace ShipMank_WPF.Components
         //    SetActiveButton(OrdersButton);
         //}
 
-        private void HelpButton_Click(object sender, RoutedEventArgs e)
-        {
-            SetActiveButton(HelpButton);
-        }
+        //private void HelpButton_Click(object sender, RoutedEventArgs e)
+        //{
+        //    SetActiveButton(HelpButton);
+        //}
     }
 }

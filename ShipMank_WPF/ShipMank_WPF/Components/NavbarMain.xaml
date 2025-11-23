@@ -27,12 +27,12 @@
                    Margin="30,0,0,0"/>
 
             <!-- Navigation Menu -->
-            <StackPanel Orientation="Horizontal" 
+            <!--<StackPanel Orientation="Horizontal" 
                         Grid.Column="1" 
                         VerticalAlignment="Center"
                         HorizontalAlignment="Center">
 
-                <!-- Home Button (Active State) -->
+                --><!-- Home Button (Active State) --><!--
                 <Button x:Name="HomeButton"
                         Height="35"
                         Background="#1E90FF"
@@ -53,7 +53,7 @@
                         <iconPacks:PackIconMaterial Kind="Home" VerticalAlignment="Center" Margin="0,0,5,0" Width="16" Height="16"/>
                         <TextBlock Text="Home" FontSize="14" VerticalAlignment="Center"/>
                     </StackPanel>
-                </Button>
+                </Button>-->
 
                 <!-- Rentals Button -->
                 <!--<Button x:Name="RentalsButton"
@@ -128,7 +128,7 @@
                 </Button>-->
 
                 <!-- Help Button -->
-                <Button x:Name="HelpButton"
+                <!--<Button x:Name="HelpButton"
                         Height="35"
                         Background="Transparent"
                         FontFamily="Dubai"
@@ -144,12 +144,12 @@
                         </Style>
                     </Button.Resources>
                     <StackPanel Orientation="Horizontal">
-                        <!-- DIGANTI -->
+                        --><!-- DIGANTI --><!--
                         <iconPacks:PackIconMaterial Kind="HelpCircleOutline" VerticalAlignment="Center" Margin="0,0,5,0" Width="16" Height="16"/>
                         <TextBlock Text="Help" FontSize="14" VerticalAlignment="Center"/>
                     </StackPanel>
                 </Button>
-            </StackPanel>
+            </StackPanel>-->
 
             <!-- Login/Register Buttons (Tidak berubah) -->
             <StackPanel Orientation="Horizontal" 

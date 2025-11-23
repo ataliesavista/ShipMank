@@ -10,7 +10,6 @@
              FontFamily="Inter, Segoe UI, sans-serif"
              Background="Transparent"
              Loaded="SettingsControl_Loaded">
-    <!-- DITAMBAHKAN -->
 
     <UserControl.Resources>
         <!-- Warna -->
@@ -20,9 +19,7 @@
         <SolidColorBrush x:Key="DarkGrayBrush" Color="#4B5563"/>
         <SolidColorBrush x:Key="TextGrayBrush" Color="#6B7280"/>
         <SolidColorBrush x:Key="BorderGrayBrush" Color="#D1D5DB"/>
-        <SolidColorBrush x:Key="WindowBackgroundBrush" Color="#00FFFFFF"/>
 
-        <!-- Style untuk Judul Utama -->
         <Style x:Key="SettingsTitle" TargetType="TextBlock">
             <Setter Property="FontSize" Value="32"/>
             <Setter Property="FontWeight" Value="Bold"/>
@@ -30,7 +27,6 @@
             <Setter Property="Foreground" Value="#111827"/>
         </Style>
 
-        <!-- Style untuk TabControl -->
         <Style x:Key="SettingsTabControl" TargetType="TabControl">
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Background" Value="Transparent"/>
@@ -51,7 +47,6 @@
             </Setter>
         </Style>
 
-        <!-- Style untuk TabItem -->
         <Style x:Key="SettingsTabItem" TargetType="TabItem">
             <Setter Property="FontSize" Value="16"/>
             <Setter Property="Padding" Value="12,10"/>
@@ -78,40 +73,25 @@
             </Setter>
         </Style>
 
-        <!-- Section Container -->
         <Style x:Key="SectionContainer" TargetType="Border">
-            <Setter Property="Background" Value="#00FFFFFF"/>
-            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="CornerRadius" Value="15"/>
             <Setter Property="Margin" Value="0,20,0,0"/>
             <Setter Property="Effect">
                 <Setter.Value>
-                    <DropShadowEffect ShadowDepth="1" Color="#000000" Opacity="0.05" BlurRadius="10" RenderingBias="Quality"/>
+                    <DropShadowEffect ShadowDepth="2" Color="#000000" Opacity="0.08" BlurRadius="15" Direction="270"/>
                 </Setter.Value>
             </Setter>
         </Style>
 
-        <!-- Header Section -->
-        <Style x:Key="SectionHeaderGrid" TargetType="Grid">
-            <Setter Property="Background" Value="#3B99FC"/>
-        </Style>
-
-        <Style x:Key="SectionHeaderTitle" TargetType="TextBlock">
-            <Setter Property="FontSize" Value="24"/>
-            <Setter Property="FontWeight" Value="Bold"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="Margin" Value="20"/>
-        </Style>
-
         <Style x:Key="HeaderButton" TargetType="Button">
-            <Setter Property="Background" Value="{StaticResource LightGrayBrush}"/>
-            <Setter Property="Foreground" Value="{StaticResource DarkGrayBrush}"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="{StaticResource PrimaryBlueBrush}"/>
             <Setter Property="FontSize" Value="14"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="Padding" Value="12,6"/>
+            <Setter Property="Padding" Value="15,6"/>
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="Margin" Value="20"/>
             <Setter Property="HorizontalAlignment" Value="Right"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="Template">
@@ -122,7 +102,7 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background" Value="#D1D5DB"/>
+                                <Setter Property="Background" Value="#F3F4F6"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -130,48 +110,65 @@
             </Setter>
         </Style>
 
-        <!-- Form -->
         <Style x:Key="FormLabel" TargetType="TextBlock">
             <Setter Property="FontSize" Value="14"/>
             <Setter Property="Foreground" Value="{StaticResource TextGrayBrush}"/>
-            <Setter Property="Margin" Value="0,0,0,5"/>
+            <Setter Property="Margin" Value="0,0,0,6"/>
+            <Setter Property="FontWeight" Value="Medium"/>
         </Style>
 
         <Style x:Key="FormTextBox" TargetType="TextBox">
             <Setter Property="FontSize" Value="16"/>
-            <Setter Property="Padding" Value="10,8"/>
+            <Setter Property="Padding" Value="12,10"/>
             <Setter Property="BorderBrush" Value="{StaticResource BorderGrayBrush}"/>
             <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" 
+                                CornerRadius="8">
+                            <ScrollViewer x:Name="PART_ContentHost" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
             <Style.Triggers>
                 <Trigger Property="IsReadOnly" Value="True">
                     <Setter Property="BorderThickness" Value="0"/>
                     <Setter Property="Foreground" Value="{StaticResource DarkGrayBrush}"/>
-                    <Setter Property="Padding" Value="10,8,10,0"/>
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="Padding" Value="0,10"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
 
+        <!-- ============================================== -->
+        <!-- MODIFIKASI 1: Padding Kiri Dropdown Readonly = 5 -->
+        <!-- ============================================== -->
         <Style x:Key="FormComboBox" TargetType="ComboBox">
             <Setter Property="FontSize" Value="16"/>
-            <Setter Property="Padding" Value="10,8"/>
+            <Setter Property="Padding" Value="12,10"/>
             <Setter Property="BorderBrush" Value="{StaticResource BorderGrayBrush}"/>
             <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Background" Value="White"/>
             <Style.Triggers>
                 <Trigger Property="IsEnabled" Value="False">
                     <Setter Property="Opacity" Value="1"/>
                     <Setter Property="BorderThickness" Value="0"/>
                     <Setter Property="Foreground" Value="{StaticResource DarkGrayBrush}"/>
-                    <Setter Property="Padding" Value="10,8,10,0"/>
+                    <Setter Property="Background" Value="Transparent"/>
+                    <!-- Padding kiri diubah menjadi 5 -->
+                    <Setter Property="Padding" Value="5,10,0,10"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
 
-        <!-- Tombol Link -->
         <Style x:Key="LinkButton" TargetType="Button">
             <Setter Property="FontSize" Value="16"/>
-            <Setter Property="Foreground" Value="{StaticResource PrimaryBlueBrush}"/>
+            <Setter Property="Foreground" Value="#EF4444"/>
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Cursor" Value="Hand"/>
@@ -180,12 +177,7 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <TextBlock x:Name="TextContent"
-                                   Text="{TemplateBinding Content}"
-                                   Foreground="{TemplateBinding Foreground}"
-                                   FontSize="{TemplateBinding FontSize}"
-                                   FontWeight="{TemplateBinding FontWeight}"
-                                   TextDecorations="None"/>
+                        <TextBlock x:Name="TextContent" Text="{TemplateBinding Content}" Foreground="{TemplateBinding Foreground}" FontSize="{TemplateBinding FontSize}" FontWeight="{TemplateBinding FontWeight}" TextDecorations="None"/>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter TargetName="TextContent" Property="TextDecorations" Value="Underline"/>
@@ -196,7 +188,6 @@
             </Setter>
         </Style>
 
-        <!-- Toggle Switch -->
         <Style x:Key="SwitchToggleButton" TargetType="ToggleButton">
             <Setter Property="Width" Value="50"/>
             <Setter Property="Height" Value="28"/>
@@ -205,39 +196,23 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="ToggleButton">
                         <Grid Background="Transparent">
-                            <Border x:Name="Track"
-                            Background="{StaticResource LightGrayBrush}"
-                            CornerRadius="14"/>
-
-                            <Ellipse x:Name="Thumb"
-                                   Fill="White"
-                                   Width="22"
-                                   Height="22"
-                                   HorizontalAlignment="Left"
-                                   Margin="3">
+                            <Border x:Name="Track" Background="{StaticResource LightGrayBrush}" CornerRadius="14"/>
+                            <Ellipse x:Name="Thumb" Fill="White" Width="22" Height="22" HorizontalAlignment="Left" Margin="3">
                                 <Ellipse.Effect>
-                                    <DropShadowEffect ShadowDepth="1"
-                                                Opacity="0.1"
-                                                BlurRadius="2"/>
+                                    <DropShadowEffect ShadowDepth="1" Opacity="0.1" BlurRadius="2"/>
                                 </Ellipse.Effect>
                             </Ellipse>
                         </Grid>
-
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsChecked" Value="True">
-                                <Setter TargetName="Track"
-                                Property="Background"
-                                Value="{StaticResource PrimaryBlueBrush}"/>
-                                <Setter TargetName="Thumb"
-                                Property="HorizontalAlignment"
-                                Value="Right"/>
+                                <Setter TargetName="Track" Property="Background" Value="{StaticResource PrimaryBlueBrush}"/>
+                                <Setter TargetName="Thumb" Property="HorizontalAlignment" Value="Right"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
-
     </UserControl.Resources>
 
     <!-- Background utama transparan -->
@@ -249,13 +224,12 @@
 
         <TextBlock Grid.Row="0" Text="Settings" Style="{StaticResource SettingsTitle}"/>
 
-        <!-- Tab Utama -->
         <TabControl Grid.Row="1" Style="{StaticResource SettingsTabControl}">
 
             <!-- Tab 1: Account Info -->
             <TabItem Header="Account Information" Style="{StaticResource SettingsTabItem}">
                 <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Padding="0,0,5,0">
-                    <StackPanel Margin="0,10,0,0">
+                    <StackPanel Margin="0,10,0,20">
 
                         <!-- Personal Information Section -->
                         <Border Style="{StaticResource SectionContainer}">
@@ -265,51 +239,34 @@
                                     <RowDefinition Height="*"/>
                                 </Grid.RowDefinitions>
 
-                                <!-- Header Biru -->
-                                <Grid Grid.Row="0" Style="{StaticResource SectionHeaderGrid}">
-                                    <Border Background="{StaticResource PrimaryBlueBrush}" CornerRadius="10,10,0,0">
-                                        <Grid>
-                                            <TextBlock Text="Personal Information" Style="{StaticResource SectionHeaderTitle}"/>
-                                            <!-- DITAMBAHKAN: x:Name dan Click -->
-                                            <Button x:Name="EditSaveButton" Content="Edit" Style="{StaticResource HeaderButton}" Click="EditSaveButton_Click"/>
-                                        </Grid>
-                                    </Border>
-                                </Grid>
+                                <Border Grid.Row="0" Background="{StaticResource PrimaryBlueBrush}" CornerRadius="15,15,0,0" Padding="25,20">
+                                    <Grid>
+                                        <TextBlock Text="Personal Information" FontSize="20" FontWeight="Bold" Foreground="White" VerticalAlignment="Center"/>
+                                        <Button x:Name="EditSaveButton" Content="Edit" Style="{StaticResource HeaderButton}" Click="EditSaveButton_Click"/>
+                                    </Grid>
+                                </Border>
 
-                                <!-- Konten Formulir -->
-                                <Grid Grid.Row="1" Margin="20">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                    </Grid.RowDefinitions>
-
-                                    <!-- Full Name -->
-                                    <StackPanel Grid.Row="0" Margin="0,0,0,15">
-                                        <TextBlock Text="Full Name" Style="{StaticResource FormLabel}"/>
-                                        <!-- DITAMBAHKAN: x:Name dan IsReadOnly -->
+                                <StackPanel Grid.Row="1" Margin="25">
+                                    <StackPanel Margin="0,0,0,20">
+                                        <TextBlock Text="Full Name" Style="{StaticResource FormLabel}" Foreground="Black" FontWeight="Bold"/>
                                         <TextBox x:Name="FullNameTextBox" Text="Loading..." Style="{StaticResource FormTextBox}" IsReadOnly="True"/>
                                     </StackPanel>
 
-                                    <!-- Gender & Birth Date -->
-                                    <Grid Grid.Row="1" Margin="0,0,0,15">
+                                    <Grid Margin="0,0,0,20">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="15"/>
+                                            <ColumnDefinition Width="20"/>
                                             <ColumnDefinition Width="2*"/>
                                         </Grid.ColumnDefinitions>
-
                                         <StackPanel Grid.Column="0">
-                                            <TextBlock Text="Gender" Style="{StaticResource FormLabel}"/>
-                                            <!-- DITAMBAHKAN: x:Name dan IsEnabled -->
+                                            <TextBlock Text="Gender" Style="{StaticResource FormLabel}"  Foreground="Black" FontWeight="Bold"/>
                                             <ComboBox x:Name="GenderComboBox" Style="{StaticResource FormComboBox}" IsEnabled="False">
                                                 <ComboBoxItem Content="Wanita"/>
                                                 <ComboBoxItem Content="Pria"/>
                                             </ComboBox>
                                         </StackPanel>
-
                                         <StackPanel Grid.Column="2">
-                                            <TextBlock Text="Birth Date" Style="{StaticResource FormLabel}"/>
+                                            <TextBlock Text="Birth Date" Style="{StaticResource FormLabel}" Foreground="Black" FontWeight="Bold"/>
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="*"/>
@@ -318,7 +275,6 @@
                                                     <ColumnDefinition Width="10"/>
                                                     <ColumnDefinition Width="*"/>
                                                 </Grid.ColumnDefinitions>
-                                                <!-- DITAMBAHKAN: x:Name dan IsEnabled untuk ComboBoxes -->
                                                 <ComboBox x:Name="CmbBirthDay" Grid.Column="0" Style="{StaticResource FormComboBox}" IsEnabled="False" />
                                                 <ComboBox x:Name="CmbBirthMonth" Grid.Column="2" Style="{StaticResource FormComboBox}" IsEnabled="False" />
                                                 <ComboBox x:Name="CmbBirthYear" Grid.Column="4" Style="{StaticResource FormComboBox}" IsEnabled="False" />
@@ -326,14 +282,12 @@
                                         </StackPanel>
                                     </Grid>
 
-                                    <!-- City -->
-                                    <StackPanel Grid.Row="2" Margin="0,0,0,15">
-                                        <TextBlock Text="City" Style="{StaticResource FormLabel}"/>
-                                        <!-- DITAMBAHKAN: x:Name dan IsReadOnly -->
-                                        <TextBox x:Name="CityTextBox" Text="-" Style="{StaticResource FormTextBox}" IsReadOnly="True"/>
+                                    <StackPanel Margin="0,0,0,5">
+                                        <TextBlock Text="City" Style="{StaticResource FormLabel}"  Foreground="Black" FontWeight="Bold"/>
+                                        <!-- CityTextBox nanti dihandle di backend -->
+                                        <TextBox x:Name="CityTextBox" Style="{StaticResource FormTextBox}" IsReadOnly="True"/>
                                     </StackPanel>
-
-                                </Grid>
+                                </StackPanel>
                             </Grid>
                         </Border>
 
@@ -345,24 +299,55 @@
                                     <RowDefinition Height="*"/>
                                 </Grid.RowDefinitions>
 
-                                <!-- Header Biru -->
-                                <Grid Grid.Row="0" Style="{StaticResource SectionHeaderGrid}">
-                                    <Border Background="{StaticResource PrimaryBlueBrush}" CornerRadius="10,10,0,0">
-                                        <Grid>
-                                            <TextBlock Text="Email" Style="{StaticResource SectionHeaderTitle}"/>
-                                            <Button Content="+ Email" Style="{StaticResource HeaderButton}"/>
-                                        </Grid>
-                                    </Border>
-                                </Grid>
+                                <!-- Header Email -->
+                                <Border Grid.Row="0" Background="{StaticResource PrimaryBlueBrush}" CornerRadius="15,15,0,0" Padding="25,20">
+                                    <Grid>
+                                        <TextBlock Text="Email" FontSize="20" FontWeight="Bold" Foreground="White" VerticalAlignment="Center"/>
 
-                                <!-- Konten Formulir -->
-                                <Grid Grid.Row="1" Margin="20">
-                                    <StackPanel Margin="0,0,0,15">
-                                        <TextBlock Text="Email Address" Style="{StaticResource FormLabel}"/>
-                                        <!-- DITAMBAHKAN: x:Name dan IsReadOnly -->
+                                        <!-- ============================================== -->
+                                        <!-- MODIFIKASI 3: Tombol + Email dan Save/Cancel -->
+                                        <!-- ============================================== -->
+                                        <!-- Tombol Add (Default Visible) -->
+                                        <Button x:Name="BtnAddEmail" 
+                                                Content="+ Email" 
+                                                Style="{StaticResource HeaderButton}"
+                                                Click="BtnAddEmail_Click"/>
+
+                                        <!-- Tombol Save & Cancel (Default Collapsed) -->
+                                        <StackPanel x:Name="StpEmailActions" 
+                                                    Orientation="Horizontal" 
+                                                    HorizontalAlignment="Right" 
+                                                    Visibility="Collapsed">
+                                            <Button Content="Cancel" 
+                                                    Style="{StaticResource HeaderButton}"
+                                                    Background="#EF4444" 
+                                                    Foreground="White"
+                                                    Margin="0,0,10,0"
+                                                    Click="BtnCancelEmail_Click"/>
+
+                                            <Button Content="Save" 
+                                                    Style="{StaticResource HeaderButton}"
+                                                    Background="#10B981"
+                                                    Foreground="White"
+                                                    Click="BtnSaveEmail_Click"/>
+                                        </StackPanel>
+
+                                    </Grid>
+                                </Border>
+
+                                <!-- Konten Formulir Email -->
+                                <StackPanel Grid.Row="1" Margin="25">
+                                    <StackPanel>
+                                        <TextBlock Text="Current Email Address" Style="{StaticResource FormLabel}" Foreground="Black" FontWeight="Bold"/>
                                         <TextBox x:Name="EmailTextBox" Text="Loading..." Style="{StaticResource FormTextBox}" IsReadOnly="True"/>
                                     </StackPanel>
-                                </Grid>
+
+                                    <!-- Input Email Baru (Muncul saat +Email diklik) -->
+                                    <StackPanel x:Name="StpNewEmailInput" Margin="0,20,0,0" Visibility="Collapsed">
+                                        <TextBlock Text="New Email Address" Style="{StaticResource FormLabel}" Foreground="Black" FontWeight="Bold"/>
+                                        <TextBox x:Name="TxtNewEmail"  Style="{StaticResource FormTextBox}" IsReadOnly="False"/>
+                                    </StackPanel>
+                                </StackPanel>
                             </Grid>
                         </Border>
 
@@ -373,57 +358,42 @@
             <!-- Tab 2: Password & Security -->
             <TabItem Header="Password &amp; Security" Style="{StaticResource SettingsTabItem}">
                 <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Padding="0,0,5,0">
-                    <StackPanel Margin="0,10,0,0">
+                    <StackPanel Margin="0,10,0,20">
 
-                        <!-- Security & Authentication Section -->
                         <Border Style="{StaticResource SectionContainer}">
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="*"/>
                                 </Grid.RowDefinitions>
-
-                                <!-- Header Biru -->
-                                <Grid Grid.Row="0" Style="{StaticResource SectionHeaderGrid}">
-                                    <Border Background="{StaticResource PrimaryBlueBrush}" CornerRadius="10,10,0,0">
-                                        <Grid>
-                                            <TextBlock Text="Security &amp; Authetication" Style="{StaticResource SectionHeaderTitle}"/>
-                                        </Grid>
-                                    </Border>
-                                </Grid>
-
-                                <!-- Konten -->
-                                <Grid Grid.Row="1" Margin="20,25,20,25">
+                                <Border Grid.Row="0" Background="{StaticResource PrimaryBlueBrush}" CornerRadius="15,15,0,0" Padding="25,20">
+                                    <TextBlock Text="Security &amp; Authetication" FontSize="20" FontWeight="Bold" Foreground="White" VerticalAlignment="Center"/>
+                                </Border>
+                                <Grid Grid.Row="1" Margin="25">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
-
                                     <StackPanel Grid.Column="0" VerticalAlignment="Center">
-                                        <TextBlock Text="Enable login verification" FontSize="16" FontWeight="SemiBold" Foreground="{StaticResource DarkGrayBrush}"/>
+                                        <TextBlock Text="Enable login verification" FontSize="16"  Foreground="Black" FontWeight="Bold"/>
                                         <TextBlock Text="Send me a verification code every time I log in from a new device" FontSize="14" Foreground="{StaticResource TextGrayBrush}" Margin="0,5,0,0"/>
                                     </StackPanel>
-
                                     <ToggleButton Grid.Column="1" IsChecked="True" Style="{StaticResource SwitchToggleButton}" VerticalAlignment="Center" Margin="20,0,0,0"/>
-
                                 </Grid>
                             </Grid>
                         </Border>
 
-                        <!-- Delete Account Section -->
                         <Border Style="{StaticResource SectionContainer}">
-                            <Grid Margin="20,25,20,25">
+                            <Grid Margin="25">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
-
                                 <StackPanel Grid.Column="0" VerticalAlignment="Center">
-                                    <TextBlock Text="Delete Account" FontSize="18" FontWeight="Bold" Foreground="{StaticResource DarkGrayBrush}"/>
+                                    <TextBlock Text="Delete Account" FontSize="18" FontWeight="Bold" Foreground="#DC2626"/>
                                     <TextBlock Text="Once your account is deleted, you will not be able to restore your account or data." FontSize="14" Foreground="{StaticResource TextGrayBrush}" Margin="0,5,0,0" TextWrapping="Wrap"/>
                                 </StackPanel>
-
-                                <Button Grid.Column="1" Content="Delete" Style="{StaticResource LinkButton}" VerticalAlignment="Center" Margin="20,0,0,0"/>
+                                <Button Grid.Column="1" Content="Delete" Style="{StaticResource LinkButton}" VerticalAlignment="Center" Margin="20,0,0,0" Click="DeleteAccount_Click"/>
                             </Grid>
                         </Border>
 
@@ -431,8 +401,7 @@
                 </ScrollViewer>
             </TabItem>
 
-            <!-- CHECKBOX YANG RUSAK SUDAH DIHAPUS DARI SINI -->
-
         </TabControl>
+
     </Grid>
 </UserControl>

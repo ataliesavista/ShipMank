@@ -5,245 +5,153 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:ShipMank_WPF.Pages"
       xmlns:components="clr-namespace:ShipMank_WPF.Components"
+      xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
       mc:Ignorable="d" 
       d:DesignHeight="720" d:DesignWidth="1280"
       Title="BeliTiket">
 
-
     <Page.Resources>
-        <!-- Style kamu tetap sama... -->
-        <!-- Style untuk Tombol Biru (Book Ticket) -->
-        <Style TargetType="Button" x:Key="PrimaryButton">
-            <Setter Property="Background" Value="#1570A6"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="Padding" Value="15,8"/>
-            <Setter Property="FontWeight" Value="SemiBold"/>
+        <Style x:Key="FilterInputStyle" TargetType="Control">
+            <Setter Property="Height" Value="45"/>
+            <Setter Property="Background" Value="White"/>
             <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Padding" Value="10,0"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="Template">
                 <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}"
-                                CornerRadius="8"
-                                Padding="{TemplateBinding Padding}">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <ControlTemplate TargetType="Control">
+                        <Border Background="{TemplateBinding Background}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" 
+                                CornerRadius="8">
+                            <ScrollViewer x:Name="PART_ContentHost" Margin="{TemplateBinding Padding}" VerticalAlignment="Center"/>
                         </Border>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
 
-        <!-- Style dasar untuk input -->
-        <Style x:Key="SearchInputStyleBase">
-            <Setter Property="Control.Background" Value="White"/>
-            <Setter Property="Control.BorderBrush" Value="#4B5563"/>
-            <Setter Property="Control.BorderThickness" Value="1.5"/>
-            <Setter Property="Control.Padding" Value="10,8"/>
-            <Setter Property="Control.FontWeight" Value="SemiBold"/>
-            <Setter Property="Control.VerticalContentAlignment" Value="Center"/>
-        </Style>
-
-        <!-- Style untuk Tombol Panah Dropdown ComboBox -->
-        <Style x:Key="ComboBoxToggleButton" TargetType="ToggleButton">
+        <Style x:Key="AnimatedButtonStyle" TargetType="Button">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Template">
                 <Setter.Value>
-                    <ControlTemplate TargetType="ToggleButton">
-                        <Grid Background="Transparent">
-                            <TextBlock Text="&#xE70D;" 
-                                       FontFamily="Segoe UI Fluent Icons" 
-                                       FontSize="12" 
-                                       VerticalAlignment="Center" 
-                                       HorizontalAlignment="Center"
-                                       Foreground="#4B5563"/>
-                        </Grid>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" RenderTransformOrigin="0.5,0.5">
+                            <Border.RenderTransform>
+                                <ScaleTransform ScaleX="1" ScaleY="1"/>
+                            </Border.RenderTransform>
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="border" Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)" To="1.1" Duration="0:0:0.2"/>
+                                            <DoubleAnimation Storyboard.TargetName="border" Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)" To="1.1" Duration="0:0:0.2"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName="border" Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)" To="1" Duration="0:0:0.2"/>
+                                            <DoubleAnimation Storyboard.TargetName="border" Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)" To="1" Duration="0:0:0.2"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.ExitActions>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
 
-        <!-- Template untuk ComboBox -->
-        <Style TargetType="ComboBox" BasedOn="{StaticResource SearchInputStyleBase}">
+        <Style x:Key="FilterComboBoxStyle" TargetType="ComboBox">
+            <Setter Property="Height" Value="45"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Padding" Value="10,0"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ComboBox">
                         <Grid>
-                            <Border Background="{TemplateBinding Background}"
-                                    BorderBrush="{TemplateBinding BorderBrush}"
-                                    BorderThickness="{TemplateBinding BorderThickness}"
-                                    CornerRadius="8"
-                                    x:Name="MainBorder">
+                            <Border Background="{TemplateBinding Background}" CornerRadius="8">
                                 <Grid>
-                                    <ContentPresenter IsHitTestVisible="False"
-                                                      Margin="8,0"
-                                                      Content="{TemplateBinding SelectionBoxItem}"
-                                                      VerticalAlignment="Center"/>
-                                    <TextBox x:Name="PART_EditableTextBox"
-                                             Visibility="Collapsed"
-                                             IsReadOnly="{TemplateBinding IsReadOnly}"
-                                             Style="{x:Null}" 
-                                             Template="{x:Null}"
-                                             Background="Transparent"
-                                             BorderThickness="0"
-                                             Padding="8,0"
-                                             VerticalContentAlignment="Center"
-                                             Text="{Binding Text, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                                    <ToggleButton Grid.Column="1" 
-                                                  Focusable="False" 
-                                                  IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" 
-                                                  Style="{StaticResource ComboBoxToggleButton}"
-                                                  HorizontalAlignment="Right"
-                                                  Margin="0,0,5,0"/>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="30"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <ContentPresenter IsHitTestVisible="False" Content="{TemplateBinding SelectionBoxItem}"
+                                                      VerticalAlignment="Center" Margin="10,0,0,0"/>
+
+                                    <ToggleButton Grid.Column="1" Background="Transparent" BorderThickness="0" 
+                                                  IsChecked="{Binding Path=IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                                  ClickMode="Press">
+                                        <ToggleButton.Template>
+                                            <ControlTemplate TargetType="ToggleButton">
+                                                <Border Background="Transparent">
+                                                    <Grid x:Name="ArrowGrid" RenderTransformOrigin="0.5,0.5">
+                                                        <Grid.RenderTransform>
+                                                            <RotateTransform Angle="0"/>
+                                                        </Grid.RenderTransform>
+                                                        <iconPacks:PackIconMaterial Kind="ChevronDown" Width="10" Height="10" Foreground="#555" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                                    </Grid>
+                                                </Border>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsChecked" Value="True">
+                                                        <Trigger.EnterActions>
+                                                            <BeginStoryboard>
+                                                                <Storyboard>
+                                                                    <DoubleAnimation Storyboard.TargetName="ArrowGrid"
+                                                                                     Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)"
+                                                                                     To="180" Duration="0:0:0.3">
+                                                                        <DoubleAnimation.EasingFunction>
+                                                                            <CubicEase EasingMode="EaseOut"/>
+                                                                        </DoubleAnimation.EasingFunction>
+                                                                    </DoubleAnimation>
+                                                                </Storyboard>
+                                                            </BeginStoryboard>
+                                                        </Trigger.EnterActions>
+                                                        <Trigger.ExitActions>
+                                                            <BeginStoryboard>
+                                                                <Storyboard>
+                                                                    <DoubleAnimation Storyboard.TargetName="ArrowGrid"
+                                                                                     Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)"
+                                                                                     To="0" Duration="0:0:0.3">
+                                                                        <DoubleAnimation.EasingFunction>
+                                                                            <CubicEase EasingMode="EaseOut"/>
+                                                                        </DoubleAnimation.EasingFunction>
+                                                                    </DoubleAnimation>
+                                                                </Storyboard>
+                                                            </BeginStoryboard>
+                                                        </Trigger.ExitActions>
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
+                                            </ControlTemplate>
+                                        </ToggleButton.Template>
+                                    </ToggleButton>
                                 </Grid>
                             </Border>
-                            <Popup x:Name="Popup" 
-                                   Placement="Bottom" 
-                                   IsOpen="{TemplateBinding IsDropDownOpen}" 
-                                   AllowsTransparency="True" 
-                                   Focusable="False" 
-                                   PopupAnimation="Slide">
-                                <Grid Name="DropDown" 
-                                      SnapsToDevicePixels="True" 
-                                      MinWidth="{TemplateBinding ActualWidth}" 
-                                      MaxHeight="{TemplateBinding MaxDropDownHeight}">
-                                    <Border x:Name="DropDownBorder" 
-                                            Background="White" 
-                                            BorderThickness="1" 
-                                            BorderBrush="#888" 
-                                            CornerRadius="5"/>
+
+                            <Popup Name="Popup" Placement="Bottom" IsOpen="{TemplateBinding IsDropDownOpen}" AllowsTransparency="True" Focusable="False" PopupAnimation="Slide">
+                                <Grid Name="DropDown" SnapsToDevicePixels="True" MinWidth="{TemplateBinding ActualWidth}" MaxHeight="{TemplateBinding MaxDropDownHeight}">
+                                    <Border x:Name="DropDownBorder" Background="White" BorderThickness="1" BorderBrush="#DDD" CornerRadius="5" Margin="0,5,0,0">
+                                        <Border.Effect>
+                                            <DropShadowEffect BlurRadius="10" ShadowDepth="2" Opacity="0.1" Color="Black"/>
+                                        </Border.Effect>
+                                    </Border>
                                     <ScrollViewer Margin="4,6,4,6" SnapsToDevicePixels="True">
-                                        <ItemsPresenter KeyboardNavigation.DirectionalNavigation="Contained" />
+                                        <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained" />
                                     </ScrollViewer>
                                 </Grid>
                             </Popup>
                         </Grid>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="MainBorder" Property="BorderBrush" Value="#1E90FF"/>
-                            </Trigger>
-                            <Trigger Property="IsFocused" Value="True">
-                                <Setter TargetName="MainBorder" Property="BorderBrush" Value="#1E90FF"/>
-                                <Setter TargetName="MainBorder" Property="BorderThickness" Value="2"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-        <!-- Template sederhana untuk DatePicker -->
-        <Style TargetType="DatePicker" BasedOn="{StaticResource SearchInputStyleBase}">
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="DatePicker">
-                        <Border Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="8"
-                                x:Name="MainBorder">
-                            <Grid>
-                                <DatePickerTextBox x:Name="PART_TextBox"
-                                                   Text="{Binding Path=SelectedDate, StringFormat='dd/MM/yyyy', RelativeSource={RelativeSource TemplatedParent}}"
-                                                   BorderThickness="0"
-                                                   Background="Transparent"
-                                                   VerticalContentAlignment="Center"
-                                                   Padding="5,0,0,0"
-                                                   Margin="3,0"/>
-                                <Button x:Name="PART_Button" 
-                                        Grid.Column="1" 
-                                        Foreground="{TemplateBinding BorderBrush}" 
-                                        Focusable="False" 
-                                        HorizontalAlignment="Right"
-                                        VerticalAlignment="Center"
-                                        Margin="0,0,5,0"
-                                        Style="{x:Null}">
-                                    <Button.Template>
-                                        <ControlTemplate TargetType="Button">
-                                            <Grid Background="Transparent">
-                                                <TextBlock Text="&#xE787;" 
-                                                           FontFamily="Segoe UI Fluent Icons" 
-                                                           FontSize="14" 
-                                                           VerticalAlignment="Center" 
-                                                           HorizontalAlignment="Center"
-                                                           Foreground="#4B5563"/>
-                                            </Grid>
-                                        </ControlTemplate>
-                                    </Button.Template>
-                                </Button>
-                            </Grid>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="MainBorder" Property="BorderBrush" Value="#1E90FF"/>
-                            </Trigger>
-                            <Trigger Property="IsFocused" Value="True">
-                                <Setter TargetName="MainBorder" Property="BorderBrush" Value="#1E90FF"/>
-                                <Setter TargetName="MainBorder" Property="BorderThickness" Value="2"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-        <!-- Template sederhana untuk TextBox -->
-        <Style TargetType="TextBox" BasedOn="{StaticResource SearchInputStyleBase}">
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="TextBox">
-                        <Border Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="8"
-                                x:Name="MainBorder">
-                            <ScrollViewer x:Name="PART_ContentHost" 
-                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" 
-                                          Margin="8,0" 
-                                          VerticalAlignment="Center" 
-                                          HorizontalAlignment="Left" />
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="MainBorder" Property="BorderBrush" Value="#1E90FF"/>
-                            </Trigger>
-                            <Trigger Property="IsFocused" Value="True">
-                                <Setter TargetName="MainBorder" Property="BorderBrush" Value="#1E90FF"/>
-                                <Setter TargetName="MainBorder" Property="BorderThickness" Value="2"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-        <!-- Style sederhana untuk Tombol Tukar (Swap) -->
-        <Style TargetType="Button" x:Key="SwapButton">
-            <Setter Property="Background" Value="White"/>
-            <Setter Property="BorderBrush" Value="#4B5563"/>
-            <Setter Property="BorderThickness" Value="1.5"/>
-            <Setter Property="Width" Value="40"/>
-            <Setter Property="Height" Value="40"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}"
-                                BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="20">
-                            <TextBlock Text="&#xE8AB;" 
-                                       FontFamily="Segoe UI Fluent Icons" 
-                                       FontSize="16" 
-                                       VerticalAlignment="Center" 
-                                       HorizontalAlignment="Center"
-                                       Foreground="#4B5563"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="BorderBrush" Value="#1E90FF"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
@@ -251,7 +159,25 @@
 
     </Page.Resources>
 
-    <!-- 🌈 Background gradasi dari atas (#FFF9AF) ke bawah (#EBF1F5) -->
+    <Page.Triggers>
+        <EventTrigger RoutedEvent="Page.Loaded">
+            <BeginStoryboard>
+                <Storyboard>
+                    <DoubleAnimation Storyboard.TargetName="MainContentGrid" 
+                                     Storyboard.TargetProperty="Opacity" 
+                                     From="0" To="1" Duration="0:0:0.6"/>
+                    <ThicknessAnimation Storyboard.TargetName="MainContentGrid" 
+                                        Storyboard.TargetProperty="Margin" 
+                                        From="0,20,0,0" To="0,0,0,0" Duration="0:0:0.6">
+                        <ThicknessAnimation.EasingFunction>
+                            <CubicEase EasingMode="EaseOut"/>
+                        </ThicknessAnimation.EasingFunction>
+                    </ThicknessAnimation>
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+    </Page.Triggers>
+
     <Grid>
         <Grid.Background>
             <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
@@ -260,150 +186,162 @@
             </LinearGradientBrush>
         </Grid.Background>
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+        <Grid x:Name="MainContentGrid">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
-        <!-- ======= Konten kamu tetap sama ======= -->
-        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="40,30,40,20">
-            <Image Source="/Assets/logob.png" Height="32" Width="32" VerticalAlignment="Center" Margin="0,0,10,0"/>
-            <TextBlock Text="Boat Rentals" FontSize="32" FontWeight="Bold" VerticalAlignment="Center"/>
-        </StackPanel>
+            <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="40,30,40,20">
+                <Image Source="/Assets/logob.png" Height="32" Width="32" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                <TextBlock Text="Boat Rentals" FontSize="32" FontWeight="Bold" VerticalAlignment="Center"/>
+            </StackPanel>
 
-        <Border Grid.Row="1" Background="#F6C945" CornerRadius="10" Padding="20" Margin="40,0,40,20">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
+            <Border x:Name="FilterSection" Grid.Row="1" Background="#F6C945" CornerRadius="15" Padding="25" Margin="40,0,40,20">
+                <Border.Effect>
+                    <DropShadowEffect ShadowDepth="2" BlurRadius="10" Opacity="0.1"/>
+                </Border.Effect>
 
-                <Grid Grid.Row="0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="20"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
 
-                    <StackPanel Grid.Column="0" Margin="0,0,20,20">
-                        <TextBlock Text="Search" FontWeight="SemiBold" Margin="0,0,0,5"/>
-                        <!-- DIUBAH: Menghapus Text="", menambah event -->
-                        <TextBox x:Name="SearchBoatNameTextBox" 
-                                 Background="White" 
-                                 BorderThickness="0" 
-                                 Padding="10"
+                    <Grid Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="20"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="20"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="Search" FontWeight="Bold" Foreground="#333" Margin="0,0,0,8"/>
+                            <TextBox x:Name="SearchBoatNameTextBox" Style="{StaticResource FilterInputStyle}" 
+                                 Tag="Search boat name..." 
                                  TextChanged="TextBox_TextChanged"
                                  GotFocus="TextBox_GotFocus"
-                                 LostFocus="TextBox_LostFocus"
-                                 />
-                    </StackPanel>
+                                 LostFocus="TextBox_LostFocus"/>
+                        </StackPanel>
 
-                    <StackPanel Grid.Column="1" Margin="0,0,20,20">
-                        <TextBlock Text="Location" FontWeight="SemiBold" Margin="0,0,0,5"/>
-                        <!-- DIUBAH: ComboBox menjadi TextBox -->
-                        <TextBox x:Name="LocationTextBox" 
-                                 Background="#FFFFFF" 
-                                 BorderThickness="0" 
-                                 Padding="10"
+                        <StackPanel Grid.Column="2">
+                            <TextBlock Text="Location" FontWeight="Bold" Foreground="#333" Margin="0,0,0,8"/>
+                            <TextBox x:Name="LocationTextBox" Style="{StaticResource FilterInputStyle}"
+                                 Tag="e.g. Bali, Jakarta"
                                  TextChanged="TextBox_TextChanged"
                                  GotFocus="TextBox_GotFocus"
-                                 LostFocus="TextBox_LostFocus"
-                                 />
-                    </StackPanel>
+                                 LostFocus="TextBox_LostFocus"/>
+                        </StackPanel>
 
-                    <StackPanel Grid.Column="2" Margin="0,0,0,20">
-                        <TextBlock Text="Type" FontWeight="SemiBold" Margin="0,0,0,5"/>
-                        <ComboBox x:Name="TypeComboBox" Background="#FFFFFF" BorderThickness="0" Padding="10">
-                            <ComboBoxItem Content="All" IsSelected="True"/>
-                            <ComboBoxItem Content="Boat"/>
-                            <ComboBoxItem Content="Perahu"/>
-                            <ComboBoxItem Content="Yacht"/>
-                        </ComboBox>
-                    </StackPanel>
-                </Grid>
+                        <StackPanel Grid.Column="4">
+                            <Grid Margin="0,0,0,8">
+                                <TextBlock Text="Type" FontWeight="Bold" Foreground="#333" VerticalAlignment="Center" HorizontalAlignment="Left"/>
 
-                <Grid Grid.Row="1">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1*"/>
-                        <ColumnDefinition Width="1*"/>
-                        <ColumnDefinition Width="2*"/>
-                    </Grid.ColumnDefinitions>
-
-                    <StackPanel Grid.Column="0" Margin="0,0,20,0">
-                        <TextBlock Text="Capacity" FontWeight="SemiBold" Margin="0,0,0,5"/>
-                        <ComboBox x:Name="CapacityComboBox" Background="#FFFFFF" BorderThickness="0" Padding="10" 
-                                  IsEditable="True" Text="20">
-                            <ComboBoxItem Content="10"/>
-                            <ComboBoxItem Content="20"/>
-                            <ComboBoxItem Content="50"/>
-                        </ComboBox>
-                    </StackPanel>
-
-                    <StackPanel Grid.Column="1" Margin="0,0,20,0">
-                        <TextBlock Text="Rate" FontWeight="SemiBold" Margin="0,0,0,5"/>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-
-                            <ComboBox x:Name="RateComboBox" Grid.Column="0" Background="#FFFFFF" BorderThickness="0" Padding="10" Width="80">
-                                <ComboBoxItem Content="All" IsSelected="True"/>
-                                <ComboBoxItem Content="1"/>
-                                <ComboBoxItem Content="2"/>
-                                <ComboBoxItem Content="3"/>
-                                <ComboBoxItem Content="4"/>
-                                <ComboBoxItem Content="5"/>
-                            </ComboBox>
-                            <TextBlock Grid.Column="1" Text="star" VerticalAlignment="Center" Margin="10,0,0,0"/>
-                        </Grid>
-                    </StackPanel>
-
-                    <StackPanel Grid.Column="2" Margin="0,0,0,0">
-                        <TextBlock Text="Max price" FontWeight="SemiBold" Margin="0,0,0,5"/>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-
-                            <Slider Grid.Column="0" 
-                                    Minimum="100000" Maximum="10000000" 
-                                    Value="10000000" 
-                                    TickPlacement="None" 
+                                <Button x:Name="ResetFilterButton"
+                                    HorizontalAlignment="Right"
                                     VerticalAlignment="Center"
-                                    Margin="0,0,10,0"/>
+                                    Style="{StaticResource AnimatedButtonStyle}"
+                                    ToolTip="Reset All Filters"
+                                    Click="ResetFilterButton_Click">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="Reset" FontSize="11" FontWeight="SemiBold" Foreground="#333" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                                        <iconPacks:PackIconMaterial Kind="Undo" Width="12" Height="12" Foreground="#333" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </Button>
+                            </Grid>
 
-                            <Border Grid.Column="1" 
-                                    Background="White" 
-                                    BorderThickness="0"
-                                    Padding="5,5,5,5"
-                                    CornerRadius="5"
-                                    Width="100"
-                                    HorizontalAlignment="Left">
-                                <TextBlock Text="10.000.000" FontSize="12" FontWeight="SemiBold" Foreground="#1F2937"/>
-                            </Border>
-                        </Grid>
-                    </StackPanel>
+                            <ComboBox x:Name="TypeComboBox" Style="{StaticResource FilterComboBoxStyle}">
+                                <ComboBoxItem Content="All Types" IsSelected="True"/>
+                                <ComboBoxItem Content="Speedboat"/>
+                                <ComboBoxItem Content="Yacht"/>
+                                <ComboBoxItem Content="Phinisi"/>
+                                <ComboBoxItem Content="Ferry"/>
+                            </ComboBox>
+                        </StackPanel>
+                    </Grid>
+
+                    <Grid Grid.Row="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="20"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="20"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="Capacity" FontWeight="Bold" Foreground="#333" Margin="0,0,0,8"/>
+                            <ComboBox x:Name="CapacityComboBox" Style="{StaticResource FilterComboBoxStyle}" IsEditable="True" Text="Any">
+                                <ComboBoxItem Content="Any"/>
+                                <ComboBoxItem Content="2 - 5 People"/>
+                                <ComboBoxItem Content="5 - 10 People"/>
+                                <ComboBoxItem Content="10+ People"/>
+                            </ComboBox>
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="2">
+                            <TextBlock Text="Rate" FontWeight="Bold" Foreground="#333" Margin="0,0,0,8"/>
+                            <Grid>
+                                <ComboBox x:Name="RateComboBox" Style="{StaticResource FilterComboBoxStyle}">
+                                    <ComboBoxItem Content="Any" IsSelected="True"/>
+                                    <ComboBoxItem Content="5"/>
+                                    <ComboBoxItem Content="4"/>
+                                    <ComboBoxItem Content="3"/>
+                                </ComboBox>
+
+                                <iconPacks:PackIconMaterial Kind="Star" 
+                                                        HorizontalAlignment="Right" VerticalAlignment="Center" 
+                                                        Margin="0,0,35,0" Foreground="#F39C12"
+                                                        IsHitTestVisible="False"/>
+                            </Grid>
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="4">
+                            <TextBlock Text="Max Price" FontWeight="Bold" Foreground="#333" Margin="0,0,0,8"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="10"/>
+                                    <ColumnDefinition Width="100"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Slider x:Name="PriceSlider" 
+                                    Grid.Column="0"
+                                    Minimum="0" 
+                                    Maximum="20000000" 
+                                    Value="10000000"
+                                    TickPlacement="None"
+                                    VerticalAlignment="Center"
+                                    IsSnapToTickEnabled="True"
+                                    TickFrequency="500000"/>
+
+                                <Border Grid.Column="2" Background="White" CornerRadius="8" Height="45">
+                                    <TextBox Text="{Binding ElementName=PriceSlider, Path=Value, UpdateSourceTrigger=PropertyChanged, StringFormat=N0}"
+                                         BorderThickness="0"
+                                         VerticalContentAlignment="Center"
+                                         HorizontalContentAlignment="Center"
+                                         FontWeight="SemiBold"
+                                         FontSize="13"
+                                         Background="Transparent"/>
+                                </Border>
+                            </Grid>
+                        </StackPanel>
+                    </Grid>
                 </Grid>
-            </Grid>
-        </Border>
+            </Border>
 
-        <!-- Baris 2: Konten Hasil (Grid Kartu) -->
-        <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-            <!-- DIUBAH: Memberi nama x:Name dan menghapus child -->
-            <UniformGrid 
-                x:Name="ShipCardGrid"
-                Margin="40,10,20,20" 
-                Rows="1" 
-                Columns="3" 
-                HorizontalAlignment="Stretch"
-            >
-                <!-- Kartu akan diisi oleh C# -->
-
-            </UniformGrid>
-
-        </ScrollViewer>
+            <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                <UniformGrid x:Name="ShipCardGrid"
+                         Margin="40,10,40,20" 
+                         Rows="2" 
+                         Columns="3" 
+                         HorizontalAlignment="Stretch">
+                </UniformGrid>
+            </ScrollViewer>
+        </Grid>
     </Grid>
 </Page>
