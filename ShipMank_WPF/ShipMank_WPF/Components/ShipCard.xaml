@@ -23,6 +23,54 @@
         </Style>
     </UserControl.Resources>
 
+    <!-- ANIMASI ZOOM GAMBAR SAAT HOVER -->
+    <UserControl.Triggers>
+        <EventTrigger RoutedEvent="MouseEnter">
+            <BeginStoryboard>
+                <Storyboard>
+                    <!-- Scale X membesar ke 1.1 -->
+                    <DoubleAnimation Storyboard.TargetName="ShipImage"
+                                     Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                                     To="1.1" Duration="0:0:0.4">
+                        <DoubleAnimation.EasingFunction>
+                            <CubicEase EasingMode="EaseOut"/>
+                        </DoubleAnimation.EasingFunction>
+                    </DoubleAnimation>
+                    <!-- Scale Y membesar ke 1.1 -->
+                    <DoubleAnimation Storyboard.TargetName="ShipImage"
+                                     Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                                     To="1.1" Duration="0:0:0.4">
+                        <DoubleAnimation.EasingFunction>
+                            <CubicEase EasingMode="EaseOut"/>
+                        </DoubleAnimation.EasingFunction>
+                    </DoubleAnimation>
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+
+        <EventTrigger RoutedEvent="MouseLeave">
+            <BeginStoryboard>
+                <Storyboard>
+                    <!-- Kembali ke ukuran normal (1.0) -->
+                    <DoubleAnimation Storyboard.TargetName="ShipImage"
+                                     Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                                     To="1.0" Duration="0:0:0.4">
+                        <DoubleAnimation.EasingFunction>
+                            <CubicEase EasingMode="EaseOut"/>
+                        </DoubleAnimation.EasingFunction>
+                    </DoubleAnimation>
+                    <DoubleAnimation Storyboard.TargetName="ShipImage"
+                                     Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                                     To="1.0" Duration="0:0:0.4">
+                        <DoubleAnimation.EasingFunction>
+                            <CubicEase EasingMode="EaseOut"/>
+                        </DoubleAnimation.EasingFunction>
+                    </DoubleAnimation>
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+    </UserControl.Triggers>
+
     <Border Background="White" CornerRadius="15" Margin="0,0,20,20" MaxWidth="380">
         <Border.Effect>
             <DropShadowEffect ShadowDepth="2" Color="#CCCCCC" Opacity="0.5" BlurRadius="10"/>
@@ -31,8 +79,19 @@
         <StackPanel>
             <!-- Bagian Gambar dan Badge Kelas -->
             <Grid>
+                <!-- ClipToBounds="True" Wajib agar zoom tidak keluar dari border -->
                 <Border CornerRadius="15,15,0,0" Height="220" ClipToBounds="True">
-                    <Image Source="{Binding ImageSource, RelativeSource={RelativeSource AncestorType=UserControl}}" Stretch="UniformToFill" />
+
+                    <!-- Tambahkan x:Name dan RenderTransform -->
+                    <Image x:Name="ShipImage" 
+                           Source="{Binding ImageSource, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                           Stretch="UniformToFill"
+                           RenderTransformOrigin="0.5, 0.5">
+                        <Image.RenderTransform>
+                            <ScaleTransform ScaleX="1.0" ScaleY="1.0"/>
+                        </Image.RenderTransform>
+                    </Image>
+
                 </Border>
 
                 <!-- Badge Kelas -->
@@ -58,7 +117,7 @@
                     </Grid.ColumnDefinitions>
 
                     <StackPanel Grid.Column="0">
-                        <!-- Lokasi Kapal (ICON PACKS: MAP MARKER) -->
+                        <!-- Lokasi Kapal -->
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
                             <iconPacks:PackIconMaterial Kind="MapMarker" 
                                                         Width="16" Height="16" 
@@ -70,7 +129,7 @@
                                        FontSize="16" Foreground="{StaticResource DarkGrayText}"/>
                         </StackPanel>
 
-                        <!-- Kapasitas Orang (ICON PACKS: ACCOUNT GROUP) -->
+                        <!-- Kapasitas Orang -->
                         <StackPanel Orientation="Horizontal">
                             <iconPacks:PackIconMaterial Kind="AccountGroup" 
                                                         Width="18" Height="18" 
@@ -83,7 +142,7 @@
                         </StackPanel>
                     </StackPanel>
 
-                    <!-- Rating Kapal (ICON PACKS: STAR) -->
+                    <!-- Rating Kapal -->
                     <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right">
                         <iconPacks:PackIconMaterial Kind="Star" 
                                                     Width="18" Height="18" 

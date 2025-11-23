@@ -9,7 +9,6 @@
       d:DesignHeight="720" d:DesignWidth="1280"
       Title="History" FontFamily="Segoe UI">
 
-    <!-- Latar belakang gradien -->
     <Page.Background>
         <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
             <GradientStop Color="#FFF9AF" Offset="0"/>
@@ -17,8 +16,39 @@
         </LinearGradientBrush>
     </Page.Background>
 
+    <Page.Triggers>
+        <EventTrigger RoutedEvent="Page.Loaded">
+            <BeginStoryboard>
+                <Storyboard>
+                    <DoubleAnimation Storyboard.TargetName="HeaderPanel" 
+                                     Storyboard.TargetProperty="Opacity" 
+                                     From="0" To="1" Duration="0:0:0.6"/>
+
+                    <ThicknessAnimation Storyboard.TargetName="HeaderPanel" 
+                                        Storyboard.TargetProperty="Margin" 
+                                        From="40,50,40,20" To="40,30,40,20" Duration="0:0:0.6">
+                        <ThicknessAnimation.EasingFunction>
+                            <CubicEase EasingMode="EaseOut"/>
+                        </ThicknessAnimation.EasingFunction>
+                    </ThicknessAnimation>
+
+                    <DoubleAnimation Storyboard.TargetName="MainBorder" 
+                                     Storyboard.TargetProperty="Opacity" 
+                                     From="0" To="1" Duration="0:0:0.8" BeginTime="0:0:0.15"/>
+
+                    <ThicknessAnimation Storyboard.TargetName="MainBorder" 
+                                        Storyboard.TargetProperty="Margin" 
+                                        From="40,40,40,30" To="40,0,40,30" Duration="0:0:0.8" BeginTime="0:0:0.15">
+                        <ThicknessAnimation.EasingFunction>
+                            <CubicEase EasingMode="EaseOut"/>
+                        </ThicknessAnimation.EasingFunction>
+                    </ThicknessAnimation>
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+    </Page.Triggers>
+
     <Page.Resources>
-        <!-- Style untuk Tombol 'View Details' -->
         <Style TargetType="Button" x:Key="ViewDetailsButton">
             <Setter Property="Background" Value="White"/>
             <Setter Property="Foreground" Value="#333"/>
@@ -28,27 +58,49 @@
             <Setter Property="FontSize" Value="12"/>
             <Setter Property="Padding" Value="15,5"/>
             <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+            <Setter Property="RenderTransform">
+                <Setter.Value>
+                    <ScaleTransform ScaleX="1" ScaleY="1"/>
+                </Setter.Value>
+            </Setter>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}" 
+                        <Border x:Name="border"
+                                Background="{TemplateBinding Background}" 
                                 BorderBrush="{TemplateBinding BorderBrush}" 
                                 BorderThickness="{TemplateBinding BorderThickness}" 
                                 CornerRadius="8"
                                 Padding="{TemplateBinding Padding}">
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#F3F4F6"/>
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)" To="1.05" Duration="0:0:0.2"/>
+                                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)" To="1.05" Duration="0:0:0.2"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)" To="1.0" Duration="0:0:0.2"/>
+                                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)" To="1.0" Duration="0:0:0.2"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.ExitActions>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#E5E7EB"/>
-                </Trigger>
-            </Style.Triggers>
         </Style>
 
-        <!-- Style untuk DataGrid -->
         <Style TargetType="DataGrid">
             <Setter Property="Background" Value="White"/>
             <Setter Property="BorderThickness" Value="0"/>
@@ -70,14 +122,17 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- Header -->
-        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="40,30,40,20">
+        <StackPanel x:Name="HeaderPanel" 
+                    Opacity="0"
+                    Grid.Row="0" 
+                    Orientation="Horizontal" 
+                    Margin="40,30,40,20">
             <Image Source="/Assets/logob.png" Height="32" Width="32" VerticalAlignment="Center" Margin="0,0,10,0"/>
             <TextBlock Text="Orders" FontSize="32" FontWeight="Bold" VerticalAlignment="Center" Foreground="#333"/>
         </StackPanel>
 
-        <!-- DataGrid Container -->
         <Border x:Name="MainBorder" 
+                Opacity="0"
                 Grid.Row="1" 
                 Margin="40,0,40,30" 
                 CornerRadius="15" 
@@ -103,7 +158,6 @@
                       SelectionChanged="HistoryDataGrid_SelectionChanged">
 
                 <DataGrid.Resources>
-                    <!-- Style Header -->
                     <Style TargetType="DataGridColumnHeader">
                         <Setter Property="Padding" Value="20,15"/>
                         <Setter Property="Background" Value="#33A1E0"/>
@@ -113,7 +167,6 @@
                         <Setter Property="BorderThickness" Value="0"/>
                     </Style>
 
-                    <!-- Style Cell -->
                     <Style TargetType="DataGridCell">
                         <Setter Property="Padding" Value="20,0"/>
                         <Setter Property="Template">
@@ -140,7 +193,6 @@
                 </DataGrid.Resources>
 
                 <DataGrid.Columns>
-                    <!-- Order ID -->
                     <DataGridTextColumn Header="Order ID" Binding="{Binding OrderID}" FontWeight="Bold" Width="Auto">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
@@ -150,12 +202,10 @@
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
 
-                    <!-- Item (Icon: SailBoat) -->
                     <DataGridTemplateColumn Header="Item" Width="2*">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                    <!-- Icon Pack -->
                                     <iconPacks:PackIconMaterial Kind="SailBoat" Width="16" Height="16" Margin="0,0,10,0" VerticalAlignment="Center" Foreground="#555"/>
                                     <TextBlock Text="{Binding ItemName}" VerticalAlignment="Center" FontWeight="Bold" Foreground="Black"/>
                                 </StackPanel>
@@ -163,12 +213,10 @@
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
 
-                    <!-- Date (Icon: CalendarRange) -->
                     <DataGridTemplateColumn Header="Date" Width="1.2*">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                    <!-- Icon Pack -->
                                     <iconPacks:PackIconMaterial Kind="CalendarRange" Width="16" Height="16" Margin="0,0,10,0" VerticalAlignment="Center" Foreground="#555"/>
                                     <TextBlock Text="{Binding Date, StringFormat='yyyy-MM-dd'}" FontWeight="Bold" VerticalAlignment="Center"/>
                                 </StackPanel>
@@ -176,21 +224,17 @@
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
 
-                    <!-- Location/Route (Icon: MapMarker) -->
                     <DataGridTemplateColumn Header="Location/Route" Width="2.5*">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                    <!-- Icon Pack -->
                                     <iconPacks:PackIconMaterial Kind="MapMarker" Width="16" Height="16" Margin="0,0,10,0" VerticalAlignment="Center" Foreground="#E74C3C"/>
-                                    <!-- Merah untuk Lokasi -->
                                     <TextBlock Text="{Binding Route}" FontWeight="Bold" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
 
-                    <!-- Total -->
                     <DataGridTextColumn Header="Total" Binding="{Binding TotalString}" FontWeight="Bold" Width="Auto">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
@@ -199,7 +243,6 @@
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
 
-                    <!-- Status -->
                     <DataGridTemplateColumn Header="Status" Width="140">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
@@ -245,7 +288,6 @@
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
 
-                    <!-- View Details -->
                     <DataGridTemplateColumn Header="" Width="150">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>

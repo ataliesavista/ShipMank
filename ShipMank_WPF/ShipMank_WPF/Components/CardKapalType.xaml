@@ -8,16 +8,94 @@
              d:DesignHeight="350" d:DesignWidth="300"
              x:Name="root">
 
+    <UserControl.Triggers>
+        <EventTrigger RoutedEvent="MouseEnter">
+            <BeginStoryboard>
+                <Storyboard>
+                    <DoubleAnimation Storyboard.TargetName="CardTranslate"
+                                     Storyboard.TargetProperty="Y"
+                                     To="-10" Duration="0:0:0.3">
+                        <DoubleAnimation.EasingFunction>
+                            <CubicEase EasingMode="EaseOut"/>
+                        </DoubleAnimation.EasingFunction>
+                    </DoubleAnimation>
+
+                    <DoubleAnimation Storyboard.TargetName="ImageScale"
+                                     Storyboard.TargetProperty="ScaleX"
+                                     To="1.1" Duration="0:0:0.4">
+                        <DoubleAnimation.EasingFunction>
+                            <CubicEase EasingMode="EaseOut"/>
+                        </DoubleAnimation.EasingFunction>
+                    </DoubleAnimation>
+                    <DoubleAnimation Storyboard.TargetName="ImageScale"
+                                     Storyboard.TargetProperty="ScaleY"
+                                     To="1.1" Duration="0:0:0.4">
+                        <DoubleAnimation.EasingFunction>
+                            <CubicEase EasingMode="EaseOut"/>
+                        </DoubleAnimation.EasingFunction>
+                    </DoubleAnimation>
+
+                    <DoubleAnimation Storyboard.TargetName="CardShadow"
+                                     Storyboard.TargetProperty="BlurRadius"
+                                     To="30" Duration="0:0:0.3"/>
+                    <DoubleAnimation Storyboard.TargetName="CardShadow"
+                                     Storyboard.TargetProperty="Opacity"
+                                     To="0.2" Duration="0:0:0.3"/>
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+
+        <EventTrigger RoutedEvent="MouseLeave">
+            <BeginStoryboard>
+                <Storyboard>
+                    <DoubleAnimation Storyboard.TargetName="CardTranslate"
+                                     Storyboard.TargetProperty="Y"
+                                     To="0" Duration="0:0:0.3">
+                        <DoubleAnimation.EasingFunction>
+                            <CubicEase EasingMode="EaseIn"/>
+                        </DoubleAnimation.EasingFunction>
+                    </DoubleAnimation>
+
+                    <DoubleAnimation Storyboard.TargetName="ImageScale"
+                                     Storyboard.TargetProperty="ScaleX"
+                                     To="1.0" Duration="0:0:0.3">
+                        <DoubleAnimation.EasingFunction>
+                            <CubicEase EasingMode="EaseIn"/>
+                        </DoubleAnimation.EasingFunction>
+                    </DoubleAnimation>
+                    <DoubleAnimation Storyboard.TargetName="ImageScale"
+                                     Storyboard.TargetProperty="ScaleY"
+                                     To="1.0" Duration="0:0:0.3">
+                        <DoubleAnimation.EasingFunction>
+                            <CubicEase EasingMode="EaseIn"/>
+                        </DoubleAnimation.EasingFunction>
+                    </DoubleAnimation>
+
+                    <DoubleAnimation Storyboard.TargetName="CardShadow"
+                                     Storyboard.TargetProperty="BlurRadius"
+                                     To="20" Duration="0:0:0.3"/>
+                    <DoubleAnimation Storyboard.TargetName="CardShadow"
+                                     Storyboard.TargetProperty="Opacity"
+                                     To="0.08" Duration="0:0:0.3"/>
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+    </UserControl.Triggers>
+
     <Grid>
-        <!-- Card Container -->
         <Border Background="White" 
                 CornerRadius="15" 
                 Margin="10"
                 BorderBrush="#EEF2F6"
-                BorderThickness="1">
+                BorderThickness="1"
+                RenderTransformOrigin="0.5,0.5">
+
+            <Border.RenderTransform>
+                <TranslateTransform x:Name="CardTranslate" Y="0"/>
+            </Border.RenderTransform>
 
             <Border.Effect>
-                <DropShadowEffect Color="#000000" Opacity="0.08" BlurRadius="20" ShadowDepth="5" Direction="270"/>
+                <DropShadowEffect x:Name="CardShadow" Color="#000000" Opacity="0.08" BlurRadius="20" ShadowDepth="5" Direction="270"/>
             </Border.Effect>
 
             <Grid>
@@ -30,13 +108,16 @@
                         CornerRadius="15,15,0,0">
                     <Border.Background>
                         <ImageBrush ImageSource="{Binding ImageSource, ElementName=root}" 
-                                    Stretch="UniformToFill"/>
+                                    Stretch="UniformToFill">
+                            <ImageBrush.RelativeTransform>
+                                <ScaleTransform x:Name="ImageScale" CenterX="0.5" CenterY="0.5" ScaleX="1.0" ScaleY="1.0"/>
+                            </ImageBrush.RelativeTransform>
+                        </ImageBrush>
                     </Border.Background>
                 </Border>
 
                 <StackPanel Grid.Row="1" Margin="20,20,20,25">
 
-                    <!-- Judul Jenis Kapal -->
                     <TextBlock Text="{Binding JudulKapal, ElementName=root}"
                                FontSize="22"
                                FontWeight="Bold"
@@ -44,7 +125,6 @@
                                Margin="0,0,0,10"
                                TextTrimming="CharacterEllipsis"/>
 
-                    <!-- Deskripsi Kapal -->
                     <TextBlock Text="{Binding DeskripsiKapal, ElementName=root}"
                                FontSize="14"
                                Foreground="#64748B"
