@@ -23,6 +23,14 @@ namespace ShipMank_WPF.Pages
         public Payment()
         {
             InitializeComponent();
+
+            TxtNamaKapal.Text = "Kapal Babe Asep";
+            TxtShipType.Text = "Luxury Speedboat";
+            TxtDateBerangkat.Text = DateTime.Now.AddDays(2).ToString("dddd, dd MMM yyyy");
+            TxtLokasi.Text = "Marina Ancol -> Pulau Pramuka";
+            TxtKapasitas.Text = "12 Orang";
+            TxtHargaPerjalanan.Text = "Rp 2.000.000";
+            TxtTotal.Text = "Rp 2.005.000";
         }
     }
 }

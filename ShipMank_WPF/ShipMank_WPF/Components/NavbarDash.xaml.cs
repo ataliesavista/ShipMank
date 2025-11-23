@@ -75,7 +75,7 @@ namespace ShipMank_WPF.Components
 
         private void SetActiveButton(Button activeButton)
         {
-            var buttons = new[] { HomeButton, RentalsButton, OrdersButton, HelpButton, ProfileButton };
+            var buttons = new[] { HomeButton, RentalsButton, OrdersButton, ProfileButton };
             foreach (var button in buttons)
             {
                 if (button != null)
@@ -111,7 +111,7 @@ namespace ShipMank_WPF.Components
         {
             SetActiveButton(HomeButton);
             var main = (MainWindow)Application.Current.MainWindow;
-            main.MainFrame.Content = new Home();
+            main.MainFrame.Content = new Home2();
         }
 
         private void RentalsButton_Click(object sender, RoutedEventArgs e)
@@ -128,10 +128,10 @@ namespace ShipMank_WPF.Components
             main.MainFrame.Content = new History();
         }
 
-        private void HelpButton_Click(object sender, RoutedEventArgs e)
-        {
-            SetActiveButton(HelpButton);
-        }
+        //private void HelpButton_Click(object sender, RoutedEventArgs e)
+        //{
+        //    SetActiveButton(HelpButton);
+        //}
 
         private void ProfileButton_Click(object sender, RoutedEventArgs e)
         {

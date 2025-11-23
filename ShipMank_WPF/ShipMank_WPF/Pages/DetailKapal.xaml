@@ -5,14 +5,12 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:ShipMank_WPF.Pages"
       xmlns:sys="clr-namespace:System;assembly=mscorlib"
+      xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
       mc:Ignorable="d" 
       Title="DetailKapal"
       Background="Transparent">
-    <!-- Latar belakang abu-abu muda untuk kontras -->
 
-    <!-- Grid utama untuk menengahkan kartu -->
     <Grid>
-        <!-- Border bertindak sebagai kartu utama -->
         <Border HorizontalAlignment="Center" 
                 VerticalAlignment="Center"
                 Background="White"
@@ -23,13 +21,10 @@
                 <DropShadowEffect ShadowDepth="2" BlurRadius="15" Color="Black" Opacity="0.2"/>
             </Border.Effect>
 
-            <!-- Grid untuk tata letak di dalam kartu -->
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
-                    <!-- Baris untuk Header Biru -->
                     <RowDefinition Height="*"/>
-                    <!-- Baris untuk Konten Utama -->
                 </Grid.RowDefinitions>
 
                 <!-- 1. Header Biru -->
@@ -44,44 +39,43 @@
                                HorizontalAlignment="Center"/>
                 </Border>
 
-                <!-- 2. Konten Utama (Info, Harga, Fasilitas, Tombol) -->
+                <!-- 2. Konten Utama -->
                 <StackPanel Grid.Row="1" Margin="25">
 
-                    <!-- Grid untuk Info Kiri dan Harga Kanan -->
+                    <!-- Grid Info & Harga -->
                     <Grid Margin="0,0,0,20">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
 
-                        <!-- Info Kiri (Lokasi, Tipe, Tanggal) -->
+                        <!-- Info Kiri -->
                         <StackPanel Grid.Column="0" VerticalAlignment="Top">
 
-                            <!-- Lokasi -->
+                            <!-- Lokasi (Ganti Emoji dengan Icon MapMarker) -->
                             <StackPanel Margin="0,0,0,15">
                                 <StackPanel Orientation="Horizontal" Opacity="0.7">
-                                    <TextBlock Text="📍" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                                    <iconPacks:PackIconMaterial Kind="MapMarker" Width="14" Height="14" Margin="0,0,8,0" VerticalAlignment="Center"/>
                                     <TextBlock Text="Location" FontSize="14" VerticalAlignment="Center"/>
                                 </StackPanel>
                                 <TextBlock Text="Jakarta, Pulau Seribu" FontSize="18" FontWeight="Bold" Margin="22,0,0,0"/>
                             </StackPanel>
 
-                            <!-- Tipe -->
+                            <!-- Tipe (Ganti Emoji dengan Icon SailBoat) -->
                             <StackPanel Margin="0,0,0,15">
                                 <StackPanel Orientation="Horizontal" Opacity="0.7">
-                                    <TextBlock Text="⚓" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                                    <iconPacks:PackIconMaterial Kind="SailBoat" Width="14" Height="14" Margin="0,0,8,0" VerticalAlignment="Center"/>
                                     <TextBlock Text="Type" FontSize="14" VerticalAlignment="Center"/>
                                 </StackPanel>
                                 <TextBlock Text="Speedboat" FontSize="18" FontWeight="Bold" Margin="22,0,0,0"/>
                             </StackPanel>
 
-                            <!-- Pilih Tanggal -->
+                            <!-- Tanggal (Ganti Emoji dengan Icon CalendarRange) -->
                             <StackPanel Margin="0,0,0,5">
                                 <StackPanel Orientation="Horizontal" Opacity="0.7">
-                                    <TextBlock Text="📅" Margin="0,0,8,0" VerticalAlignment="Center"/>
+                                    <iconPacks:PackIconMaterial Kind="CalendarRange" Width="14" Height="14" Margin="0,0,8,0" VerticalAlignment="Center"/>
                                     <TextBlock Text="Select Date" FontSize="14" VerticalAlignment="Center"/>
                                 </StackPanel>
-                                <!-- Menggunakan DatePicker yang lebih sesuai secara fungsional -->
                                 <DatePicker SelectedDate="2025-10-10"
                                             DisplayDateStart="2025-01-01"
                                             FontSize="16" 
@@ -89,58 +83,59 @@
                                             BorderThickness="0,0,0,1"
                                             Padding="5,2"/>
                             </StackPanel>
-
                         </StackPanel>
 
                         <!-- Harga Kanan -->
                         <StackPanel Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Top">
-                            <TextBlock Text="Rp 450.000"
-                                       FontSize="28"
-                                       FontWeight="Bold"
-                                       Foreground="#111"/>
-                            <TextBlock Text="IDR / Day"
-                                       FontSize="14"
-                                       Opacity="0.7"
-                                       HorizontalAlignment="Right"/>
+                            <TextBlock Text="Rp 450.000" FontSize="28" FontWeight="Bold" Foreground="#111"/>
+                            <TextBlock Text="IDR / Day" FontSize="14" Opacity="0.7" HorizontalAlignment="Right"/>
                         </StackPanel>
                     </Grid>
 
-                    <!-- Pesan Peringatan -->
+                    <!-- Alert Message -->
                     <TextBlock Text="Sorry, this boat is not available on this date"
                                Foreground="#E74C3C"
                                FontSize="13"
                                HorizontalAlignment="Center"
-                               Margin="0,0,0,20"/>
+                               Margin="0,0,0,20">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding KapalStatus}" Value="Unavailable">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
 
                     <!-- Fasilitas (Tags) -->
-                    <ItemsControl Margin="0,0,0,30">
+                    <ItemsControl Margin="0,0,0,30" HorizontalAlignment="Center">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
-                                <WrapPanel HorizontalAlignment="Center"/>
+                                <WrapPanel HorizontalAlignment="Center" VerticalAlignment="Center"/>
                             </ItemsPanelTemplate>
                         </ItemsControl.ItemsPanel>
 
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Border CornerRadius="15"
-                                    Margin="5">
+                                <Border CornerRadius="15" Margin="5">
                                     <Border.Background>
                                         <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
                                             <GradientStop Color="#F6C945" Offset="0"/>
                                             <GradientStop Color="#FFF9AF" Offset="1"/>
                                         </LinearGradientBrush>
                                     </Border.Background>
-
                                     <TextBlock Text="{Binding}"
-                                       Foreground="Black"
-                                       FontWeight="SemiBold"
-                                       Padding="12,6"
-                                       FontSize="13"/>      
+                                               Foreground="Black"
+                                               FontWeight="SemiBold"
+                                               Padding="12,6"
+                                               FontSize="13"/>
                                 </Border>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
 
-                        <!-- Hardcoded contoh -->
                         <sys:String>Captain Included</sys:String>
                         <sys:String>Snorkeling Gear</sys:String>
                         <sys:String>WiFi</sys:String>
@@ -150,7 +145,6 @@
                         <sys:String>Gym</sys:String>
                         <sys:String>Dining Area</sys:String>
                     </ItemsControl>
-
 
                     <!-- Tombol Book Now -->
                     <Button Content="Book Now"

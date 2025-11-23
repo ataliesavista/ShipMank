@@ -1,0 +1,177 @@
+﻿<Page x:Class="ShipMank_WPF.Pages.Home2"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:ShipMank_WPF.Pages"
+      xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+      xmlns:components="clr-namespace:ShipMank_WPF.Components"
+      mc:Ignorable="d" 
+      d:DesignHeight="1080" d:DesignWidth="1920"
+      Title="Home2">
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+        <StackPanel Background="#EBF1F5">
+
+            <Grid MinHeight="500">
+                <Grid>
+                    <Image Source="/Assets/hero2.jpg"
+                           Stretch="UniformToFill"/>
+                    <Grid>
+                        <Grid.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                <GradientStop Color="#33EBF1F5" Offset="0.3"/>
+                                <GradientStop Color="#EBF1F5" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Grid.Background>
+                    </Grid>
+                </Grid>
+
+                <Grid VerticalAlignment="Center" Margin="50">
+                    <!-- Hapus ColumnDefinitions agar area teks mengambil seluruh lebar layar -->
+
+                    <!-- Ubah HorizontalAlignment jadi Center, Hapus Grid.Column="0", Hapus Margin kanan -->
+                    <StackPanel VerticalAlignment="Center" 
+                HorizontalAlignment="Center">
+
+                        <TextBlock Text="Boat Rentals"
+                           FontSize="100"
+                           FontWeight="ExtraBold"
+                           Foreground="White"
+                           TextWrapping="Wrap"
+                           TextAlignment="Center" 
+                           LineHeight="65"/>
+                        <!-- Tambah TextAlignment -->
+
+                        <TextBlock Text="across Indonesia"
+                           FontSize="100"
+                           FontWeight="ExtraBold"
+                           Foreground="White"
+                           TextWrapping="Wrap"
+                           TextAlignment="Center" 
+                           LineHeight="65"/>
+                        <!-- Tambah TextAlignment -->
+                    </StackPanel>
+                </Grid>
+            </Grid>
+
+            <!-- ================= NEW SECTION: SHIP TYPES ================= -->
+            <StackPanel Margin="50,60,50,20">
+
+                <!-- Section Header -->
+                <Grid Margin="0,0,0,30">
+                    <!-- Hapus ColumnDefinitions agar Grid memakai full width -->
+
+                    <!-- Tambahkan HorizontalAlignment="Center" pada StackPanel -->
+                    <StackPanel HorizontalAlignment="Center">
+
+                        <TextBlock Text="Ship Types we offer"
+                           FontSize="32"
+                           FontWeight="Bold"
+                           Foreground="#1a1a1a"
+                           Margin="0,0,0,10"
+                           TextAlignment="Center" 
+                           HorizontalAlignment="Center"/>
+                        <!-- Tambah TextAlignment & HorizontalAlignment -->
+
+                        <TextBlock Text="Explore our diverse fleet tailored for your needs. From high-speed boats for quick island transfers to large ferries for logistics, and luxury yachts for leisure."
+                           FontSize="16"
+                           Foreground="#555"
+                           TextWrapping="Wrap"
+                           MaxWidth="800"
+                           HorizontalAlignment="Center" 
+                           TextAlignment="Center" 
+                           LineHeight="24"/>
+                        <!-- Ganti HorizontalAlignment jadi Center & Tambah TextAlignment -->
+                    </StackPanel>
+                </Grid>
+
+                <!-- Cards Grid (Menggunakan ItemsControl untuk Looping Data) -->
+                <ItemsControl ItemsSource="{Binding ShipTypes}">
+                    <!-- Layout Container untuk Items -->
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <!-- WrapPanel agar card turun ke bawah jika layar penuh -->
+                            <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+
+                    <!-- Template untuk setiap Item (Card) -->
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <!-- Memanggil UserControl CardKapalType -->
+                            <!-- Binding ke Properties di Class ShipTypeModel -->
+                            <components:CardKapalType 
+                                Width="350"
+                                Margin="15"
+                                JudulKapal="{Binding Title}"
+                                DeskripsiKapal="{Binding Description}"
+                                ImageSource="{Binding ImagePath}"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+            </StackPanel>
+
+            <!-- ================= CALL TO ACTION SECTION ================= -->
+            <Border Margin="100,20,100,60"
+        CornerRadius="15"
+        Height="120">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                        <GradientStop Color="#FFF9C4" Offset="0"/>
+                        <GradientStop Color="#B2DFDB" Offset="0.5"/>
+                        <GradientStop Color="#4DB6AC" Offset="1"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+                <Border.Effect>
+                    <DropShadowEffect Color="Gray" Opacity="0.3" BlurRadius="10" ShadowDepth="3"/>
+                </Border.Effect>
+
+                <Grid Margin="40,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel VerticalAlignment="Center" Grid.Column="0">
+                        <TextBlock Text="Plan your island hop today!"
+                       FontSize="28"
+                       FontWeight="Bold"
+                       Foreground="#1a1a1a"
+                       Margin="0,0,0,5"/>
+                        <TextBlock Text="Fast booking, secure payments, and support for every journey."
+                       FontSize="15"
+                       Foreground="#333"
+                       TextWrapping="Wrap"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" 
+                        VerticalAlignment="Center" 
+                        Grid.Column="1">
+                        <Button Content="Book Now"
+                            Click="BtnBookNow_Click"
+                            Background="White"
+                            Foreground="#1a1a1a"
+                            FontWeight="Bold"
+                            FontSize="14"
+                            Height="40"
+                            Width="130"
+                            BorderThickness="0"
+                            Margin="0,0,15,0"
+                            Cursor="Hand">
+                            <Button.Resources>
+                                <Style TargetType="Border">
+                                    <Setter Property="CornerRadius" Value="20"/>
+                                </Style>
+                            </Button.Resources>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <components:Footer/>
+
+        </StackPanel>
+    </ScrollViewer>
+</Page>
