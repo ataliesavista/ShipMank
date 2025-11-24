@@ -2,21 +2,20 @@
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Media;
+using System.Windows.Navigation;
+using Npgsql;
+using ShipMank_WPF.Models;
 
 namespace ShipMank_WPF.Pages
 {
+    // 1. UPDATE: Tambahkan ImagePath ke model
     public class ShipTypeModel
     {
         public string Title { get; set; }
         public string Description { get; set; }
-        public string ImagePath { get; set; }
+        public string ImagePath { get; set; } // Sekarang akan menampung URL dari DB
     }
 
-    /// <summary>
-    /// Interaction logic for Home2.xaml
-    /// </summary>
     public partial class Home2 : Page
     {
         public List<ShipTypeModel> ShipTypes { get; set; }
@@ -24,44 +23,63 @@ namespace ShipMank_WPF.Pages
         public Home2()
         {
             InitializeComponent();
-            LoadMockData();
+            LoadDataFromDatabase();
             this.DataContext = this;
         }
 
-        private void LoadMockData()
+        private void LoadDataFromDatabase()
         {
-            ShipTypes = new List<ShipTypeModel>
+            ShipTypes = new List<ShipTypeModel>();
+
+            try
             {
-                new ShipTypeModel
+                string connString = DBHelper.GetConnectionString();
+
+                using (var conn = new NpgsqlConnection(connString))
                 {
-                    Title = "Fast Boat",
-                    Description = "High-speed vessels designed for quick inter-island travel.",
-                    ImagePath = "/Assets/hero2.jpg"
-                },
-                new ShipTypeModel
-                {
-                    Title = "Ro-Ro Ferry",
-                    Description = "Large vessels capable of carrying passengers, cars, and logistics trucks.",
-                    ImagePath = "/Assets/hero2.jpg"
-                },
-                new ShipTypeModel
-                {
-                    Title = "Phinisi",
-                    Description = "Traditional Indonesian wooden sailing vessels for leisure luxury experience.",
-                    ImagePath = "/Assets/hero2.jpg"
-                },
-                new ShipTypeModel
-                {
-                    Title = "Yacht",
-                    Description = "Premium private vessels for exclusive travel experiences.",
-                    ImagePath = "/Assets/hero2.jpg"
+                    conn.Open();
+
+                    // 2. UPDATE: Ambil kolom imagePath dari database
+                    // Kita asumsikan PostgreSQL menyimpannya sebagai huruf kecil
+                    string sql = "SELECT typename, description, imagepath FROM shiptype";
+
+                    using (var cmd = new NpgsqlCommand(sql, conn))
+                    {
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                // Pastikan nama kolom di sini cocok dengan nama di DB (huruf kecil)
+                                string typeName = reader["typename"].ToString();
+                                string description = reader["description"].ToString();
+                                // Ambil ImagePath (berisi URL Imgur, Supabase, dll.)
+                                string imagePath = reader["imagepath"].ToString();
+
+                                var ship = new ShipTypeModel
+                                {
+                                    Title = typeName,
+                                    Description = description,
+                                    // 3. UPDATE: Langsung gunakan ImagePath dari DB
+                                    ImagePath = imagePath
+                                };
+
+                                ShipTypes.Add(ship);
+                            }
+                        }
+                    }
                 }
-            };
-        }
-        private void BtnBookNow_Click(object sender, RoutedEventArgs e)
-        {
-            NavigationService.Navigate(new BeliTiket());
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Gagal mengambil data kapal: {ex.Message}");
+            }
         }
 
+        // 4. UPDATE: Hapus fungsi GetImageForShipType karena ImagePath sudah diambil dari DB
+
+        private void BtnBookNow_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Navigasi ke Booking (Fitur belum aktif di kode contoh ini)");
+        }
     }
 }

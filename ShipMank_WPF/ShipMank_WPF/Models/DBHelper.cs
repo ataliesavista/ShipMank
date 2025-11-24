@@ -1,51 +1,48 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 
 namespace ShipMank_WPF.Models
 {
     public static class DBHelper
     {
-        // MODIFIKASI: Mengoreksi typo pada default parameter: "PostgresCon**ne**ction"
-        // MODIFIKASI: Menambahkan logging/debug output untuk memverifikasi path dan string koneksi.
+        // Cache konfigurasi agar tidak membaca file berulang-ulang setiap kali query
+        private static IConfigurationRoot _configuration;
+
         public static string GetConnectionString(string name = "PostgresConnection")
         {
-            // MODIFIKASI: Menggunakan AppDomain.CurrentDomain.BaseDirectory untuk path yang lebih andal di WPF
-            string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
-
-            // Tambahkan debug untuk melihat path yang sedang digunakan
-            System.Diagnostics.Debug.WriteLine($"Configuration Base Path: {baseDirectory}");
-
             try
             {
-                var builder = new ConfigurationBuilder()
-                    .SetBasePath(baseDirectory)
-                    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                if (_configuration == null)
+                {
+                    // Mendapatkan folder tempat .exe aplikasi berjalan (Bin/Debug atau Bin/Release)
+                    string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
 
-                IConfigurationRoot configuration = builder.Build();
+                    var builder = new ConfigurationBuilder()
+                        .SetBasePath(baseDirectory)
+                        // PENTING: optional: false artinya jika file tidak ada, aplikasi akan error (bagus untuk debugging)
+                        .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
 
-                string connectionString = configuration.GetConnectionString(name);
+                    _configuration = builder.Build();
+                }
 
-                // Tambahkan debug untuk melihat hasil Connection String
+                string connectionString = _configuration.GetConnectionString(name);
+
+                // Validasi sederhana
                 if (string.IsNullOrEmpty(connectionString))
                 {
-                    System.Diagnostics.Debug.WriteLine($"ERROR: Connection string '{name}' not found in configuration.");
-                }
-                else
-                {
-                    System.Diagnostics.Debug.WriteLine($"Connection String Loaded: {connectionString}");
+                    throw new Exception($"Connection string '{name}' tidak ditemukan di appsettings.json");
                 }
 
                 return connectionString;
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"Error loading configuration: {ex.Message}");
-                return null;
+                // Log error ke Output Window di Visual Studio
+                System.Diagnostics.Debug.WriteLine($"[DBHelper Error] Gagal memuat config: {ex.Message}");
+
+                // Melempar error agar Anda sadar ada yang salah saat development
+                throw;
             }
         }
     }
