@@ -31,8 +31,14 @@ namespace ShipMank_WPF.Models
         private static string ConnectionString => DBHelper.GetConnectionString();
 
         // Implementasi HashPassword dan VerifyPassword (dibiarkan placeholder, tapi harus diimplementasikan dengan benar)
-        private static string HashPassword(string password) { return password; }
-        private static bool VerifyPassword(string passwordRaw, string storedHash) { return passwordRaw == storedHash; }
+        private static string HashPassword(string password)
+        {
+            return BCrypt.Net.BCrypt.HashPassword(password);
+        }
+        private static bool VerifyPassword(string passwordRaw, string storedHash)
+        {
+            return BCrypt.Net.BCrypt.Verify(passwordRaw, storedHash);
+        }
 
         // ----------------------------------------------------
         // 2. Metode Database Access (CRUD)

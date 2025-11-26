@@ -84,7 +84,7 @@ namespace ShipMank_WPF.Pages
             string clientSecret = configuration["GoogleAuth:ClientSecret"];
 
             string[] scopes = { Oauth2Service.Scope.UserinfoEmail, Oauth2Service.Scope.UserinfoProfile };
-            string applicationName = "ShipMank_WPF";
+            string applicationName = "ShipMank";
 
             try
             {
