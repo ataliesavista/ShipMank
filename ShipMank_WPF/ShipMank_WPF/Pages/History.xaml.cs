@@ -5,31 +5,161 @@ using System.Windows.Controls;
 using System.Windows.Navigation;
 using Npgsql;
 using ShipMank_WPF.Models;
-using ShipMank_WPF.Components; // Agar bisa panggil RatingWindow
+using ShipMank_WPF.Components;
+using System.Threading.Tasks;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using Microsoft.Extensions.Configuration;
+using System.IO;
+using Newtonsoft.Json;
+using System.Text;
 
 namespace ShipMank_WPF.Pages
 {
     public partial class History : Page
     {
-        private int _currentUserID = 1; // Sesuaikan dengan ID User Login Anda
+        private int _currentUserID = 1;
 
         public History()
         {
             InitializeComponent();
-            LoadHistoryData();
+            InitializeHistoryAsync();
         }
 
-        private void LoadHistoryData()
+        private async void InitializeHistoryAsync()
         {
-            var historyItems = new List<OrderHistoryItem>();
+            CheckAndProcessCompletions(); // 1. Update status Completed jika lewat tanggal
+            LoadHistoryData();            // 2. Load data awal
+            await SyncPaymentStatusAsync(); // 3. Cek Midtrans (Unpaid -> Upcoming)
+            LoadHistoryData();            // 4. Refresh data setelah update
+        }
 
+        // ==========================================
+        // 1. LOGIKA AUTO-COMPLETE (BY DATE)
+        // ==========================================
+        private void CheckAndProcessCompletions()
+        {
             try
             {
                 using (var conn = new NpgsqlConnection(DBHelper.GetConnectionString()))
                 {
                     conn.Open();
+                    // Query: Ubah status 'Upcoming' menjadi 'Completed' JIKA dateBerangkat < Hari Ini
+                    string sql = @"
+                        UPDATE Booking 
+                        SET status = 'Completed' 
+                        WHERE status = 'Upcoming' AND dateBerangkat < CURRENT_DATE";
 
-                    // QUERY BARU: Mengecek tabel Reviews untuk status IsRated
+                    using (var cmd = new NpgsqlCommand(sql, conn))
+                    {
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch { /* Ignore error untuk proses background */ }
+        }
+
+        // ==========================================
+        // 2. LOGIKA SINKRONISASI MIDTRANS
+        // ==========================================
+        private async Task SyncPaymentStatusAsync()
+        {
+            // Ambil Config
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+            var config = builder.Build();
+            string serverKey = config["Midtrans:ServerKey"];
+            bool isProd = bool.Parse(config["Midtrans:IsProduction"]);
+            string baseUrl = isProd ? "https://api.midtrans.com/v2" : "https://api.sandbox.midtrans.com/v2";
+
+            // Ambil List Booking ID yang masih Unpaid
+            var unpaidBookings = new List<int>();
+            using (var conn = new NpgsqlConnection(DBHelper.GetConnectionString()))
+            {
+                conn.Open();
+                string sql = "SELECT bookingID FROM Booking WHERE status = 'Unpaid'";
+                using (var cmd = new NpgsqlCommand(sql, conn))
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read()) unpaidBookings.Add((int)reader["bookingID"]);
+                }
+            }
+
+            // Cek API Midtrans satu per satu
+            using (var client = new HttpClient())
+            {
+                var authString = Convert.ToBase64String(Encoding.UTF8.GetBytes(serverKey + ":"));
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", authString);
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                foreach (var bookingId in unpaidBookings)
+                {
+                    try
+                    {
+                        string orderId = $"BKG-{bookingId}";
+                        string url = $"{baseUrl}/{orderId}/status";
+
+                        var response = await client.GetAsync(url);
+                        if (!response.IsSuccessStatusCode) continue;
+
+                        var jsonString = await response.Content.ReadAsStringAsync();
+                        dynamic statusData = JsonConvert.DeserializeObject(jsonString);
+                        string transactionStatus = statusData.transaction_status;
+
+                        // Jika Settlement/Capture -> Update jadi Paid
+                        if (transactionStatus == "settlement" || transactionStatus == "capture")
+                        {
+                            UpdateDatabaseToPaid(bookingId);
+                        }
+                    }
+                    catch { /* Ignore error connection */ }
+                }
+            }
+        }
+
+        private void UpdateDatabaseToPaid(int bookingId)
+        {
+            using (var conn = new NpgsqlConnection(DBHelper.GetConnectionString()))
+            {
+                conn.Open();
+                using (var trans = conn.BeginTransaction())
+                {
+                    try
+                    {
+                        // Update Booking -> Upcoming
+                        string sql1 = "UPDATE Booking SET status = 'Upcoming' WHERE bookingID = @bid";
+                        using (var cmd = new NpgsqlCommand(sql1, conn, trans))
+                        {
+                            cmd.Parameters.AddWithValue("bid", bookingId);
+                            cmd.ExecuteNonQuery();
+                        }
+
+                        // Update Payment -> Completed
+                        string sql2 = "UPDATE Payment SET paymentStatus = 'Completed' WHERE bookingID = @bid";
+                        using (var cmd = new NpgsqlCommand(sql2, conn, trans))
+                        {
+                            cmd.Parameters.AddWithValue("bid", bookingId);
+                            cmd.ExecuteNonQuery();
+                        }
+                        trans.Commit();
+                    }
+                    catch { trans.Rollback(); }
+                }
+            }
+        }
+
+        // ==========================================
+        // 3. LOGIKA LOAD DATA
+        // ==========================================
+        private void LoadHistoryData()
+        {
+            var historyItems = new List<OrderHistoryItem>();
+            try
+            {
+                using (var conn = new NpgsqlConnection(DBHelper.GetConnectionString()))
+                {
+                    conn.Open();
                     string sql = @"
                         SELECT 
                             b.bookingID, b.kapalID, k.namaKapal, s.typeName, b.dateBerangkat,
@@ -42,10 +172,9 @@ namespace ShipMank_WPF.Pages
                         INNER JOIN ShipType s ON k.shipType = s.typeID
                         LEFT JOIN Lokasi l ON k.lokasi = l.portID
                         LEFT JOIN Payment p ON b.bookingID = p.bookingID
-                        LEFT JOIN Reviews r ON b.bookingID = r.bookingID -- Join untuk cek rating
+                        LEFT JOIN Reviews r ON b.bookingID = r.bookingID 
                         WHERE b.userID = @UserID
-                        ORDER BY b.dateBooking DESC;
-                    ";
+                        ORDER BY b.dateBooking DESC;";
 
                     using (var cmd = new NpgsqlCommand(sql, conn))
                     {
@@ -55,12 +184,11 @@ namespace ShipMank_WPF.Pages
                             while (reader.Read())
                             {
                                 decimal priceVal = Convert.ToDecimal(reader["totalHarga"]);
-
                                 historyItems.Add(new OrderHistoryItem
                                 {
                                     OrderID = $"BKG-{reader["bookingID"].ToString().PadLeft(5, '0')}",
                                     OriginalBookingID = (int)reader["bookingID"],
-                                    KapalID = (int)reader["kapalID"], // ID Kapal disimpan untuk update rata-rata
+                                    KapalID = (int)reader["kapalID"],
                                     ItemName = reader["namaKapal"].ToString(),
                                     ShipType = reader["typeName"].ToString(),
                                     Date = Convert.ToDateTime(reader["dateBerangkat"]),
@@ -70,7 +198,7 @@ namespace ShipMank_WPF.Pages
                                     Status = reader["status"].ToString(),
                                     PaymentDate = reader["datePayment"] as DateTime?,
                                     PaymentMethod = reader["paymentMethod"]?.ToString() ?? "-",
-                                    IsRated = (bool)reader["isRated"] // True jika sudah direview
+                                    IsRated = (bool)reader["isRated"]
                                 });
                             }
                         }
@@ -85,36 +213,26 @@ namespace ShipMank_WPF.Pages
         }
 
         // ==========================================
-        // EVENT HANDLER TOMBOL RATE
+        // 4. EVENT HANDLERS
         // ==========================================
         private void BtnRate_Click(object sender, RoutedEventArgs e)
         {
             if (sender is Button btn && btn.DataContext is OrderHistoryItem item)
             {
                 RatingWindow ratingPopup = new RatingWindow();
-
-                // LOGIKA BARU: Cek apakah user sudah pernah rating?
                 if (item.IsRated)
                 {
-                    // CASE 1: SUDAH RATING (VIEW ONLY)
-                    // Ambil nilai rating lama dari database
                     int existingRating = GetUserRatingForBooking(item.OriginalBookingID);
-
-                    // Set window ke mode ReadOnly
                     ratingPopup.SetReadOnlyMode(existingRating);
                     ratingPopup.ShowDialog();
-                    // Tidak perlu logic submit karena tombol submit disembunyikan
                 }
                 else
                 {
-                    // CASE 2: BELUM RATING (INPUT MODE)
                     bool? result = ratingPopup.ShowDialog();
-
                     if (result == true)
                     {
-                        int userRating = ratingPopup.SelectedRating;
-                        SubmitRatingToDatabase(item, userRating);
-                        LoadHistoryData(); // Refresh UI agar IsRated terupdate
+                        SubmitRatingToDatabase(item, ratingPopup.SelectedRating);
+                        LoadHistoryData(); // Refresh UI
                     }
                 }
             }
@@ -133,10 +251,7 @@ namespace ShipMank_WPF.Pages
                     {
                         cmd.Parameters.AddWithValue("bid", bookingId);
                         object res = cmd.ExecuteScalar();
-                        if (res != null && res != DBNull.Value)
-                        {
-                            rating = Convert.ToInt32(res);
-                        }
+                        if (res != null && res != DBNull.Value) rating = Convert.ToInt32(res);
                     }
                 }
             }
@@ -151,13 +266,10 @@ namespace ShipMank_WPF.Pages
                 using (var conn = new NpgsqlConnection(DBHelper.GetConnectionString()))
                 {
                     conn.Open();
-                    // Gunakan Transaction agar Insert Review & Update Kapal terjadi bersamaan
                     using (var trans = conn.BeginTransaction())
                     {
                         try
                         {
-                            // A. Insert ke tabel Reviews
-                            // Menggunakan bookingID sebagai referensi unik
                             string insertSql = "INSERT INTO Reviews (bookingID, ratingValue) VALUES (@bid, @val)";
                             using (var cmd1 = new NpgsqlCommand(insertSql, conn, trans))
                             {
@@ -166,26 +278,15 @@ namespace ShipMank_WPF.Pages
                                 cmd1.ExecuteNonQuery();
                             }
 
-                            // B. Hitung Ulang Rata-rata Rating Kapal tersebut
-                            // Cari semua review yang booking-nya milik kapalID ini
-                            string calcSql = @"
-                                SELECT AVG(r.ratingValue) 
-                                FROM Reviews r
-                                JOIN Booking b ON r.bookingID = b.bookingID
-                                WHERE b.kapalID = @kid";
-
+                            string calcSql = "SELECT AVG(r.ratingValue) FROM Reviews r JOIN Booking b ON r.bookingID = b.bookingID WHERE b.kapalID = @kid";
                             double newAverage = 0;
                             using (var cmd2 = new NpgsqlCommand(calcSql, conn, trans))
                             {
                                 cmd2.Parameters.AddWithValue("kid", item.KapalID);
                                 object result = cmd2.ExecuteScalar();
-                                if (result != DBNull.Value)
-                                {
-                                    newAverage = Convert.ToDouble(result);
-                                }
+                                if (result != DBNull.Value) newAverage = Convert.ToDouble(result);
                             }
 
-                            // C. Update Tabel Kapal dengan Rata-rata Baru
                             string updateSql = "UPDATE Kapal SET rating = @newRate WHERE kapalID = @kid";
                             using (var cmd3 = new NpgsqlCommand(updateSql, conn, trans))
                             {
@@ -193,22 +294,14 @@ namespace ShipMank_WPF.Pages
                                 cmd3.Parameters.AddWithValue("kid", item.KapalID);
                                 cmd3.ExecuteNonQuery();
                             }
-
-                            trans.Commit(); // Simpan permanen
+                            trans.Commit();
                             MessageBox.Show("Thank you! Your rating has been submitted.", "Success");
                         }
-                        catch (Exception)
-                        {
-                            trans.Rollback(); // Batalkan semua jika error
-                            throw;
-                        }
+                        catch { trans.Rollback(); throw; }
                     }
                 }
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Failed to submit rating: {ex.Message}");
-            }
+            catch (Exception ex) { MessageBox.Show($"Failed: {ex.Message}"); }
         }
 
         private void BtnViewDetails_Click(object sender, RoutedEventArgs e)
@@ -219,7 +312,11 @@ namespace ShipMank_WPF.Pages
             }
         }
 
-        private void HistoryDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e) { }
+        // Method kosong untuk mengatasi Error CS1061 di XAML
+        private void HistoryDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            // Tidak perlu ada logic, biarkan kosong
+        }
     }
 }
 

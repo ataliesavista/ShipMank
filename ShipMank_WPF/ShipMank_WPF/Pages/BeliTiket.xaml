@@ -12,10 +12,10 @@
 
     <Page.Resources>
         <Style x:Key="FilterInputStyle" TargetType="Control">
-            <Setter Property="Height" Value="45"/>
+            <Setter Property="Height" Value="36"/>
             <Setter Property="Background" Value="White"/>
             <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontSize" Value="13"/>
             <Setter Property="Padding" Value="10,0"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="Template">
@@ -23,7 +23,7 @@
                     <ControlTemplate TargetType="Control">
                         <Border Background="{TemplateBinding Background}" 
                                 BorderThickness="{TemplateBinding BorderThickness}" 
-                                CornerRadius="8">
+                                CornerRadius="6">
                             <ScrollViewer x:Name="PART_ContentHost" Margin="{TemplateBinding Padding}" VerticalAlignment="Center"/>
                         </Border>
                     </ControlTemplate>
@@ -70,26 +70,24 @@
         </Style>
 
         <Style x:Key="FilterComboBoxStyle" TargetType="ComboBox">
-            <Setter Property="Height" Value="45"/>
+            <Setter Property="Height" Value="36"/>
             <Setter Property="Background" Value="White"/>
             <Setter Property="BorderThickness" Value="0"/>
-            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontSize" Value="13"/>
             <Setter Property="Padding" Value="10,0"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="ComboBox">
                         <Grid>
-                            <Border Background="{TemplateBinding Background}" CornerRadius="8">
+                            <Border Background="{TemplateBinding Background}" CornerRadius="6">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="30"/>
                                     </Grid.ColumnDefinitions>
-
                                     <ContentPresenter IsHitTestVisible="False" Content="{TemplateBinding SelectionBoxItem}"
                                                       VerticalAlignment="Center" Margin="10,0,0,0"/>
-
                                     <ToggleButton Grid.Column="1" Background="Transparent" BorderThickness="0" 
                                                   IsChecked="{Binding Path=IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
                                                   ClickMode="Press">
@@ -108,9 +106,7 @@
                                                         <Trigger.EnterActions>
                                                             <BeginStoryboard>
                                                                 <Storyboard>
-                                                                    <DoubleAnimation Storyboard.TargetName="ArrowGrid"
-                                                                                     Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)"
-                                                                                     To="180" Duration="0:0:0.3">
+                                                                    <DoubleAnimation Storyboard.TargetName="ArrowGrid" Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)" To="180" Duration="0:0:0.3">
                                                                         <DoubleAnimation.EasingFunction>
                                                                             <CubicEase EasingMode="EaseOut"/>
                                                                         </DoubleAnimation.EasingFunction>
@@ -121,9 +117,7 @@
                                                         <Trigger.ExitActions>
                                                             <BeginStoryboard>
                                                                 <Storyboard>
-                                                                    <DoubleAnimation Storyboard.TargetName="ArrowGrid"
-                                                                                     Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)"
-                                                                                     To="0" Duration="0:0:0.3">
+                                                                    <DoubleAnimation Storyboard.TargetName="ArrowGrid" Storyboard.TargetProperty="(UIElement.RenderTransform).(RotateTransform.Angle)" To="0" Duration="0:0:0.3">
                                                                         <DoubleAnimation.EasingFunction>
                                                                             <CubicEase EasingMode="EaseOut"/>
                                                                         </DoubleAnimation.EasingFunction>
@@ -138,7 +132,6 @@
                                     </ToggleButton>
                                 </Grid>
                             </Border>
-
                             <Popup Name="Popup" Placement="Bottom" IsOpen="{TemplateBinding IsDropDownOpen}" AllowsTransparency="True" Focusable="False" PopupAnimation="Slide">
                                 <Grid Name="DropDown" SnapsToDevicePixels="True" MinWidth="{TemplateBinding ActualWidth}" MaxHeight="{TemplateBinding MaxDropDownHeight}">
                                     <Border x:Name="DropDownBorder" Background="White" BorderThickness="1" BorderBrush="#DDD" CornerRadius="5" Margin="0,5,0,0">
@@ -156,19 +149,14 @@
                 </Setter.Value>
             </Setter>
         </Style>
-
     </Page.Resources>
 
     <Page.Triggers>
         <EventTrigger RoutedEvent="Page.Loaded">
             <BeginStoryboard>
                 <Storyboard>
-                    <DoubleAnimation Storyboard.TargetName="MainContentGrid" 
-                                     Storyboard.TargetProperty="Opacity" 
-                                     From="0" To="1" Duration="0:0:0.6"/>
-                    <ThicknessAnimation Storyboard.TargetName="MainContentGrid" 
-                                        Storyboard.TargetProperty="Margin" 
-                                        From="0,20,0,0" To="0,0,0,0" Duration="0:0:0.6">
+                    <DoubleAnimation Storyboard.TargetName="MainContentGrid" Storyboard.TargetProperty="Opacity" From="0" To="1" Duration="0:0:0.6"/>
+                    <ThicknessAnimation Storyboard.TargetName="MainContentGrid" Storyboard.TargetProperty="Margin" From="0,20,0,0" To="0,0,0,0" Duration="0:0:0.6">
                         <ThicknessAnimation.EasingFunction>
                             <CubicEase EasingMode="EaseOut"/>
                         </ThicknessAnimation.EasingFunction>
@@ -193,12 +181,12 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="40,30,40,20">
-                <Image Source="/Assets/logob.png" Height="32" Width="32" VerticalAlignment="Center" Margin="0,0,10,0"/>
-                <TextBlock Text="Boat Rentals" FontSize="32" FontWeight="Bold" VerticalAlignment="Center"/>
+            <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="40,20,40,10">
+                <Image Source="/Assets/logob.png" Height="28" Width="28" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                <TextBlock Text="Boat Rentals" FontSize="26" FontWeight="Bold" VerticalAlignment="Center"/>
             </StackPanel>
 
-            <Border x:Name="FilterSection" Grid.Row="1" Background="#F6C945" CornerRadius="15" Padding="25" Margin="40,0,40,20">
+            <Border x:Name="FilterSection" Grid.Row="1" Background="#F6C945" CornerRadius="12" Padding="15" Margin="40,0,40,15">
                 <Border.Effect>
                     <DropShadowEffect ShadowDepth="2" BlurRadius="10" Opacity="0.1"/>
                 </Border.Effect>
@@ -206,75 +194,53 @@
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="20"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
                     <Grid Grid.Row="0">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="20"/>
+                            <ColumnDefinition Width="15"/>
                             <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="20"/>
+                            <ColumnDefinition Width="15"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
                         <StackPanel Grid.Column="0">
-                            <TextBlock Text="Search" FontWeight="Bold" Foreground="#333" Margin="0,0,0,8"/>
-                            <TextBox x:Name="SearchBoatNameTextBox" Style="{StaticResource FilterInputStyle}" 
-                                 Tag="Search boat name..." 
-                                 TextChanged="TextBox_TextChanged"
-                                 GotFocus="TextBox_GotFocus"
-                                 LostFocus="TextBox_LostFocus"/>
+                            <TextBlock Text="Search" FontWeight="Bold" Foreground="#333" FontSize="12" Margin="0,0,0,2"/>
+                            <TextBox x:Name="SearchBoatNameTextBox" Style="{StaticResource FilterInputStyle}" Tag="Search boat name..." TextChanged="TextBox_TextChanged" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus"/>
                         </StackPanel>
 
                         <StackPanel Grid.Column="2">
-                            <TextBlock Text="Location" FontWeight="Bold" Foreground="#333" Margin="0,0,0,8"/>
-                            <TextBox x:Name="LocationTextBox" Style="{StaticResource FilterInputStyle}"
-                                 Tag="e.g. Bali, Jakarta"
-                                 TextChanged="TextBox_TextChanged"
-                                 GotFocus="TextBox_GotFocus"
-                                 LostFocus="TextBox_LostFocus"/>
+                            <TextBlock Text="Location" FontWeight="Bold" Foreground="#333" FontSize="12" Margin="0,0,0,2"/>
+                            <TextBox x:Name="LocationTextBox" Style="{StaticResource FilterInputStyle}" Tag="e.g. Bali, Jakarta" TextChanged="TextBox_TextChanged" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus"/>
                         </StackPanel>
 
                         <StackPanel Grid.Column="4">
-                            <Grid Margin="0,0,0,8">
-                                <TextBlock Text="Type" FontWeight="Bold" Foreground="#333" VerticalAlignment="Center" HorizontalAlignment="Left"/>
-
-                                <Button x:Name="ResetFilterButton"
-                                    HorizontalAlignment="Right"
-                                    VerticalAlignment="Center"
-                                    Style="{StaticResource AnimatedButtonStyle}"
-                                    ToolTip="Reset All Filters"
-                                    Click="ResetFilterButton_Click">
+                            <Grid Margin="0,0,0,2">
+                                <TextBlock Text="Type" FontWeight="Bold" Foreground="#333" FontSize="12" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                                <Button x:Name="ResetFilterButton" HorizontalAlignment="Right" VerticalAlignment="Center" Style="{StaticResource AnimatedButtonStyle}" ToolTip="Reset All Filters" Click="ResetFilterButton_Click">
                                     <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="Reset" FontSize="11" FontWeight="SemiBold" Foreground="#333" VerticalAlignment="Center" Margin="0,0,5,0"/>
-                                        <iconPacks:PackIconMaterial Kind="Undo" Width="12" Height="12" Foreground="#333" VerticalAlignment="Center"/>
+                                        <TextBlock Text="Reset" FontSize="10" FontWeight="SemiBold" Foreground="#333" VerticalAlignment="Center" Margin="0,0,4,0"/>
+                                        <iconPacks:PackIconMaterial Kind="Undo" Width="10" Height="10" Foreground="#333" VerticalAlignment="Center"/>
                                     </StackPanel>
                                 </Button>
                             </Grid>
-
-                            <ComboBox x:Name="TypeComboBox" Style="{StaticResource FilterComboBoxStyle}">
-                                <ComboBoxItem Content="All Types" IsSelected="True"/>
-                                <ComboBoxItem Content="Speedboat"/>
-                                <ComboBoxItem Content="Yacht"/>
-                                <ComboBoxItem Content="Phinisi"/>
-                                <ComboBoxItem Content="Ferry"/>
-                            </ComboBox>
+                            <ComboBox x:Name="TypeComboBox" Style="{StaticResource FilterComboBoxStyle}"/>
                         </StackPanel>
                     </Grid>
 
-                    <Grid Grid.Row="2">
+                    <Grid Grid.Row="1" Margin="0,8,0,0">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="20"/>
+                            <ColumnDefinition Width="15"/>
                             <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="20"/>
+                            <ColumnDefinition Width="15"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
                         <StackPanel Grid.Column="0">
-                            <TextBlock Text="Capacity" FontWeight="Bold" Foreground="#333" Margin="0,0,0,8"/>
+                            <TextBlock Text="Capacity" FontWeight="Bold" Foreground="#333" FontSize="12" Margin="0,0,0,2"/>
                             <ComboBox x:Name="CapacityComboBox" Style="{StaticResource FilterComboBoxStyle}" IsEditable="True" Text="Any">
                                 <ComboBoxItem Content="Any"/>
                                 <ComboBoxItem Content="2 - 5 People"/>
@@ -284,7 +250,7 @@
                         </StackPanel>
 
                         <StackPanel Grid.Column="2">
-                            <TextBlock Text="Rate" FontWeight="Bold" Foreground="#333" Margin="0,0,0,8"/>
+                            <TextBlock Text="Rate" FontWeight="Bold" Foreground="#333" FontSize="12" Margin="0,0,0,2"/>
                             <Grid>
                                 <ComboBox x:Name="RateComboBox" Style="{StaticResource FilterComboBoxStyle}">
                                     <ComboBoxItem Content="Any" IsSelected="True"/>
@@ -292,41 +258,21 @@
                                     <ComboBoxItem Content="4"/>
                                     <ComboBoxItem Content="3"/>
                                 </ComboBox>
-
-                                <iconPacks:PackIconMaterial Kind="Star" 
-                                                        HorizontalAlignment="Right" VerticalAlignment="Center" 
-                                                        Margin="0,0,35,0" Foreground="#F39C12"
-                                                        IsHitTestVisible="False"/>
+                                <iconPacks:PackIconMaterial Kind="Star" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,30,0" Foreground="#F39C12" IsHitTestVisible="False"/>
                             </Grid>
                         </StackPanel>
 
                         <StackPanel Grid.Column="4">
-                            <TextBlock Text="Max Price" FontWeight="Bold" Foreground="#333" Margin="0,0,0,8"/>
+                            <TextBlock Text="Max Price" FontWeight="Bold" Foreground="#333" FontSize="12" Margin="0,0,0,2"/>
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="10"/>
-                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="90"/>
                                 </Grid.ColumnDefinitions>
-
-                                <Slider x:Name="PriceSlider" 
-                                    Grid.Column="0"
-                                    Minimum="0" 
-                                    Maximum="20000000" 
-                                    Value="10000000"
-                                    TickPlacement="None"
-                                    VerticalAlignment="Center"
-                                    IsSnapToTickEnabled="True"
-                                    TickFrequency="500000"/>
-
-                                <Border Grid.Column="2" Background="White" CornerRadius="8" Height="45">
-                                    <TextBox Text="{Binding ElementName=PriceSlider, Path=Value, UpdateSourceTrigger=PropertyChanged, StringFormat=N0}"
-                                         BorderThickness="0"
-                                         VerticalContentAlignment="Center"
-                                         HorizontalContentAlignment="Center"
-                                         FontWeight="SemiBold"
-                                         FontSize="13"
-                                         Background="Transparent"/>
+                                <Slider x:Name="PriceSlider" Grid.Column="0" Minimum="0" Maximum="20000000" Value="10000000" TickPlacement="None" VerticalAlignment="Center" IsSnapToTickEnabled="True" TickFrequency="500000"/>
+                                <Border Grid.Column="2" Background="White" CornerRadius="6" Height="36">
+                                    <TextBox Text="{Binding ElementName=PriceSlider, Path=Value, UpdateSourceTrigger=PropertyChanged, StringFormat=N0}" BorderThickness="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontWeight="SemiBold" FontSize="12" Background="Transparent"/>
                                 </Border>
                             </Grid>
                         </StackPanel>
@@ -341,12 +287,13 @@
                           CanContentScroll="False"
                           PreviewMouseWheel="MainScroll_PreviewMouseWheel">
                 <UniformGrid x:Name="ShipCardGrid"
-                          Margin="40,10,40,20" 
-                          Rows="2" 
-                          Columns="3" 
-                          HorizontalAlignment="Stretch">
+                             Margin="40,5,40,20" 
+                             Rows="2" 
+                             Columns="3" 
+                             HorizontalAlignment="Stretch">
                 </UniformGrid>
             </ScrollViewer>
+
         </Grid>
     </Grid>
 </Page>
