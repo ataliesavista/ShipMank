@@ -157,7 +157,7 @@ D:\vista~\Semester 5\Junpro_Github_VS\ShipMank_WPF\ShipMank_WPF\bin\Debug\System
 D:\vista~\Semester 5\Junpro_Github_VS\ShipMank_WPF\ShipMank_WPF\bin\Debug\System.Threading.Channels.xml
 D:\vista~\Semester 5\Junpro_Github_VS\ShipMank_WPF\ShipMank_WPF\bin\Debug\System.Threading.Tasks.Extensions.xml
 D:\vista~\Semester 5\Junpro_Github_VS\ShipMank_WPF\ShipMank_WPF\obj\Debug\ShipMank_WPF.csproj.AssemblyReference.cache
-D:\vista~\Semester 5\Junpro_Github_VS\ShipMank_WPF\ShipMank_WPF\obj\Debug\Components\ShipCard.baml
+D:\vista~\Semester 5\Junpro_Github_VS\ShipMank_WPF\ShipMank_WPF\obj\Debug\Pages\DetailKapal.baml
 D:\vista~\Semester 5\Junpro_Github_VS\ShipMank_WPF\ShipMank_WPF\obj\Debug\Pages\LoginPage.baml
 D:\vista~\Semester 5\Junpro_Github_VS\ShipMank_WPF\ShipMank_WPF\obj\Debug\Pages\SignUp.baml
 D:\vista~\Semester 5\Junpro_Github_VS\ShipMank_WPF\ShipMank_WPF\obj\Debug\Components\CardKapalType.g.cs
@@ -182,6 +182,7 @@ D:\vista~\Semester 5\Junpro_Github_VS\ShipMank_WPF\ShipMank_WPF\obj\Debug\Pages\
 D:\vista~\Semester 5\Junpro_Github_VS\ShipMank_WPF\ShipMank_WPF\obj\Debug\Pages\Payment.g.cs
 D:\vista~\Semester 5\Junpro_Github_VS\ShipMank_WPF\ShipMank_WPF\obj\Debug\Pages\Profile.g.cs
 D:\vista~\Semester 5\Junpro_Github_VS\ShipMank_WPF\ShipMank_WPF\obj\Debug\Pages\SignUp.g.cs
+D:\vista~\Semester 5\Junpro_Github_VS\ShipMank_WPF\ShipMank_WPF\obj\Debug\Pages\ViewDetails.g.cs
 D:\vista~\Semester 5\Junpro_Github_VS\ShipMank_WPF\ShipMank_WPF\obj\Debug\App.g.cs
 D:\vista~\Semester 5\Junpro_Github_VS\ShipMank_WPF\ShipMank_WPF\obj\Debug\GeneratedInternalTypeHelper.g.cs
 D:\vista~\Semester 5\Junpro_Github_VS\ShipMank_WPF\ShipMank_WPF\obj\Debug\ShipMank_WPF_MarkupCompile.cache
@@ -197,14 +198,15 @@ D:\vista~\Semester 5\Junpro_Github_VS\ShipMank_WPF\ShipMank_WPF\obj\Debug\Compon
 D:\vista~\Semester 5\Junpro_Github_VS\ShipMank_WPF\ShipMank_WPF\obj\Debug\Components\PassengersControl.baml
 D:\vista~\Semester 5\Junpro_Github_VS\ShipMank_WPF\ShipMank_WPF\obj\Debug\Components\ProfileNavbar.baml
 D:\vista~\Semester 5\Junpro_Github_VS\ShipMank_WPF\ShipMank_WPF\obj\Debug\Components\SettingsControl.baml
+D:\vista~\Semester 5\Junpro_Github_VS\ShipMank_WPF\ShipMank_WPF\obj\Debug\Components\ShipCard.baml
 D:\vista~\Semester 5\Junpro_Github_VS\ShipMank_WPF\ShipMank_WPF\obj\Debug\MainWindow.baml
 D:\vista~\Semester 5\Junpro_Github_VS\ShipMank_WPF\ShipMank_WPF\obj\Debug\Pages\BeliTiket.baml
-D:\vista~\Semester 5\Junpro_Github_VS\ShipMank_WPF\ShipMank_WPF\obj\Debug\Pages\DetailKapal.baml
 D:\vista~\Semester 5\Junpro_Github_VS\ShipMank_WPF\ShipMank_WPF\obj\Debug\Pages\History.baml
 D:\vista~\Semester 5\Junpro_Github_VS\ShipMank_WPF\ShipMank_WPF\obj\Debug\Pages\Home.baml
 D:\vista~\Semester 5\Junpro_Github_VS\ShipMank_WPF\ShipMank_WPF\obj\Debug\Pages\Home2.baml
 D:\vista~\Semester 5\Junpro_Github_VS\ShipMank_WPF\ShipMank_WPF\obj\Debug\Pages\Payment.baml
 D:\vista~\Semester 5\Junpro_Github_VS\ShipMank_WPF\ShipMank_WPF\obj\Debug\Pages\Profile.baml
+D:\vista~\Semester 5\Junpro_Github_VS\ShipMank_WPF\ShipMank_WPF\obj\Debug\Pages\ViewDetails.baml
 D:\vista~\Semester 5\Junpro_Github_VS\ShipMank_WPF\ShipMank_WPF\obj\Debug\ShipMank_WPF.g.resources
 D:\vista~\Semester 5\Junpro_Github_VS\ShipMank_WPF\ShipMank_WPF\obj\Debug\ShipMank_WPF.Properties.Resources.resources
 D:\vista~\Semester 5\Junpro_Github_VS\ShipMank_WPF\ShipMank_WPF\obj\Debug\ShipMank_WPF.csproj.GenerateResource.cache
@@ -214,5 +216,5 @@ D:\vista~\Semester 5\Junpro_Github_VS\ShipMank_WPF\ShipMank_WPF\obj\Debug\ShipMa
 D:\vista~\Semester 5\Junpro_Github_VS\ShipMank_WPF\ShipMank_WPF\obj\Debug\ShipMank_WPF.csproj.CopyComplete
 D:\vista~\Semester 5\Junpro_Github_VS\ShipMank_WPF\ShipMank_WPF\obj\Debug\ShipMank_WPF.exe
 D:\vista~\Semester 5\Junpro_Github_VS\ShipMank_WPF\ShipMank_WPF\obj\Debug\ShipMank_WPF.pdb
-D:\vista~\Semester 5\Junpro_Github_VS\ShipMank_WPF\ShipMank_WPF\obj\Debug\Pages\ViewDetails.g.cs
-D:\vista~\Semester 5\Junpro_Github_VS\ShipMank_WPF\ShipMank_WPF\obj\Debug\Pages\ViewDetails.baml
+D:\vista~\Semester 5\Junpro_Github_VS\ShipMank_WPF\ShipMank_WPF\obj\Debug\Components\RatingWindow.baml
+D:\vista~\Semester 5\Junpro_Github_VS\ShipMank_WPF\ShipMank_WPF\obj\Debug\Components\RatingWindow.g.cs

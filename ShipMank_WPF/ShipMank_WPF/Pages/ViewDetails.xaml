@@ -112,11 +112,53 @@
         </Grid.RowDefinitions>
 
         <!-- Row 0: Header -->
-        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="40,30,40,20">
-            <!-- Icon Receipt/Details -->
-            <iconPacks:PackIconMaterial Kind="ReceiptText" Width="32" Height="32" VerticalAlignment="Center" Margin="0,0,15,0" Foreground="#333"/>
-            <TextBlock Text="Transaction Details" FontSize="32" FontWeight="Bold" VerticalAlignment="Center" Foreground="#333"/>
-        </StackPanel>
+        <Grid Grid.Row="0" Margin="40,30,40,20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Bagian Kiri: Judul & Icon -->
+            <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                <iconPacks:PackIconMaterial Kind="ReceiptText" Width="32" Height="32" VerticalAlignment="Center" Margin="0,0,15,0" Foreground="#333"/>
+                <TextBlock Text="Transaction Details" FontSize="32" FontWeight="Bold" VerticalAlignment="Center" Foreground="#333"/>
+            </StackPanel>
+
+            <!-- Bagian Kanan: Tombol Back -->
+            <Button Grid.Column="1" 
+                    x:Name="BackButton"
+                    Click="BackButton_Click"
+                    Cursor="Hand"
+                    Background="Transparent"
+                    BorderThickness="1"
+                    BorderBrush="#555"
+                    Foreground="#555"
+                    Padding="15,8"
+                    VerticalAlignment="Center">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" 
+                                CornerRadius="8">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#EEEEEE"/>
+                                <Setter Property="BorderBrush" Value="#333"/>
+                                <Setter Property="Foreground" Value="#333"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Button.Template>
+
+                <StackPanel Orientation="Horizontal">
+                    <iconPacks:PackIconMaterial Kind="ArrowLeft" Width="14" Height="14" VerticalAlignment="Center" Margin="8,8,8,8"/>
+                    <TextBlock Text="Back" FontWeight="Bold" FontSize="14" VerticalAlignment="Center" Margin="0,8,8,8"/>
+                </StackPanel>
+            </Button>
+        </Grid>
 
         <!-- Row 1: Main Content Area -->
         <ScrollViewer Grid.Row="1" Margin="40,0,40,0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
@@ -176,7 +218,6 @@
 
                             <Separator Background="#EEE" Margin="0,0,0,15"/>
 
-                            <!-- Detail Perjalanan Grid -->
                             <Grid Margin="0,0,0,15">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>
@@ -186,27 +227,47 @@
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
 
-                                <!-- Date -->
                                 <iconPacks:PackIconMaterial Grid.Row="0" Grid.Column="0" Kind="CalendarRange" Width="16" Height="16" Margin="0,0,10,10" Foreground="#33A1E0" VerticalAlignment="Top"/>
                                 <StackPanel Grid.Row="0" Grid.Column="1" Margin="0,0,0,10">
                                     <TextBlock Text="Departure Date" FontSize="12" Foreground="Gray"/>
-                                    <TextBlock x:Name="TxtDateBerangkat" Text="Senin, 12 Oktober 2025" FontWeight="SemiBold"/>
+                                    <TextBlock Text="{Binding Date, StringFormat='dddd, dd MMM yyyy'}" FontWeight="SemiBold"/>
                                 </StackPanel>
 
-                                <!-- Location -->
                                 <iconPacks:PackIconMaterial Grid.Row="1" Grid.Column="0" Kind="MapMarker" Width="16" Height="16" Margin="0,0,10,10" Foreground="#E74C3C" VerticalAlignment="Top"/>
                                 <StackPanel Grid.Row="1" Grid.Column="1" Margin="0,0,0,10">
                                     <TextBlock Text="Location / Route" FontSize="12" Foreground="Gray"/>
-                                    <TextBlock x:Name="TxtLokasi" Text="Marina Ancol -> Pulau Bidadari" FontWeight="SemiBold" TextWrapping="Wrap"/>
+                                    <TextBlock Text="{Binding Route}" FontWeight="SemiBold" TextWrapping="Wrap"/>
                                 </StackPanel>
 
-                                <!-- Capacity -->
-                                <iconPacks:PackIconMaterial Grid.Row="2" Grid.Column="0" Kind="AccountGroup" Width="16" Height="16" Margin="0,0,10,0" Foreground="#FEEBAE" VerticalAlignment="Top"/>
-                                <StackPanel Grid.Row="2" Grid.Column="1">
+                                <iconPacks:PackIconMaterial Grid.Row="2" Grid.Column="0" Kind="ClockOutline" Width="16" Height="16" Margin="0,0,10,10" Foreground="#F59E0B" VerticalAlignment="Top"/>
+                                <StackPanel Grid.Row="2" Grid.Column="1" Margin="0,0,0,10">
+                                    <TextBlock Text="Payment Date" FontSize="12" Foreground="Gray"/>
+
+                                    <TextBlock FontWeight="SemiBold">
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="Text" Value="{Binding PaymentDate, StringFormat='dd MMM yyyy, HH:mm'}"/>
+                                                <Setter Property="Foreground" Value="#333"/>
+
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding PaymentDate}" Value="{x:Null}">
+                                                        <Setter Property="Text" Value="Not Paid Yet"/>
+                                                        <Setter Property="Foreground" Value="#DC2626"/>
+                                                        <Setter Property="FontWeight" Value="Bold"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </StackPanel>
+
+                                <iconPacks:PackIconMaterial Grid.Row="3" Grid.Column="0" Kind="AccountGroup" Width="16" Height="16" Margin="0,0,10,0" Foreground="#FEEBAE" VerticalAlignment="Top"/>
+                                <StackPanel Grid.Row="3" Grid.Column="1">
                                     <TextBlock Text="Capacity" FontSize="12" Foreground="Gray"/>
-                                    <TextBlock x:Name="TxtKapasitas" Text="10 Passengers" FontWeight="SemiBold"/>
+                                    <TextBlock Text="10 Passengers" FontWeight="SemiBold"/>
                                 </StackPanel>
                             </Grid>
 
@@ -243,11 +304,10 @@
                     </Border>
                 </Grid>
 
-                <!-- == BAGIAN BAWAH: PAYMENT METHOD (DISABLED/READONLY) == -->
                 <Border Grid.Row="1" Style="{StaticResource ContentCard}" Margin="0,20,0,20">
                     <StackPanel>
                         <TextBlock Text="Payment Method Used" Style="{StaticResource SectionHeader}" />
-                        <!-- IsEnabled="False" membuat user tidak bisa mengubah pilihan -->
+
                         <Grid IsEnabled="False" Opacity="0.9">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
@@ -255,47 +315,21 @@
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
 
-                            <RadioButton Grid.Row="0" Grid.Column="0" Margin="0,0,10,10" Style="{StaticResource PaymentOption}" Tag="Mobile Banking">
-                                <StackPanel Orientation="Horizontal">
-                                    <Border Width="40" Height="40" CornerRadius="20" Background="#F3F4F6" Margin="0,0,10,0">
-                                        <iconPacks:PackIconMaterial Kind="Bank" Width="20" Height="20" Foreground="#555" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                                    </Border>
-                                    <StackPanel VerticalAlignment="Center">
-                                        <TextBlock Text="Mobile Banking" FontWeight="SemiBold" />
-                                        <TextBlock Text="BCA, Mandiri, BNI" FontSize="12" Foreground="Gray" />
-                                    </StackPanel>
-                                </StackPanel>
-                            </RadioButton>
-
-                            <!-- Contoh E-Wallet Terpilih (IsChecked="True") -->
-                            <RadioButton Grid.Row="0" Grid.Column="1" Margin="10,0,0,10" IsChecked="True" Style="{StaticResource PaymentOption}" Tag="E-Wallet">
+                            <RadioButton Grid.Row="0" Grid.Column="0" Margin="0,0,10,0" IsChecked="True" Style="{StaticResource PaymentOption}" Tag="Virtual Account">
                                 <StackPanel Orientation="Horizontal">
                                     <Border Width="40" Height="40" CornerRadius="20" Background="#E0F2FE" Margin="0,0,10,0">
-                                        <iconPacks:PackIconMaterial Kind="Wallet" Width="20" Height="20" Foreground="#0EA5E9" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                        <iconPacks:PackIconMaterial Kind="Bank" Width="20" Height="20" Foreground="#0EA5E9" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                                     </Border>
                                     <StackPanel VerticalAlignment="Center">
-                                        <TextBlock Text="E-Wallet" FontWeight="SemiBold" />
-                                        <TextBlock Text="Gopay, OVO, Dana" FontSize="12" Foreground="Gray" />
+                                        <TextBlock Text="Virtual Account" FontWeight="SemiBold" />
+                                        <TextBlock Text="BCA, Mandiri, BRI, BNI" FontSize="12" Foreground="Gray" />
                                     </StackPanel>
                                 </StackPanel>
                             </RadioButton>
 
-                            <RadioButton Grid.Row="1" Grid.Column="0" Margin="0,10,10,0" Style="{StaticResource PaymentOption}" Tag="Credit Card">
-                                <StackPanel Orientation="Horizontal">
-                                    <Border Width="40" Height="40" CornerRadius="20" Background="#FEF3C7" Margin="0,0,10,0">
-                                        <iconPacks:PackIconMaterial Kind="CreditCard" Width="20" Height="20" Foreground="#D97706" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                                    </Border>
-                                    <StackPanel VerticalAlignment="Center">
-                                        <TextBlock Text="Credit Card" FontWeight="SemiBold" />
-                                        <TextBlock Text="Visa, Mastercard" FontSize="12" Foreground="Gray" />
-                                    </StackPanel>
-                                </StackPanel>
-                            </RadioButton>
-
-                            <RadioButton Grid.Row="1" Grid.Column="1" Margin="10,10,0,0" Style="{StaticResource PaymentOption}" Tag="QRIS">
+                            <RadioButton Grid.Row="0" Grid.Column="1" Margin="10,0,0,0" Style="{StaticResource PaymentOption}" Tag="QRIS">
                                 <StackPanel Orientation="Horizontal">
                                     <Border Width="40" Height="40" CornerRadius="20" Background="#EEE" Margin="0,0,10,0">
                                         <iconPacks:PackIconMaterial Kind="QrcodeScan" Width="20" Height="20" Foreground="Black" VerticalAlignment="Center" HorizontalAlignment="Center"/>
@@ -306,6 +340,7 @@
                                     </StackPanel>
                                 </StackPanel>
                             </RadioButton>
+
                         </Grid>
                     </StackPanel>
                 </Border>

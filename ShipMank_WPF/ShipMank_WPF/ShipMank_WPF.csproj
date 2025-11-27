@@ -352,6 +352,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Components\RatingWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Components\SettingsControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -397,6 +401,9 @@
     </Compile>
     <Compile Include="Components\ProfileNavbar.xaml.cs">
       <DependentUpon>ProfileNavbar.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Components\RatingWindow.xaml.cs">
+      <DependentUpon>RatingWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Components\SettingsControl.xaml.cs">
       <DependentUpon>SettingsControl.xaml</DependentUpon>

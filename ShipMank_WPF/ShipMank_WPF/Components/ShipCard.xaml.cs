@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System;
+using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace ShipMank_WPF.Components
@@ -8,6 +10,16 @@ namespace ShipMank_WPF.Components
         public ShipCard()
         {
             InitializeComponent();
+        }
+
+        // Contoh KapalID Dependency Property di ShipCard.xaml.cs
+        public static readonly DependencyProperty KapalIDProperty =
+            DependencyProperty.Register("KapalID", typeof(int), typeof(ShipCard), new PropertyMetadata(0));
+
+        public int KapalID
+        {
+            get { return (int)GetValue(KapalIDProperty); }
+            set { SetValue(KapalIDProperty, value); }
         }
 
         public string ShipName
@@ -106,9 +118,30 @@ namespace ShipMank_WPF.Components
         public static readonly DependencyProperty BadgeColorProperty =
             DependencyProperty.Register("BadgeColor", typeof(string), typeof(ShipCard));
 
+        public static readonly DependencyProperty ImageSourceProperty =
+            DependencyProperty.Register("ImageSource", typeof(string), typeof(ShipCard), new PropertyMetadata(null));
+
+        public string ImageSource
+        {
+            get { return (string)GetValue(ImageSourceProperty); }
+            set { SetValue(ImageSourceProperty, value); }
+        }
+
+        // 2. Facilities DP
+        public static readonly DependencyProperty FacilitiesProperty =
+            DependencyProperty.Register("Facilities", typeof(List<string>), typeof(ShipCard), new PropertyMetadata(null));
+
+        public List<string> Facilities
+        {
+            get { return (List<string>)GetValue(FacilitiesProperty); }
+            set { SetValue(FacilitiesProperty, value); }
+        }
+
+        public event EventHandler<int> DetailButtonClicked;
+
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-
+            DetailButtonClicked?.Invoke(this, this.KapalID);
         }
     }
 }

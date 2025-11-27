@@ -334,12 +334,17 @@
                 </Grid>
             </Border>
 
-            <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <ScrollViewer Grid.Row="2" 
+                          x:Name="MainScroll"
+                          VerticalScrollBarVisibility="Auto" 
+                          HorizontalScrollBarVisibility="Disabled"
+                          CanContentScroll="False"
+                          PreviewMouseWheel="MainScroll_PreviewMouseWheel">
                 <UniformGrid x:Name="ShipCardGrid"
-                         Margin="40,10,40,20" 
-                         Rows="2" 
-                         Columns="3" 
-                         HorizontalAlignment="Stretch">
+                          Margin="40,10,40,20" 
+                          Rows="2" 
+                          Columns="3" 
+                          HorizontalAlignment="Stretch">
                 </UniformGrid>
             </ScrollViewer>
         </Grid>

@@ -288,13 +288,28 @@
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
 
-                    <DataGridTemplateColumn Header="" Width="150">
+                    <DataGridTemplateColumn Header="Action" Width="170">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <Button Content="View Details" 
-                                        Style="{StaticResource ViewDetailsButton}"
-                                        HorizontalAlignment="Center"
-                                        VerticalAlignment="Center"/>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+
+                                    <Button Content="Rate" 
+                        Visibility="{Binding RateButtonVisibility}"
+                        Click="BtnRate_Click"
+                        Background="#FFC107" Foreground="#333" FontWeight="Bold"
+                        Padding="15,5" Margin="0,0,8,0" BorderThickness="0" Cursor="Hand">
+                                        <Button.Resources>
+                                            <Style TargetType="Border">
+                                                <Setter Property="CornerRadius" Value="8"/>
+                                            </Style>
+                                        </Button.Resources>
+                                    </Button>
+
+                                    <Button Content="Details" 
+                        Style="{StaticResource ViewDetailsButton}"
+                        Click="BtnViewDetails_Click"/>
+
+                                </StackPanel>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>

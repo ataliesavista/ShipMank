@@ -109,11 +109,48 @@
         </Grid.RowDefinitions>
 
         <!-- Row 0: Header -->
-        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="40,30,40,20">
-            <!-- Icon Header -->
-            <iconPacks:PackIconMaterial Kind="CreditCardOutline" Width="32" Height="32" VerticalAlignment="Center" Margin="0,0,15,0" Foreground="#333"/>
-            <TextBlock Text="Complete Payment" FontSize="32" FontWeight="Bold" VerticalAlignment="Center" Foreground="#333"/>
-        </StackPanel>
+        <Grid Grid.Row="0" Margin="40,30,40,20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Bagian Kiri: Judul & Icon -->
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <iconPacks:PackIconMaterial Kind="CreditCardOutline" Width="32" Height="32" VerticalAlignment="Center" Margin="0,0,15,0" Foreground="#333"/>
+                <TextBlock Text="Complete Payment" FontSize="32" FontWeight="Bold" VerticalAlignment="Center" Foreground="#333"/>
+            </StackPanel>
+
+            <!-- Bagian Kanan: Tombol Cancel -->
+            <Button Grid.Column="1" 
+                    Click="CancelButton_Click"
+                    Cursor="Hand"
+                    Background="Transparent"
+                    BorderThickness="1"
+                    BorderBrush="#E74C3C"
+                    Padding="15,8">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" 
+                                CornerRadius="8">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#FFEBEE"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Button.Template>
+
+                <StackPanel Orientation="Horizontal">
+                    <iconPacks:PackIconMaterial Kind="Close" Width="14" Height="14" Foreground="#E74C3C" VerticalAlignment="Center" Margin="8,0,8,0"/>
+                    <TextBlock Text="Cancel" FontWeight="Bold" Foreground="#E74C3C" FontSize="14" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                </StackPanel>
+            </Button>
+        </Grid>
 
         <!-- Row 1: Main Content Area -->
         <ScrollViewer Grid.Row="1" Margin="40,0,40,0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
@@ -247,6 +284,7 @@
                 <Border Grid.Row="1" Style="{StaticResource ContentCard}" Margin="0,20,0,20">
                     <StackPanel>
                         <TextBlock Text="Select Payment Method" Style="{StaticResource SectionHeader}" />
+
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
@@ -254,53 +292,24 @@
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
 
-                            <!-- Opsi 1: Mobile Banking -->
-                            <RadioButton Grid.Row="0" Grid.Column="0" Margin="0,0,10,10" Style="{StaticResource PaymentOption}" Tag="Mobile Banking">
-                                <StackPanel Orientation="Horizontal">
-                                    <Border Width="40" Height="40" CornerRadius="20" Background="#F3F4F6" Margin="0,0,10,0">
-                                        <iconPacks:PackIconMaterial Kind="Bank" Width="20" Height="20" Foreground="#555" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                                    </Border>
-                                    <StackPanel VerticalAlignment="Center">
-                                        <TextBlock Text="Mobile Banking" FontWeight="SemiBold" />
-                                        <TextBlock Text="BCA, Mandiri, BNI" FontSize="12" Foreground="Gray" />
-                                    </StackPanel>
-                                </StackPanel>
-                            </RadioButton>
-
-                            <!-- Opsi 2: E-Wallet -->
-                            <RadioButton Grid.Row="0" Grid.Column="1" Margin="10,0,0,10" IsChecked="True" Style="{StaticResource PaymentOption}" Tag="E-Wallet">
+                            <RadioButton Grid.Row="0" Grid.Column="0" Margin="0,0,10,0" IsChecked="True" Style="{StaticResource PaymentOption}" Tag="Virtual Account">
                                 <StackPanel Orientation="Horizontal">
                                     <Border Width="40" Height="40" CornerRadius="20" Background="#E0F2FE" Margin="0,0,10,0">
-                                        <iconPacks:PackIconMaterial Kind="Wallet" Width="20" Height="20" Foreground="#0EA5E9" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                        <iconPacks:PackIconMaterial Kind="Bank" Width="20" Height="20" Foreground="#0EA5E9" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                                     </Border>
                                     <StackPanel VerticalAlignment="Center">
-                                        <TextBlock Text="E-Wallet" FontWeight="SemiBold" />
-                                        <TextBlock Text="Gopay, OVO, Dana" FontSize="12" Foreground="Gray" />
+                                        <TextBlock Text="Virtual Account" FontWeight="SemiBold" />
+                                        <TextBlock Text="BCA, Mandiri, BRI, BNI" FontSize="12" Foreground="Gray" />
                                     </StackPanel>
                                 </StackPanel>
                             </RadioButton>
 
-                            <!-- Opsi 3: Credit Card -->
-                            <RadioButton Grid.Row="1" Grid.Column="0" Margin="0,10,10,0" Style="{StaticResource PaymentOption}" Tag="Credit Card">
+                            <RadioButton Grid.Row="0" Grid.Column="1" Margin="10,0,0,0" Style="{StaticResource PaymentOption}" Tag="QRIS">
                                 <StackPanel Orientation="Horizontal">
-                                    <Border Width="40" Height="40" CornerRadius="20" Background="#FEF3C7" Margin="0,0,10,0">
-                                        <iconPacks:PackIconMaterial Kind="CreditCard" Width="20" Height="20" Foreground="#D97706" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                                    </Border>
-                                    <StackPanel VerticalAlignment="Center">
-                                        <TextBlock Text="Credit Card" FontWeight="SemiBold" />
-                                        <TextBlock Text="Visa, Mastercard" FontSize="12" Foreground="Gray" />
-                                    </StackPanel>
-                                </StackPanel>
-                            </RadioButton>
-
-                            <!-- Opsi 4: QRIS -->
-                            <RadioButton Grid.Row="1" Grid.Column="1" Margin="10,10,0,0" Style="{StaticResource PaymentOption}" Tag="QRIS">
-                                <StackPanel Orientation="Horizontal">
-                                    <Border Width="40" Height="40" CornerRadius="20" Background="#EEE" Margin="0,0,10,0">
-                                        <iconPacks:PackIconMaterial Kind="QrcodeScan" Width="20" Height="20" Foreground="Black" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                    <Border Width="40" Height="40" CornerRadius="20" Background="#F3F4F6" Margin="0,0,10,0">
+                                        <iconPacks:PackIconMaterial Kind="QrcodeScan" Width="20" Height="20" Foreground="#333" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                                     </Border>
                                     <StackPanel VerticalAlignment="Center">
                                         <TextBlock Text="QRIS" FontWeight="SemiBold" />
@@ -308,6 +317,7 @@
                                     </StackPanel>
                                 </StackPanel>
                             </RadioButton>
+
                         </Grid>
                     </StackPanel>
                 </Border>
@@ -327,7 +337,7 @@
                     Foreground="White"
                     Background="#33A1E0"
                     BorderThickness="0"
-                    Cursor="Hand">
+                    Cursor="Hand" Click="PayButton_Click_1">
                 <Button.Template>
                     <ControlTemplate TargetType="Button">
                         <Border Background="{TemplateBinding Background}" CornerRadius="28">
