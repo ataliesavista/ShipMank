@@ -14,34 +14,22 @@ namespace ShipMank_WPF.Pages
 {
     public partial class BeliTiket : Page
     {
-        // =========================================================
-        // 1. DATA MODEL
-        // =========================================================
+        // ... (Class ShipData tidak berubah) ...
         public class ShipData
         {
             public int KapalID { get; set; }
             public string ShipName { get; set; }
             public string ShipClass { get; set; }
-
-            // Location for ShipCard (Province only)
             public string Location { get; set; }
-
-            // Data detail for DetailKapal
             public string Address { get; set; }
             public string City { get; set; }
             public string Province { get; set; }
-
-            // Helper for full address
             public string FullLocation => $"{Address}, {City}, {Province}";
-
             public string Capacity { get; set; }
             public string Rating { get; set; }
             public string Price { get; set; }
             public string PriceUnit { get; set; } = "/day";
-
-            // Status Availability
             public string KapalStatus { get; set; }
-
             public List<string> Facilities { get; set; } = new List<string>();
             public string ImageSource { get; set; }
             public string BadgeColor { get; set; } = "#2980B9";
@@ -56,7 +44,13 @@ namespace ShipMank_WPF.Pages
         public BeliTiket()
         {
             InitializeComponent();
+
+            // 1. Load Filter Data (Ship Types) DULUAN
+            LoadShipTypes();
+
+            // 2. Load Data Kapal
             LoadInitialData();
+
             InitializePlaceholders();
 
             // Wiring Events
@@ -67,6 +61,48 @@ namespace ShipMank_WPF.Pages
 
             // Initial Filter Application
             ApplyFilters();
+        }
+
+        // =========================================================
+        // [BARU] LOAD SHIP TYPE DARI DATABASE
+        // =========================================================
+        private void LoadShipTypes()
+        {
+            try
+            {
+                // Bersihkan item jika ada sisa dari XAML atau reload
+                TypeComboBox.Items.Clear();
+
+                // Tambahkan opsi Default "All Types"
+                ComboBoxItem defaultItem = new ComboBoxItem { Content = "All Types", IsSelected = true };
+                TypeComboBox.Items.Add(defaultItem);
+
+                using (var conn = new NpgsqlConnection(DBHelper.GetConnectionString()))
+                {
+                    conn.Open();
+                    // Ambil nama tipe kapal dari tabel ShipType
+                    string sql = "SELECT typeName FROM ShipType ORDER BY typeName ASC";
+
+                    using (var cmd = new NpgsqlCommand(sql, conn))
+                    {
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                string typeName = reader["typeName"].ToString();
+
+                                // Tambahkan ke ComboBox sebagai ComboBoxItem
+                                // Kita bungkus dalam ComboBoxItem agar fungsi GetComboBoxValue tetap bekerja
+                                TypeComboBox.Items.Add(new ComboBoxItem { Content = typeName });
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Gagal memuat tipe kapal: {ex.Message}");
+            }
         }
 
         private void LoadInitialData()
@@ -122,7 +158,7 @@ namespace ShipMank_WPF.Pages
                                     KapalID = (int)reader["kapalID"],
                                     ShipName = reader["namakapal"].ToString(),
                                     ShipClass = reader["typename"].ToString(),
-                                    Location = dbProvince, // Card shows Province
+                                    Location = dbProvince,
                                     Address = dbAddress,
                                     City = dbCity,
                                     Province = dbProvince,
@@ -147,69 +183,54 @@ namespace ShipMank_WPF.Pages
 
         private string GetBadgeColor(string shipType)
         {
+            // Update logika warna agar dinamis (fallback warna default jika tipe baru ditambah di DB)
             string type = shipType.ToLower();
-            if (type == "phinisi") return "#8E44AD";
-            else if (type == "speedboat") return "#2980B9";
-            else if (type == "yacht") return "#F39C12";
-            else if (type == "ferry") return "#27AE60";
-            else return "#16A085";
+            if (type.Contains("phinisi")) return "#8E44AD";
+            else if (type.Contains("speedboat")) return "#2980B9";
+            else if (type.Contains("yacht")) return "#F39C12";
+            else if (type.Contains("ferry")) return "#27AE60";
+            else return "#16A085"; // Warna default untuk tipe kapal baru
         }
 
-        // ===========================================================
-        // POPUP LOGIC (FIXED)
-        // ===========================================================
+        // ... (ShowDetailKapalPopup TIDAK BERUBAH) ...
         private void ShowDetailKapalPopup(ShipData ship)
         {
-            // 1. Buat Window yang menutupi seluruh layar (Maximized)
             Window modalWindow = new Window
             {
                 Title = "Detail Kapal",
                 WindowStyle = WindowStyle.None,
-                AllowsTransparency = true, // Wajib true agar background bisa transparan
-                Background = Brushes.Transparent, // Window dasar transparan
-                WindowState = WindowState.Maximized, // Agar menutupi seluruh layar monitor
+                AllowsTransparency = true,
+                Background = Brushes.Transparent,
+                WindowState = WindowState.Maximized,
                 ResizeMode = ResizeMode.NoResize,
-                Owner = Application.Current.MainWindow, // Agar muncul di atas aplikasi utama
-                ShowInTaskbar = false // Agar tidak muncul icon window baru di taskbar
+                Owner = Application.Current.MainWindow,
+                ShowInTaskbar = false
             };
 
-            // 2. Buat Grid Overlay sebagai Background Gelap (Blur effect simulation)
             Grid overlayGrid = new Grid
             {
-                // Warna Hitam dengan Opacity 50% (Hex: #80000000)
                 Background = new SolidColorBrush(Color.FromArgb(128, 0, 0, 0))
             };
 
-            // 3. Siapkan Halaman Detail
             DetailKapal detailPage = new DetailKapal(ship.KapalID)
             {
                 HostWindow = modalWindow,
                 ShipInfo = ship
             };
 
-            // 4. Buat Frame untuk menampung halaman, dan letakkan di TENGAH Overlay
             Frame contentFrame = new Frame
             {
                 Content = detailPage,
-                HorizontalAlignment = HorizontalAlignment.Center, // PENTING: Agar di tengah horizontal
-                VerticalAlignment = VerticalAlignment.Center,     // PENTING: Agar di tengah vertikal
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center,
                 NavigationUIVisibility = System.Windows.Navigation.NavigationUIVisibility.Hidden,
                 Background = Brushes.Transparent
             };
 
-            // 5. Susun UI: Frame dimasukkan ke dalam Grid Overlay
             overlayGrid.Children.Add(contentFrame);
-
-            // 6. Masukkan Grid Overlay ke dalam Window
             modalWindow.Content = overlayGrid;
-
-            // 7. Tampilkan
             modalWindow.ShowDialog();
         }
-
-        // ... (Rest of the code: ResetFilterButton_Click, InitializePlaceholders, Filter_Changed, 
-        // ApplyFilters, ShipCard_Click, UpdateShipCardGrid, GetComboBoxValue, ParsePrice, 
-        // ParseCapacity, TextBox events, MainScroll_PreviewMouseWheel - NO CHANGES NEEDED) ...
 
         private void ResetFilterButton_Click(object sender, RoutedEventArgs e)
         {
@@ -217,13 +238,17 @@ namespace ShipMank_WPF.Pages
             SearchBoatNameTextBox.Foreground = Brushes.Gray;
             LocationTextBox.Text = LocationPlaceholder;
             LocationTextBox.Foreground = Brushes.Gray;
+
+            // Index 0 adalah "All Types" yang kita tambahkan secara coding
             TypeComboBox.SelectedIndex = 0;
+
             CapacityComboBox.SelectedIndex = 0;
             RateComboBox.SelectedIndex = 0;
             PriceSlider.Value = 20000000;
             ApplyFilters();
         }
 
+        // ... (Sisa method helper lainnya TIDAK BERUBAH) ...
         private void InitializePlaceholders()
         {
             if (string.IsNullOrEmpty(SearchBoatNameTextBox.Text)) { SearchBoatNameTextBox.Text = SearchPlaceholder; SearchBoatNameTextBox.Foreground = Brushes.Gray; }
@@ -238,7 +263,9 @@ namespace ShipMank_WPF.Pages
 
             string searchText = (SearchBoatNameTextBox.Text == SearchPlaceholder) ? "" : SearchBoatNameTextBox.Text;
             string locationText = (LocationTextBox.Text == LocationPlaceholder) ? "" : LocationTextBox.Text;
+
             string selectedType = GetComboBoxValue(TypeComboBox);
+
             string selectedCapacity = GetComboBoxValue(CapacityComboBox);
             string selectedRate = GetComboBoxValue(RateComboBox);
             double maxPrice = PriceSlider.Value;
@@ -249,7 +276,10 @@ namespace ShipMank_WPF.Pages
                 bool matchLocation = string.IsNullOrEmpty(locationText) ||
                                      ship.Province.IndexOf(locationText, StringComparison.OrdinalIgnoreCase) >= 0 ||
                                      ship.City.IndexOf(locationText, StringComparison.OrdinalIgnoreCase) >= 0;
+
+                // Logic "All Types"
                 bool matchType = selectedType == "All Types" || selectedType == null || ship.ShipClass.Equals(selectedType, StringComparison.OrdinalIgnoreCase);
+
                 bool matchRate = true;
                 if (selectedRate != "Any" && selectedRate != null && double.TryParse(ship.Rating, NumberStyles.Any, CultureInfo.InvariantCulture, out double shipRating))
                 {
@@ -293,6 +323,7 @@ namespace ShipMank_WPF.Pages
                 ShipCardGrid.Children.Add(newCard);
             }
         }
+
         private void ShipCard_ButtonClicked(object sender, int kapalID)
         {
             ShipData selectedShip = masterShipList.FirstOrDefault(s => s.KapalID == kapalID);
@@ -304,6 +335,7 @@ namespace ShipMank_WPF.Pages
 
         private string GetComboBoxValue(ComboBox cb)
         {
+            // Karena kita memasukkan ComboBoxItem secara manual di LoadShipTypes, logic ini tetap aman
             if (cb.SelectedItem is ComboBoxItem item) return item.Content.ToString();
             return null;
         }
