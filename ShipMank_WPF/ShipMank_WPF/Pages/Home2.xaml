@@ -10,7 +10,11 @@
       d:DesignHeight="1080" d:DesignWidth="1920"
       Title="Home2">
 
-    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+    <ScrollViewer x:Name="MainScroll"
+                  VerticalScrollBarVisibility="Auto" 
+                  HorizontalScrollBarVisibility="Disabled"
+                  CanContentScroll="False"
+                  PreviewMouseWheel="MainScroll_PreviewMouseWheel">
         <StackPanel Background="#EBF1F5">
 
             <Grid MinHeight="500">
