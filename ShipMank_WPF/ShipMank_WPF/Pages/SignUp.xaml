@@ -28,67 +28,22 @@
             </Border.Effect>
 
             <StackPanel>
+
                 <TextBlock Text="Sign Up" 
                            FontSize="28" 
                            FontWeight="Bold" 
                            Foreground="#000000"
                            HorizontalAlignment="Center"
-                           Margin="0 0 0 20"/>
+                           Margin="0 0 0 25"/>
 
-                <TextBlock Text="Username"
-                           FontWeight="SemiBold"
-                           Foreground="#000000"/>
 
-                <Border Height="35"
-                        Margin="0 5 0 15"
-                        Background="#33A1E0"
-                        Opacity="0.35"
-                        Padding="5"
-                        CornerRadius="8">
-                    <TextBox Name="tbUsername"
-                             FontFamily="Dubai"
-                             Background="Transparent"
-                             BorderThickness="0"
-                             VerticalContentAlignment="Center"/>
-                </Border>
-
-                <TextBlock Text="Email"
-                           FontWeight="SemiBold"
-                           Foreground="#000000"/>
-
-                <Border Height="35"
-                        Margin="0 5 0 15"
-                        Background="#33A1E0"
-                        Opacity="0.35"
-                        Padding="5"
-                        CornerRadius="8">
-                    <TextBox Name="tbEmail"
-                             FontFamily="Dubai"
-                             Background="Transparent"
-                             BorderThickness="0"
-                             VerticalContentAlignment="Center"/>
-                </Border>
-
-                <TextBlock Text="Password"
-                           FontWeight="SemiBold"
-                           Foreground="#000000"/>
-
-                <Border Height="35"
-                        Margin="0 5 0 20"
-                        Background="#33A1E0"
-                        Opacity="0.35"
-                        Padding="5"
-                        CornerRadius="8">
-                    <PasswordBox Name="tbPassword"
-                                 FontFamily="Dubai"
-                                 Background="Transparent"
-                                 BorderThickness="0"
-                                 VerticalContentAlignment="Center"/>
-                </Border>
+                <!-- ============================
+                     HANYA TOMBOL GOOGLE SIGN UP
+                     ============================ -->
 
                 <StackPanel Orientation="Horizontal"
-            HorizontalAlignment="Center"
-            Margin="0 5 0 0">
+                            HorizontalAlignment="Center"
+                            Margin="0 5 0 0">
 
                     <StackPanel.Resources>
                         <Style TargetType="Button">
@@ -112,14 +67,16 @@
                                                 <Trigger.EnterActions>
                                                     <BeginStoryboard>
                                                         <Storyboard>
-                                                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)" To="3" Duration="0:0:0.2"/>
+                                                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)"
+                                                                             To="3" Duration="0:0:0.2"/>
                                                         </Storyboard>
                                                     </BeginStoryboard>
                                                 </Trigger.EnterActions>
                                                 <Trigger.ExitActions>
                                                     <BeginStoryboard>
                                                         <Storyboard>
-                                                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)" To="0" Duration="0:0:0.2"/>
+                                                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)"
+                                                                             To="0" Duration="0:0:0.2"/>
                                                         </Storyboard>
                                                     </BeginStoryboard>
                                                 </Trigger.ExitActions>
@@ -131,31 +88,24 @@
                         </Style>
                     </StackPanel.Resources>
 
-                    <Button Content="Google"
-            Height="25"
-            Background="#FFFFFF"
-            FontFamily="Dubai"
-            FontWeight="SemiBold"
-            Cursor="Hand"
-            Width="100"
-            BorderThickness="0"
-            Click="GoogleSignUp_Click"/>
 
-                    <Button Content="Daftar"
-            Height="25"
-            Background="#FFF9AF"
-            FontFamily="Dubai"
-            FontWeight="SemiBold"
-            Cursor="Hand"
-            Width="100"
-            BorderThickness="0"
-            Margin="10 0 0 0"
-            Click="SignUpButton_Click"/>
+                    <!-- TOMBOL GOOGLE (TETAP) -->
+                    <Button Content="Sign Up with Google"
+                            Height="30"
+                            Background="#FFFFFF"
+                            FontFamily="Dubai"
+                            FontWeight="SemiBold"
+                            Cursor="Hand"
+                            Width="180"
+                            BorderThickness="0"
+                            Click="GoogleSignUp_Click"/>
+
                 </StackPanel>
 
+                <!-- TEKS DI BAWAH (TETAP ADA) -->
                 <StackPanel Orientation="Horizontal" 
                             HorizontalAlignment="Center"
-                            Margin="0 15 0 0">
+                            Margin="0 20 0 0">
                     <TextBlock Text="Sudah punya akun? "
                                FontFamily="Dubai"
                                Foreground="#555"/>
@@ -167,6 +117,7 @@
                                MouseDown="LoginText_MouseDown" 
                                TextDecorations="Underline"/>
                 </StackPanel>
+
             </StackPanel>
         </Border>
     </Grid>
