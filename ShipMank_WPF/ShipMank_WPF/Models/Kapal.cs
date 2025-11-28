@@ -1,72 +1,110 @@
-﻿using System;
+﻿using Npgsql;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using ShipMank_WPF.Models.ViewModel; // <--- WAJIB ADA: Karena ShipViewModel ada di sini
 
 namespace ShipMank_WPF.Models
 {
-    public class Kapal
+    public partial class Kapal
     {
-        public int KapalID { get; private set; }
+        public int KapalID { get; set; }
         public string NamaKapal { get; set; }
-        public ShipType Jenis { get; private set; }
+        public int ShipTypeID { get; set; }
         public int Kapasitas { get; set; }
-        public double HargaPerjalanan { get; set; }
-        public string Lokasi { get; set; }
-        public string Deskripsi { get; set; }
-        public KapalStatus Status { get; private set; }
-        public double Rating { get; private set; }
+        public decimal HargaPerjalanan { get; set; }
+        public int LokasiID { get; set; }
+        public KapalStatus Status { get; set; }
         public string Fasilitas { get; set; }
 
-        public List<Review> Reviews { get; private set; }
-
-        public Kapal(int kapalID, string namaKapal, ShipType jenis, int kapasitas,
-                     double hargaPerjalanan, string lokasi, string deskripsi, string fasilitas)
+        public static List<ShipViewModel> GetAllKapalForDisplay()
         {
-            KapalID = kapalID;
-            NamaKapal = namaKapal;
-            Jenis = jenis;
-            Kapasitas = kapasitas;
-            HargaPerjalanan = hargaPerjalanan;
-            Lokasi = lokasi;
-            Deskripsi = deskripsi;
-            Status = KapalStatus.Available;
-            Fasilitas = fasilitas;
-            Reviews = new List<Review>();
-            Rating = 0.0;
-        }
+            var list = new List<ShipViewModel>();
 
-        //Contoh Tampilan Detail Kapal
-        public string TampilDetail()
-        {
-            return $"ID: {KapalID}\n" +
-                   $"Nama: {NamaKapal}\n" +
-                   $"Jenis: {Jenis.TypeName}\n" +
-                   $"Kapasitas: {Kapasitas} orang\n" +
-                   $"Harga: Rp {HargaPerjalanan:N0}\n" +
-                   $"Lokasi: {Lokasi}\n" +
-                   $"Status: {Status}\n" +
-                   $"Rating: {Rating:F1}/5.0\n" +
-                   $"Fasilitas: {Fasilitas}\n" +
-                   $"Deskripsi: {Deskripsi}";
-        }
-
-        public bool Availability() => Status == KapalStatus.Available;
-
-        public void UpdateStatus(KapalStatus newStatus) => Status = newStatus;
-
-        public void UpdateRating()
-        {
-            if (Reviews.Count > 0)
+            try
             {
-                Rating = Reviews.Average(r => r.Rating);
-            }
-        }
+                using (var conn = new NpgsqlConnection(DBHelper.GetConnectionString()))
+                {
+                    conn.Open();
+                    string sql = @"
+                        SELECT 
+                            k.kapalID, k.namakapal, k.kapasitas, k.rating, k.hargaperjalanan, k.kapalStatus,
+                            s.typename, 
+                            l.city, l.address, l.province,
+                            k.fasilitas,
+                            ki.imagePath
+                        FROM Kapal k
+                        INNER JOIN ShipType s ON k.shiptype = s.typeid
+                        LEFT JOIN Lokasi l ON k.lokasi = l.portid
+                        LEFT JOIN KapalImages ki ON k.kapalID = ki.kapalID AND ki.isPrimary = TRUE;";
 
-        public override string ToString()
+                    using (var cmd = new NpgsqlCommand(sql, conn))
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            int kapasitas = reader["kapasitas"] is int cap ? cap : 0;
+                            double rating = reader["rating"] is DBNull ? 0.0 : Convert.ToDouble(reader["rating"]);
+                            decimal harga = reader["hargaperjalanan"] is DBNull ? 0M : (decimal)reader["hargaperjalanan"];
+                            string typeName = reader["typename"].ToString();
+                            string fasilitasText = reader["fasilitas"]?.ToString() ?? "";
+
+                            var facilities = fasilitasText.Split(new[] { ',', ';' }, StringSplitOptions.RemoveEmptyEntries)
+                                                          .Select(f => f.Trim()).ToList();
+
+                            list.Add(new ShipViewModel
+                            {
+                                KapalID = (int)reader["kapalID"],
+                                ShipName = reader["namakapal"].ToString(),
+                                ShipClass = typeName,
+                                Location = reader["province"]?.ToString() ?? "-",
+                                Address = reader["address"]?.ToString() ?? "-",
+                                City = reader["city"]?.ToString() ?? "-",
+                                Province = reader["province"]?.ToString() ?? "-",
+                                KapalStatus = reader["kapalStatus"]?.ToString() ?? "Available",
+                                Capacity = $"{kapasitas} Penumpang",
+                                Rating = rating.ToString("F1", CultureInfo.InvariantCulture),
+                                Price = "Rp " + harga.ToString("N0", new CultureInfo("id-ID")),
+                                Facilities = facilities,
+                                ImageSource = reader["imagePath"]?.ToString() ?? "/Resources/default_ship.jpg",
+                                BadgeColor = ShipViewModel.GetBadgeColor(typeName)
+                            });
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            return list;
+        }
+        public static List<string> GetImages(int kapalId, string defaultImage)
         {
-            return $"{NamaKapal} ({Jenis.TypeName}) - Rp {HargaPerjalanan:N0}";
+            var images = new List<string>();
+            try
+            {
+                using (var conn = new NpgsqlConnection(DBHelper.GetConnectionString()))
+                {
+                    conn.Open();
+                    string sql = "SELECT imagePath FROM KapalImages WHERE kapalID = @KapalID ORDER BY isPrimary DESC, imageID ASC";
+                    using (var cmd = new NpgsqlCommand(sql, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@KapalID", kapalId);
+                        using (var reader = cmd.ExecuteReader())
+                            while (reader.Read()) images.Add(reader["imagePath"].ToString());
+                    }
+                }
+            }
+            catch { }
+
+            // Fallback ke gambar default jika kosong
+            if (images.Count == 0 && !string.IsNullOrEmpty(defaultImage))
+                images.Add(defaultImage);
+
+            return images;
         }
     }
 }
