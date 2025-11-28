@@ -7,18 +7,21 @@
       Title="LoginPage"
       Background="Transparent">
 
-    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent">
+    <Grid HorizontalAlignment="Stretch"
+          VerticalAlignment="Stretch"
+          Background="Transparent">
 
+        <!-- BACKGROUND -->
         <Rectangle Fill="#EBF1F5"/>
 
-        <Border 
-            Background="#F2F8FF"
-            CornerRadius="15"
-            Padding="30"
-            Width="400"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            RenderTransformOrigin="0.5,0.5">
+        <!-- LOGIN CARD -->
+        <Border Background="#F2F8FF"
+                CornerRadius="15"
+                Padding="30"
+                Width="400"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                RenderTransformOrigin="0.5,0.5">
 
             <Border.Effect>
                 <DropShadowEffect BlurRadius="2"
@@ -28,128 +31,118 @@
             </Border.Effect>
 
             <StackPanel>
-                <TextBlock Text="Login" 
-                           FontSize="28" 
-                           FontWeight="Bold" 
+
+                <!-- TITLE -->
+                <TextBlock Text="Login"
+                           FontSize="28"
+                           FontWeight="Bold"
                            Foreground="#000000"
                            HorizontalAlignment="Center"
-                           Margin="0 0 0 20"/>
+                           Margin="0 0 0 30"/>
 
-                <TextBlock Text="Username"
-                           FontWeight="SemiBold"
-                           Foreground="#000000"/>
-
-                <Border Height="35"
-                        Margin="0 5 0 15"
-                        Background="#33A1E0"
-                        Opacity="0.35"
-                        Padding="5"
-                        CornerRadius="8">
-                    <TextBox Name="tbUsername"
-                             FontFamily="Dubai"
-                             Background="Transparent"
-                             BorderThickness="0"
-                             VerticalContentAlignment="Center"/>
-                </Border>
-
-                <TextBlock Text="Password"
-                           FontWeight="SemiBold"
-                           Foreground="#000000"/>
-
-                <Border Height="35"
-                        Margin="0 5 0 20"
-                        Background="#33A1E0"
-                        Opacity="0.35"
-                        Padding="5"
-                        CornerRadius="8">
-                    <PasswordBox Name="tbPassword"
-                                 FontFamily="Dubai"
-                                 Background="Transparent"
-                                 BorderThickness="0"
-                                 VerticalContentAlignment="Center"/>
-                </Border>
-
+                <!-- GOOGLE BUTTON ONLY -->
                 <StackPanel Orientation="Horizontal"
-            HorizontalAlignment="Center"
-            Margin="0 5 0 0">
+                            HorizontalAlignment="Center">
 
-                    <StackPanel.Resources>
-                        <Style TargetType="Button">
-                            <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
-                            <Setter Property="RenderTransform">
-                                <Setter.Value>
-                                    <TranslateTransform Y="0"/>
-                                </Setter.Value>
-                            </Setter>
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="Button">
-                                        <Border Background="{TemplateBinding Background}" CornerRadius="5">
-                                            <Border.Effect>
-                                                <DropShadowEffect Color="Gray" Opacity="0.2" ShadowDepth="1"/>
-                                            </Border.Effect>
-                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                        </Border>
-                                        <ControlTemplate.Triggers>
-                                            <Trigger Property="IsMouseOver" Value="True">
-                                                <Trigger.EnterActions>
-                                                    <BeginStoryboard>
-                                                        <Storyboard>
-                                                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)" To="-3" Duration="0:0:0.2"/>
-                                                        </Storyboard>
-                                                    </BeginStoryboard>
-                                                </Trigger.EnterActions>
-                                                <Trigger.ExitActions>
-                                                    <BeginStoryboard>
-                                                        <Storyboard>
-                                                            <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)" To="0" Duration="0:0:0.2"/>
-                                                        </Storyboard>
-                                                    </BeginStoryboard>
-                                                </Trigger.ExitActions>
-                                            </Trigger>
-                                        </ControlTemplate.Triggers>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </StackPanel.Resources>
+                    <Button Content="Login dengan Google"
+                            Height="30"
+                            Width="180"
+                            Cursor="Hand"
+                            FontFamily="Dubai"
+                            FontWeight="SemiBold"
+                            BorderThickness="0"
+                            Click="GoogleLogin_Click">
 
-                    <Button Content="Google"
-            Height="25"
-            Background="#FFFFFF"
-            FontFamily="Dubai"
-            FontWeight="SemiBold"
-            Cursor="Hand"
-            Width="100"
-            BorderThickness="0"
-            Click="GoogleLogin_Click"/>
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Background" Value="#FFFFFF"/>
+                                <Setter Property="Foreground" Value="#000000"/>
+                                <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+                                <Setter Property="RenderTransform">
+                                    <Setter.Value>
+                                        <TranslateTransform Y="0"/>
+                                    </Setter.Value>
+                                </Setter>
 
-                    <Button Content="Masuk"
-            Height="25"
-            Background="#FFF9AF"
-            FontFamily="Dubai"
-            FontWeight="SemiBold"
-            Cursor="Hand"
-            Width="100"
-            BorderThickness="0"
-            Margin="10 0 0 0"
-            Click="LoginButton_Click"/>
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border x:Name="btnBorder"
+                                                    Background="{TemplateBinding Background}"
+                                                    CornerRadius="5">
+                                                <Border.Effect>
+                                                    <DropShadowEffect Color="Gray"
+                                                                      Opacity="0.2"
+                                                                      ShadowDepth="1"/>
+                                                </Border.Effect>
+
+                                                <ContentPresenter HorizontalAlignment="Center"
+                                                                  VerticalAlignment="Center"/>
+                                            </Border>
+
+                                            <ControlTemplate.Triggers>
+
+                                                <!-- LIFT ANIMATION -->
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Trigger.EnterActions>
+                                                        <BeginStoryboard>
+                                                            <Storyboard>
+                                                                <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)"
+                                                                                 To="-3"
+                                                                                 Duration="0:0:0.15"/>
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                    </Trigger.EnterActions>
+
+                                                    <Trigger.ExitActions>
+                                                        <BeginStoryboard>
+                                                            <Storyboard>
+                                                                <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)"
+                                                                                 To="0"
+                                                                                 Duration="0:0:0.15"/>
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                    </Trigger.ExitActions>
+                                                </Trigger>
+
+                                                <!-- HOVER COLOR -->
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter TargetName="btnBorder"
+                                                            Property="Background"
+                                                            Value="#E8F3FF"/>
+                                                    <Setter Property="Foreground"
+                                                            Value="#0078D7"/>
+                                                </Trigger>
+
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+
+                            </Style>
+                        </Button.Style>
+
+                    </Button>
                 </StackPanel>
 
-                <StackPanel Orientation="Horizontal" 
-                    HorizontalAlignment="Center"
-                    Margin="0 15 0 0">
+                <!-- SIGN UP TEXT -->
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Center"
+                            Margin="0 20 0 0">
+
                     <TextBlock Text="Belum punya akun? "
-                       FontFamily="Dubai"
-                       Foreground="#555"/>
-                    <TextBlock Text="Daftar"
-                       FontFamily="Dubai"
-                       Foreground="#33A1E0"
-                       FontWeight="Bold"
-                       Cursor="Hand"
-                       MouseDown="SignUpText_MouseDown"
-                       TextDecorations="Underline"/>
+                               FontFamily="Dubai"
+                               Foreground="#555"/>
+
+                    <TextBlock Text="Daftar di sini"
+                               FontFamily="Dubai"
+                               Foreground="#33A1E0"
+                               FontWeight="Bold"
+                               Cursor="Hand"
+                               TextDecorations="Underline"
+                               MouseDown="SignUpText_MouseDown"/>
                 </StackPanel>
+
             </StackPanel>
         </Border>
     </Grid>
