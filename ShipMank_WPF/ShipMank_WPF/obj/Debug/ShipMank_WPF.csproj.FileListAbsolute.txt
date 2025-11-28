@@ -216,3 +216,8 @@ D:\vista~\Semester 5\Junpro_Github_VS\ShipMank_WPF\ShipMank_WPF\obj\Debug\ShipMa
 D:\vista~\Semester 5\Junpro_Github_VS\ShipMank_WPF\ShipMank_WPF\obj\Debug\ShipMank_WPF.pdb
 D:\vista~\Semester 5\Junpro_Github_VS\ShipMank_WPF\ShipMank_WPF\obj\Debug\Pages\ViewDetails.g.cs
 D:\vista~\Semester 5\Junpro_Github_VS\ShipMank_WPF\ShipMank_WPF\obj\Debug\Pages\ViewDetails.baml
+D:\Code\Visual Studio\ShipMank\ShipMank_WPF\ShipMank_WPF\obj\Debug\ShipMank_WPF.csproj.AssemblyReference.cache
+D:\Code\Visual Studio\ShipMank\ShipMank_WPF\ShipMank_WPF\obj\Debug\ShipMank_WPF.csproj.SuggestedBindingRedirects.cache
+D:\Code\Visual Studio\ShipMank\ShipMank_WPF\ShipMank_WPF\obj\Debug\ShipMank_WPF.exe.config
+D:\Code\Visual Studio\ShipMank\ShipMank_WPF\ShipMank_WPF\obj\Debug\ShipMank_WPF.exe
+D:\Code\Visual Studio\ShipMank\ShipMank_WPF\ShipMank_WPF\obj\Debug\ShipMank_WPF.pdb
