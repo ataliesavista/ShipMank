@@ -4,16 +4,16 @@
 winexe
 C#
 .cs
-D:\vista~\Semester 5\Junpro_Github_VS_2\ShipMank\ShipMank_WPF\ShipMank_WPF\obj\Debug\
+D:\Code\Visual Studio\ShipMank\ShipMank_WPF\ShipMank_WPF\obj\Debug\
 ShipMank_WPF
 none
 false
 DEBUG;TRACE
-D:\vista~\Semester 5\Junpro_Github_VS_2\ShipMank\ShipMank_WPF\ShipMank_WPF\App.xaml
+D:\Code\Visual Studio\ShipMank\ShipMank_WPF\ShipMank_WPF\App.xaml
 25-180977685
 
 451587645719
-96-1190607589
+96-174118485
 Components\CardKapalType.xaml;Components\Footer.xaml;Components\NavbarDash.xaml;Components\NavbarMain.xaml;Components\NavbarSearch.xaml;Components\NavbarTp.xaml;Components\NavbarWhite.xaml;Components\PassengersAdd.xaml;Components\PassengersControl.xaml;Components\ProfileNavbar.xaml;Components\RatingWindow.xaml;Components\SettingsControl.xaml;Components\ShipCard.xaml;MainWindow.xaml;Pages\BeliTiket.xaml;Pages\DetailKapal.xaml;Pages\History.xaml;Pages\Home.xaml;Pages\Home2.xaml;Pages\LoginPage.xaml;Pages\Payment.xaml;Pages\PaymentResult.xaml;Pages\Profile.xaml;Pages\SignUp.xaml;Pages\ViewDetails.xaml;
 
 False
