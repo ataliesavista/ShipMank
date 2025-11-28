@@ -24,26 +24,35 @@ namespace ShipMank_WPF.Pages
             InitializeComponent();
             _shipData = shipData;
             _bookingDate = bookingDate;
-
             _midtransService = new MidtransServices();
 
             // =======================================================
-            // PERBAIKAN: AMBIL USER ID DARI MAIN WINDOW
+            // PERBAIKAN: HAPUS FALLBACK HARDCODED
             // =======================================================
             if (Application.Current.MainWindow is MainWindow mw && mw.CurrentUser != null)
             {
-                _currentUserID = mw.CurrentUser.UserID; // Ambil ID yang Login
+                _currentUserID = mw.CurrentUser.UserID;
+
+                // Debugging: Cek Output Window di Visual Studio saat dijalankan
+                System.Diagnostics.Debug.WriteLine($"PAYMENT PAGE: Logged in as ID {_currentUserID}");
             }
             else
             {
-                // Fallback jika testing tanpa login / error session
-                // MessageBox.Show("Session User tidak ditemukan/Logout. Menggunakan ID default.");
-                _currentUserID = 1;
+                _currentUserID = 0; // Set 0 agar terdeteksi invalid
             }
-            // =======================================================
 
-            LoadUserData();
-            UpdateUI();
+            // Cek Validitas langsung di Constructor
+            if (_currentUserID == 0)
+            {
+                MessageBox.Show("Sesi anda habis. Silakan login ulang sebelum membayar.");
+                // Opsional: Navigasi balik otomatis
+                // NavigationService.GoBack(); 
+            }
+            else
+            {
+                LoadUserData();
+                UpdateUI();
+            }
         }
 
         private void LoadUserData()

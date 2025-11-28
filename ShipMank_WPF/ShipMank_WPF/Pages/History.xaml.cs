@@ -15,18 +15,36 @@ namespace ShipMank_WPF.Pages
         {
             InitializeComponent();
 
+            // PENTING: Jangan ambil ID di sini!
+            // Pasang event handler Loaded agar selalu dijalankan setiap kali halaman tampil.
+            this.Loaded += History_Loaded;
+        }
+
+        // Method ini akan SELALU jalan setiap kali halaman dibuka, meskipun dari cache.
+        private async void History_Loaded(object sender, RoutedEventArgs e)
+        {
             if (Application.Current.MainWindow is MainWindow mw && mw.CurrentUser != null)
             {
                 _currentUserID = mw.CurrentUser.UserID;
             }
             else
             {
-                _currentUserID = 1;
+                _currentUserID = 0;
             }
 
-            InitializeHistoryAsync();
-        }
+            // JIKA USER 0, JANGAN LOAD DATA APAPUN (KOSONGKAN GRID)
+            if (_currentUserID == 0)
+            {
+                HistoryDataGrid.ItemsSource = null;
+                return;
+            }
 
+            // ... lanjut kode logic kamu ...
+            HistoryService.CheckAndProcessCompletions();
+            RefreshUI();
+            await HistoryService.SyncUnpaidBookingsAsync();
+            RefreshUI();
+        }
         private async void InitializeHistoryAsync()
         {
             // 1. Jalankan proses background (Logic ada di Service)
@@ -44,7 +62,7 @@ namespace ShipMank_WPF.Pages
 
         private void RefreshUI()
         {
-            // Panggil method static dari Service
+            // Panggil service dengan ID yang BARU saja diambil
             var data = HistoryService.GetHistoryByUser(_currentUserID);
             HistoryDataGrid.ItemsSource = data;
         }
