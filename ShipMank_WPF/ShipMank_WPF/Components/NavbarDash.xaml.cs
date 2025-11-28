@@ -144,17 +144,22 @@ namespace ShipMank_WPF.Components
         {
             try
             {
-                var dataStore = new FileDataStore("ShipMank.GoogleAuthStore");
-                await dataStore.DeleteAsync<TokenResponse>("temp_user_id");
+                // Hapus token Google yang tersimpan
+                var dataStore = new FileDataStore("ShipMank.GoogleAuthStore", true);
+                await dataStore.DeleteAsync<TokenResponse>("google_user");
 
-                MessageBox.Show("Anda telah berhasil logout.", "Logout Sukses", MessageBoxButton.OK, MessageBoxImage.Information);
-
+                // Panggil method Logout dari MainWindow (bukan ShowLoggedOutState)
                 var main = (MainWindow)Application.Current.MainWindow;
-                main.ShowLoggedOutState();
+                main.Logout(); // <--- PERBAIKAN: Gunakan Logout() bukan ShowLoggedOutState()
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Gagal logout: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(
+                    $"Gagal logout: {ex.Message}",
+                    "Error",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error
+                );
             }
         }
     }
