@@ -1,52 +1,94 @@
-﻿using System.Collections.Generic;
+﻿using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Navigation;
+using ShipMank_WPF.Components;
+using ShipMank_WPF.Models;
+using ShipMank_WPF.Models.Services; // Tambahkan namespace Service
 
 namespace ShipMank_WPF.Pages
 {
-    /// <summary>
-    /// Interaction logic for History.xaml
-    /// </summary>
     public partial class History : Page
     {
+        private int _currentUserID = 0;
+
         public History()
         {
             InitializeComponent();
-            // Memuat data tiruan untuk mengisi DataGrid
-            LoadMockData();
-        }
 
-        private void LoadMockData()
-        {
-            // Membuat list data
-            var historyItems = new List<OrderHistoryItem>
+            if (Application.Current.MainWindow is MainWindow mw && mw.CurrentUser != null)
             {
-                new OrderHistoryItem { OrderID = "TCK00001", ItemName = "Kapal Van Der Wijck", Date = new System.DateTime(2024, 1, 15), Route = "Jakarta (MAK) - Surabaya (TPR)", TotalString = "IDR 10.000.000", Status = "Completed" },
-                new OrderHistoryItem { OrderID = "RTL00001", ItemName = "Going Merry", Date = new System.DateTime(2025, 9, 30), Route = "Lombok, Senggigi", TotalString = "IDR 975.000", Status = "Upcoming" },
-                new OrderHistoryItem { OrderID = "RTL00002", ItemName = "Kapal Babe Asep", Date = new System.DateTime(2023, 12, 12), Route = "Jakarta, Pulau Seribu", TotalString = "IDR 200.000", Status = "Cancelled" },
-                new OrderHistoryItem { OrderID = "RTL00003", ItemName = "Kapal Babe Asep", Date = new System.DateTime(2023, 11, 1), Route = "Jakarta, Pulau Seribu", TotalString = "IDR 200.000", Status = "Unpaid" }
-            };
+                _currentUserID = mw.CurrentUser.UserID;
+            }
+            else
+            {
+                _currentUserID = 1;
+            }
 
-            // Mengatur ItemsSource dari DataGrid ke list data
-            HistoryDataGrid.ItemsSource = historyItems;
+            InitializeHistoryAsync();
         }
 
-        private void HistoryDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void InitializeHistoryAsync()
         {
+            // 1. Jalankan proses background (Logic ada di Service)
+            HistoryService.CheckAndProcessCompletions();
 
+            // 2. Load data awal
+            RefreshUI();
+
+            // 3. Sync Midtrans (Async)
+            await HistoryService.SyncUnpaidBookingsAsync();
+
+            // 4. Refresh lagi setelah sync
+            RefreshUI();
         }
-    }
 
-    /* * Kelas helper untuk data.
-     * Idealnya, kelas ini ada di filenya sendiri (misalnya, di dalam folder 'Models'),
-     * tapi saya letakkan di sini agar lebih mudah disalin.
-     */
-    public class OrderHistoryItem
-    {
-        public string OrderID { get; set; }
-        public string ItemName { get; set; }
-        public System.DateTime Date { get; set; }
-        public string Route { get; set; }
-        public string TotalString { get; set; } // Menggunakan string agar sesuai dengan format 'IDR ...'
-        public string Status { get; set; }
+        private void RefreshUI()
+        {
+            // Panggil method static dari Service
+            var data = HistoryService.GetHistoryByUser(_currentUserID);
+            HistoryDataGrid.ItemsSource = data;
+        }
+
+        // ================= BUTTON HANDLERS =================
+
+        private void BtnRate_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button btn && btn.DataContext is OrderHistoryItem item)
+            {
+                RatingWindow ratingPopup = new RatingWindow();
+
+                if (item.IsRated)
+                {
+                    int existing = HistoryService.GetExistingRating(item.OriginalBookingID);
+                    ratingPopup.SetReadOnlyMode(existing);
+                    ratingPopup.ShowDialog();
+                }
+                else
+                {
+                    if (ratingPopup.ShowDialog() == true)
+                    {
+                        try
+                        {
+                            HistoryService.SubmitRating(item.OriginalBookingID, item.KapalID, ratingPopup.SelectedRating);
+                            RefreshUI(); // Refresh tampilan setelah rate
+                        }
+                        catch (System.Exception ex)
+                        {
+                            MessageBox.Show("Gagal submit rating: " + ex.Message);
+                        }
+                    }
+                }
+            }
+        }
+
+        private void BtnViewDetails_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button btn && btn.DataContext is OrderHistoryItem selectedOrder)
+            {
+                NavigationService.Navigate(new ViewDetails(selectedOrder));
+            }
+        }
+
+        private void HistoryDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e) { }
     }
 }

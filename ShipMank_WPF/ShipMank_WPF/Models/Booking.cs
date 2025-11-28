@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Npgsql;
+using NpgsqlTypes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,54 +10,48 @@ namespace ShipMank_WPF.Models
 {
     public class Booking
     {
-        public int BookingID { get; private set; }
-        public int UserID { get; private set; }
-        public int KapalID { get; private set; }
-        public DateTime DateBooking { get; private set; }
+        public int BookingID { get; set; }
+        public int UserID { get; set; }
+        public User User { get; set; }
+        public int KapalID { get; set; }
+        public Kapal Kapal { get; set; }
+        public DateTime DateBooking { get; set; }
         public DateTime DateBerangkat { get; set; }
-        public int JumlahPenumpang { get; set; }
-        public string Tujuan { get; set; }
-        public BookingStatus Status { get; private set; }
-
-        public User User { get; private set; }
-        public Kapal Kapal { get; private set; }
-        public Payment Payment { get; private set; }
-
-        public Booking(int bookingID, int userID, int kapalID, DateTime dateBerangkat,
-                       int jumlahPenumpang, string tujuan, User user, Kapal kapal)
+        public BookingStatus Status { get; set; }
+        public Payment Payment { get; set; }
+        public Review Review { get; set; }
+        public Booking(int userID, int kapalID, DateTime dateBerangkat)
         {
-            BookingID = bookingID;
             UserID = userID;
             KapalID = kapalID;
             DateBooking = DateTime.Now;
             DateBerangkat = dateBerangkat;
-            JumlahPenumpang = jumlahPenumpang;
-            Tujuan = tujuan;
-            Status = BookingStatus.Pending;
-            User = user;
-            Kapal = kapal;
+            Status = BookingStatus.Unpaid;
         }
 
-        public bool BuatPesanan(int userID, int kapalID, DateTime dateBerangkat,
-                               int jumlahPenumpang, string tujuan)
+        public bool BuatPesanan(int userID, int kapalID, DateTime dateBerangkat)
         {
-            if (jumlahPenumpang <= 0 || dateBerangkat <= DateTime.Now || string.IsNullOrEmpty(tujuan))
+            if (dateBerangkat <= DateTime.Now)
                 return false;
 
             UserID = userID;
             KapalID = kapalID;
             DateBerangkat = dateBerangkat;
-            JumlahPenumpang = jumlahPenumpang;
-            Tujuan = tujuan;
+            Status = BookingStatus.Unpaid;
 
             return true;
         }
 
         public bool BatalkanPesanan()
         {
-            if (Status == BookingStatus.Pending || Status == BookingStatus.Confirmed)
+            if (Status != BookingStatus.Completed && Status != BookingStatus.Cancelled)
             {
                 Status = BookingStatus.Cancelled;
+
+                if (Payment != null && Payment.Status != PaymentStatus.Cancelled)
+                {
+                    Payment.Status = PaymentStatus.Cancelled;
+                }
                 return true;
             }
             return false;
@@ -63,9 +59,9 @@ namespace ShipMank_WPF.Models
 
         public bool KonfirmasiPesanan()
         {
-            if (Status == BookingStatus.Pending)
+            if (Status == BookingStatus.Unpaid)
             {
-                Status = BookingStatus.Confirmed;
+                Status = BookingStatus.Upcoming;
                 return true;
             }
             return false;
@@ -76,17 +72,33 @@ namespace ShipMank_WPF.Models
             return $"Booking ID: {BookingID}\n" +
                    $"User: {User?.Name ?? "Unknown"}\n" +
                    $"Kapal: {Kapal?.NamaKapal ?? "Unknown"}\n" +
-                   $"Tanggal Booking: {DateBooking:dd/MM/yyyy HH:mm}\n" +
-                   $"Tanggal Berangkat: {DateBerangkat:dd/MM/yyyy}\n" +
-                   $"Jumlah Penumpang: {JumlahPenumpang}\n" +
-                   $"Tujuan: {Tujuan}\n" +
+                   $"Tgl Booking: {DateBooking:dd/MM/yyyy HH:mm}\n" +
+                   $"Tgl Berangkat: {DateBerangkat:dd/MM/yyyy}\n" +
                    $"Status: {Status}";
         }
 
-        public double HitungTotalHarga() => Kapal != null ? Kapal.HargaPerjalanan * JumlahPenumpang : 0;
-
-        public void SetPayment(Payment payment) => Payment = payment;
-
-        public override string ToString() => $"Booking #{BookingID} - {Status} ({DateBerangkat:dd/MM/yyyy})";
+        public decimal HitungTotalHarga() => Kapal != null ? Kapal.HargaPerjalanan : 0;
+        public static bool IsDateBooked(int kapalId, DateTime date)
+        {
+            try
+            {
+                using (var conn = new NpgsqlConnection(DBHelper.GetConnectionString()))
+                {
+                    conn.Open();
+                    // Query: Hitung booking yang tidak di-cancel
+                    string sql = "SELECT COUNT(*) FROM Booking WHERE kapalID = @id AND dateBerangkat = @tgl AND status != 'Cancelled'";
+                    using (var cmd = new NpgsqlCommand(sql, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@id", kapalId);
+                        cmd.Parameters.Add(new NpgsqlParameter("@tgl", NpgsqlDbType.Date) { Value = date });
+                        return Convert.ToInt64(cmd.ExecuteScalar()) > 0;
+                    }
+                }
+            }
+            catch
+            {
+                return true; // Return true (booked/unavailable) jika error demi keamanan
+            }
+        }
     }
 }

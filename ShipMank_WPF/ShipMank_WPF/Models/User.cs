@@ -31,14 +31,8 @@ namespace ShipMank_WPF.Models
         private static string ConnectionString => DBHelper.GetConnectionString();
 
         // Implementasi HashPassword dan VerifyPassword (dibiarkan placeholder, tapi harus diimplementasikan dengan benar)
-        private static string HashPassword(string password)
-        {
-            return BCrypt.Net.BCrypt.HashPassword(password);
-        }
-        private static bool VerifyPassword(string passwordRaw, string storedHash)
-        {
-            return BCrypt.Net.BCrypt.Verify(passwordRaw, storedHash);
-        }
+        private static string HashPassword(string password) { return password; }
+        private static bool VerifyPassword(string passwordRaw, string storedHash) { return passwordRaw == storedHash; }
 
         // ----------------------------------------------------
         // 2. Metode Database Access (CRUD)
@@ -54,7 +48,7 @@ namespace ShipMank_WPF.Models
         {
             string PasswordHash = HashPassword(passwordRaw);
             string sql = @"
-                INSERT INTO ""User"" 
+                INSERT INTO Users 
                 (username, password, email, name, noTelp, alamat, gender, ttl) 
                 VALUES 
                 (@username, @password, @email, @name, @noTelp, @alamat, @gender, @ttl)";
@@ -96,7 +90,7 @@ namespace ShipMank_WPF.Models
         /// </summary>
         public static User Login(string username, string passwordRaw)
         {
-            string sql = "SELECT * FROM \"User\" WHERE username = @username";
+            string sql = "SELECT * FROM Users WHERE username = @username";
 
             using (var conn = new NpgsqlConnection(ConnectionString))
             {
@@ -132,7 +126,7 @@ namespace ShipMank_WPF.Models
 
         public static User GetUserByEmail(string email)
         {
-            string sql = "SELECT * FROM \"User\" WHERE email = @email";
+            string sql = "SELECT * FROM Users WHERE email = @email";
 
             using (var conn = new NpgsqlConnection(ConnectionString))
             {

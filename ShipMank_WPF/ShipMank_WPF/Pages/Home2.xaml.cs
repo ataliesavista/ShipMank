@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Navigation;
 using Npgsql;
 using ShipMank_WPF.Models;
@@ -80,6 +81,17 @@ namespace ShipMank_WPF.Pages
         private void BtnBookNow_Click(object sender, RoutedEventArgs e)
         {
             MessageBox.Show("Navigasi ke Booking (Fitur belum aktif di kode contoh ini)");
+        }
+
+        private void MainScroll_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            ScrollViewer scv = (ScrollViewer)sender;
+
+            double speedFactor = 3.0;
+            double scrollAmount = e.Delta / speedFactor;
+            scv.ScrollToVerticalOffset(scv.VerticalOffset - scrollAmount);
+
+            e.Handled = true;
         }
     }
 }
