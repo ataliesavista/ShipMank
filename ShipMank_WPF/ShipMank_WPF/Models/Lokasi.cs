@@ -8,30 +8,22 @@ namespace ShipMank_WPF.Models
 {
     public class Lokasi
     {
-        public int PortID { get; private set; }
-        public string Name { get; set; }
+        public int PortID { get; set; }
         public string Address { get; set; }
         public string City { get; set; }
-        public string Country { get; set; }
+        public string Province { get; set; }
 
-        public Lokasi(int portID, string name, string address, string city, string country)
+        public Lokasi(int portID, string address, string city, string province)
         {
             PortID = portID;
-            Name = name;
             Address = address;
             City = city;
-            Country = country;
-        }
-
-        public List<Kapal> GetAvailableShips()
-        {
-            // TODO: Hubungkan ke database untuk implementasinya
-            return new List<Kapal>();
+            Province = province;
         }
 
         public override string ToString()
         {
-            return $"{Name}, {City}, {Country}";
+            return $"{City}, {Province}";
         }
     }
 }

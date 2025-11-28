@@ -12,7 +12,6 @@ namespace ShipMank_WPF.Components
             InitializeComponent();
         }
 
-        // Contoh KapalID Dependency Property di ShipCard.xaml.cs
         public static readonly DependencyProperty KapalIDProperty =
             DependencyProperty.Register("KapalID", typeof(int), typeof(ShipCard), new PropertyMetadata(0));
 

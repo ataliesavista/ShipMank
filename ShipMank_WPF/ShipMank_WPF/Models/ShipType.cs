@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Npgsql;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,8 +9,8 @@ namespace ShipMank_WPF.Models
 {
     public class ShipType
     {
-        public int TypeID { get; private set; }
-        public string TypeName { get; private set; }
+        public int TypeID { get; set; }
+        public string TypeName { get; set; }
         public string Description { get; set; }
         public string ImagePath { get; set; }
 
@@ -21,9 +22,31 @@ namespace ShipMank_WPF.Models
             ImagePath = imagePath;
         }
 
-        public override string ToString()
+        public override string ToString() => TypeName;
+        public static List<string> GetAllTypeNames()
         {
-            return $"{TypeName}: {Description}";
+            var list = new List<string>();
+            try
+            {
+                using (var conn = new NpgsqlConnection(DBHelper.GetConnectionString()))
+                {
+                    conn.Open();
+                    string sql = "SELECT typeName FROM ShipType ORDER BY typeName ASC";
+                    using (var cmd = new NpgsqlCommand(sql, conn))
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            list.Add(reader["typeName"].ToString());
+                        }
+                    }
+                }
+            }
+            catch
+            {
+                
+            }
+            return list;
         }
     }
 }

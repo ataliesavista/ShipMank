@@ -478,10 +478,17 @@
     <Compile Include="Models\Enum.cs" />
     <Compile Include="Models\Kapal.cs" />
     <Compile Include="Models\Lokasi.cs" />
+    <Compile Include="Models\OrderHistoryItem.cs" />
     <Compile Include="Models\Payment.cs" />
     <Compile Include="Models\Review.cs" />
+    <Compile Include="Models\Services\BookingDetailService.cs" />
+    <Compile Include="Models\Services\HistoryService.cs" />
+    <Compile Include="Models\Services\MidtransServices.cs" />
+    <Compile Include="Models\Services\PdfService.cs" />
+    <Compile Include="Models\Services\TransactionsServices.cs" />
     <Compile Include="Models\ShipType.cs" />
     <Compile Include="Models\User.cs" />
+    <Compile Include="Models\ViewModel\ShipViewModel.cs" />
     <Compile Include="Pages\BeliTiket.xaml.cs">
       <DependentUpon>BeliTiket.xaml</DependentUpon>
     </Compile>
