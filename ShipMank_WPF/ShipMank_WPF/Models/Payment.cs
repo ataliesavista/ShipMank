@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ShipMank_WPF.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,23 +7,27 @@ using System.Threading.Tasks;
 
 namespace ShipMank_WPF.Models
 {
-    public class Payment
+    public class Payment : TransactionBase
     {
-        public int PaymentID { get; set; }
-        public int BookingID { get; set; }
+        public int BookingID { get; private set; }
         public Booking Booking { get; set; }
-        public PaymentMethod Metode { get; set; }
-        public decimal Jumlah { get; set; }
+        public PaymentMethod Metode { get; private set; }
+        public decimal Jumlah { get; private set; }
         public PaymentStatus Status { get; set; }
-        public DateTime DatePayment { get; set; }
 
         public Payment(int bookingID, decimal jumlah)
         {
             BookingID = bookingID;
             Jumlah = jumlah;
             Metode = PaymentMethod.VirtualAccount;
-            Status = PaymentStatus.Unpaid;        
-            DatePayment = DateTime.Now;
+            Status = PaymentStatus.Unpaid;
+            // DateCreated diurus oleh base class
+        }
+
+        // POLYMORPHISM: Implementasi proses transaksi untuk Payment (Bayar)
+        public override bool ProcessTransaction()
+        {
+            return ProsesPembayaran();
         }
 
         public bool ProsesPembayaran()
@@ -35,6 +40,7 @@ namespace ShipMank_WPF.Models
             if (success)
             {
                 Status = PaymentStatus.Completed;
+                // OOP Interaction
                 Booking?.KonfirmasiPesanan();
                 return true;
             }
@@ -44,6 +50,24 @@ namespace ShipMank_WPF.Models
             }
         }
 
-        public override string ToString() => $"Payment #{PaymentID} - {Status} (Rp {Jumlah:N0})";
+        // Method khusus untuk mendukung encapsulation Booking
+        public void CancelPayment()
+        {
+            if (Status != PaymentStatus.Cancelled)
+            {
+                Status = PaymentStatus.Cancelled;
+            }
+        }
+
+        // POLYMORPHISM: Override tampilan string
+        public override string ToString() => $"Payment #{ID} - {Status} (Rp {Jumlah:N0})";
+
+        public override string GetDetail()
+        {
+            return base.GetDetail() +
+                   $"\nType: Payment" +
+                   $"\nAmount: {Jumlah:N0}" +
+                   $"\nStatus: {Status}";
+        }
     }
 }

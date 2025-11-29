@@ -158,13 +158,35 @@
                                     <iconPacks:PackIconMaterial Kind="AlertCircleOutline" Width="24" Height="24" Foreground="#D97706" VerticalAlignment="Top" Margin="0,0,15,0"/>
                                     <StackPanel Grid.Column="1">
                                         <TextBlock Text="Waiting for Payment" FontWeight="Bold" Foreground="#D97706" FontSize="16" Margin="0,0,0,5"/>
-                                        <TextBlock Text="Please complete your payment via Virtual Account before the expiration time." Foreground="#92400E" TextWrapping="Wrap" Margin="0,0,0,10"/>
-
-                                        <TextBlock Text="Virtual Account Number:" FontSize="12" Foreground="Gray"/>
-                                        <TextBlock x:Name="TxtVANumber" Text="-" FontSize="24" FontWeight="Bold" Foreground="#333" Margin="0,2,0,0"/>
+                                        <TextBlock Text="Please complete your payment before the expiration time." Foreground="#92400E" TextWrapping="Wrap" Margin="0,0,0,10"/>
                                     </StackPanel>
                                 </Grid>
                             </Border>
+
+                            <StackPanel x:Name="PanelUnpaidInfo" Visibility="Collapsed" Margin="0,0,0,20">
+                                <TextBlock Text="Payment Information" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                                <Border Background="#F3F4F6" CornerRadius="8" Padding="15">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                                            <TextBlock x:Name="TxtBankName" Text="BCA Virtual Account" Foreground="#6B7280" FontSize="12"/>
+                                            <TextBlock x:Name="TxtVANumberDisplay" Text="1234567890" FontWeight="Bold" FontSize="20" Foreground="#333" Margin="0,2,0,0"/>
+                                        </StackPanel>
+
+                                        <Button x:Name="BtnCopyVA" Grid.Column="1" Click="BtnCopyVA_Click"
+                                                Background="Transparent" BorderThickness="0" Cursor="Hand" Padding="10,5">
+                                            <StackPanel Orientation="Horizontal">
+                                                <iconPacks:PackIconMaterial Kind="ContentCopy" Width="16" Height="16" Foreground="#2563EB" Margin="0,0,5,0" VerticalAlignment="Center"/>
+                                                <TextBlock Text="Copy" Foreground="#2563EB" FontWeight="Bold" VerticalAlignment="Center"/>
+                                            </StackPanel>
+                                        </Button>
+                                    </Grid>
+                                </Border>
+                            </StackPanel>
 
                             <Grid>
                                 <Grid.ColumnDefinitions>

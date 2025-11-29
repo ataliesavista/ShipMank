@@ -241,11 +241,7 @@
 
                         <StackPanel Grid.Column="0">
                             <TextBlock Text="Capacity" FontWeight="Bold" Foreground="#333" FontSize="12" Margin="0,0,0,2"/>
-                            <ComboBox x:Name="CapacityComboBox" Style="{StaticResource FilterComboBoxStyle}" IsEditable="True" Text="Any">
-                                <ComboBoxItem Content="Any"/>
-                                <ComboBoxItem Content="2 - 5 People"/>
-                                <ComboBoxItem Content="5 - 10 People"/>
-                                <ComboBoxItem Content="10+ People"/>
+                            <ComboBox x:Name="CapacityComboBox" Style="{StaticResource FilterComboBoxStyle}">
                             </ComboBox>
                         </StackPanel>
 

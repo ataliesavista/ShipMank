@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Windows; // Wajib untuk Application.Current
+using System.Windows;
 using System.Windows.Controls;
 using Npgsql;
 using ShipMank_WPF.Components;
@@ -14,39 +14,32 @@ namespace ShipMank_WPF.Pages
         private ShipViewModel _shipData;
         private DateTime _bookingDate;
 
-        // HAPUS "= 1", kita set default 0 dulu
         private int _currentUserID = 0;
 
-        private MidtransServices _midtransService;
+        private ITransactionProcessor _transactionProcessor;
 
         public Payment(ShipViewModel shipData, DateTime bookingDate)
         {
             InitializeComponent();
             _shipData = shipData;
             _bookingDate = bookingDate;
-            _midtransService = new MidtransServices();
 
-            // =======================================================
-            // PERBAIKAN: HAPUS FALLBACK HARDCODED
-            // =======================================================
+            var midtransService = new MidtransServices();
+            _transactionProcessor = new MidtransTransactionProcessor(midtransService);
+
             if (Application.Current.MainWindow is MainWindow mw && mw.CurrentUser != null)
             {
                 _currentUserID = mw.CurrentUser.UserID;
-
-                // Debugging: Cek Output Window di Visual Studio saat dijalankan
                 System.Diagnostics.Debug.WriteLine($"PAYMENT PAGE: Logged in as ID {_currentUserID}");
             }
             else
             {
-                _currentUserID = 0; // Set 0 agar terdeteksi invalid
+                _currentUserID = 0;
             }
 
-            // Cek Validitas langsung di Constructor
             if (_currentUserID == 0)
             {
-                MessageBox.Show("Sesi anda habis. Silakan login ulang sebelum membayar.");
-                // Opsional: Navigasi balik otomatis
-                // NavigationService.GoBack(); 
+                MessageBox.Show("Sesi anda habis atau belum login. Silakan login ulang.", "Akses Ditolak");
             }
             else
             {
@@ -57,7 +50,6 @@ namespace ShipMank_WPF.Pages
 
         private void LoadUserData()
         {
-            // Pengecekan keamanan
             if (_currentUserID == 0) return;
 
             try
@@ -106,10 +98,9 @@ namespace ShipMank_WPF.Pages
         {
             if (_shipData == null) return;
 
-            // Validasi User ID
             if (_currentUserID == 0)
             {
-                MessageBox.Show("Sesi login tidak valid. Silakan login ulang.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Sesi login tidak valid.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
@@ -120,14 +111,14 @@ namespace ShipMank_WPF.Pages
             string type = bank == "mandiri" ? "echannel" : "bank_transfer";
             decimal amount = ParseCurrency(TxtTotal.Text);
 
-            var result = await TransactionServices.ProcessBookingTransaction(
-                _currentUserID, // <--- Ini sekarang sudah dinamis sesuai yang login
+            var result = await _transactionProcessor.ProcessBooking(
+                _currentUserID,
                 _shipData.KapalID,
                 _bookingDate,
                 amount,
                 bank,
-                type,
-                _midtransService);
+                type
+            );
 
             if (result.Success)
             {
@@ -145,6 +136,10 @@ namespace ShipMank_WPF.Pages
         }
 
         private decimal ParseCurrency(string str) => decimal.TryParse(str?.Replace("Rp", "").Replace(".", "").Trim(), out decimal res) ? res : 0;
-        private void CancelButton_Click(object sender, RoutedEventArgs e) { if (NavigationService.CanGoBack) NavigationService.GoBack(); }
+
+        private void CancelButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (NavigationService.CanGoBack) NavigationService.GoBack();
+        }
     }
 }

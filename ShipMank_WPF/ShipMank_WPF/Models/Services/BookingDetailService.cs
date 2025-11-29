@@ -22,6 +22,7 @@ namespace ShipMank_WPF.Models.Services
         public string PaymentMethod { get; set; }
         public DateTime? PaymentDate { get; set; }
         public string VaNumber { get; set; }
+        public string PaymentBank { get; set; }
     }
 
     public static class BookingDetailService
@@ -37,7 +38,7 @@ namespace ShipMank_WPF.Models.Services
                         SELECT b.bookingID, b.dateBooking, b.dateBerangkat, b.status,
                                k.namaKapal, s.typeName, l.city, l.province,
                                u.name AS custName, u.email AS custEmail, u.noTelp AS custPhone,
-                               p.paymentMethod, p.datePayment, p.va_number,
+                               p.paymentMethod, p.datePayment, p.va_number, p.bankName,
                                COALESCE(p.jumlah, k.hargaPerjalanan) AS totalPaid
                         FROM Booking b
                         JOIN Users u ON b.userID = u.userID
@@ -54,6 +55,23 @@ namespace ShipMank_WPF.Models.Services
                         {
                             if (reader.Read())
                             {
+                                string bank = reader["bankName"]?.ToString();
+                                string method = reader["paymentMethod"]?.ToString(); // Isinya "VirtualAccount"
+
+                                // LOGIKA PENGGABUNGAN NAMA BANK & METHOD
+                                string displayMethod = "-";
+                                if (!string.IsNullOrEmpty(bank))
+                                {
+                                    if (bank.ToLower() == "mandiri")
+                                        displayMethod = "Mandiri Bill Payment";
+                                    else
+                                        displayMethod = $"{bank.ToUpper()} Virtual Account";
+                                }
+                                else if (!string.IsNullOrEmpty(method))
+                                {
+                                    displayMethod = method; // Fallback jika bank null (transaksi lama)
+                                }
+
                                 return new BookingDetailInfo
                                 {
                                     OrderID = $"BKG-{reader["bookingID"].ToString().PadLeft(5, '0')}",
@@ -67,9 +85,10 @@ namespace ShipMank_WPF.Models.Services
                                     BookingDate = Convert.ToDateTime(reader["dateBooking"]),
                                     Status = reader["status"].ToString(),
                                     TotalPaid = Convert.ToDecimal(reader["totalPaid"]),
-                                    PaymentMethod = reader["paymentMethod"]?.ToString(),
+                                    PaymentMethod = displayMethod, // SUDAH DIGABUNG DI SINI
                                     PaymentDate = reader["datePayment"] as DateTime?,
-                                    VaNumber = reader["va_number"]?.ToString()
+                                    VaNumber = reader["va_number"]?.ToString(),
+                                    PaymentBank = bank // Tetap disimpan untuk logika lain jika perlu
                                 };
                             }
                         }
