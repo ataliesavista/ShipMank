@@ -26,7 +26,6 @@ namespace ShipMank_WPF.Models.Services
                     page.PageColor(QColors.White);
                     page.DefaultTextStyle(x => x.FontSize(10));
 
-                    // HEADER
                     page.Header().Row(row =>
                     {
                         row.RelativeItem().Column(col =>
@@ -41,10 +40,9 @@ namespace ShipMank_WPF.Models.Services
                         });
                     });
 
-                    // CONTENT
+                    // ISIIII
                     page.Content().PaddingVertical(20).Column(col =>
                     {
-                        // Booking Details Box
                         col.Item().Border(1).BorderColor(QColors.Grey.Lighten2).Padding(10).Column(inner =>
                         {
                             inner.Item().Text("Booking Details").Bold().FontSize(12).Underline();
@@ -55,7 +53,6 @@ namespace ShipMank_WPF.Models.Services
 
                         col.Item().Height(10);
 
-                        // Trip Info Box
                         col.Item().Border(1).BorderColor(QColors.Grey.Lighten2).Padding(10).Column(inner =>
                         {
                             inner.Item().Text("Trip Information").Bold().FontSize(12).Underline();
@@ -67,7 +64,6 @@ namespace ShipMank_WPF.Models.Services
 
                         col.Item().Height(10);
 
-                        // Payment Summary
                         col.Item().Border(1).BorderColor(QColors.Grey.Lighten2).Padding(10).Column(inner =>
                         {
                             inner.Item().Text("Payment Summary").Bold().FontSize(12).Underline();
@@ -93,7 +89,6 @@ namespace ShipMank_WPF.Models.Services
                         }
                     });
 
-                    // FOOTER
                     page.Footer().AlignCenter().Text(x =>
                     {
                         x.Span("Thank you for choosing ShipMank. Contact support: support@shipmank.com");

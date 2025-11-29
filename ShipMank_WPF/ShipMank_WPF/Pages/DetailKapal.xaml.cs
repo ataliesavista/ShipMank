@@ -30,7 +30,6 @@ namespace ShipMank_WPF.Pages
                 if (_originalButtonBackground == null) _originalButtonBackground = BookNowButton.Background;
                 if (ShipInfo != null)
                 {
-                    // 1. Panggil Method Static di Model Kapal
                     _allImages = Kapal.GetImages(_kapalId, ShipInfo.ImageSource);
                     UpdateMainImage();
 
@@ -50,7 +49,6 @@ namespace ShipMank_WPF.Pages
         {
             if (ShipInfo?.KapalStatus != "Available") { SetUiStatus(false, "Unavailable (Maintenance)"); return; }
 
-            // 2. Panggil Method Static di Model Booking
             bool isBooked = Booking.IsDateBooked(_kapalId, date);
             SetUiStatus(!isBooked, isBooked ? "Unavailable / Booked" : "Available");
         }
@@ -78,7 +76,6 @@ namespace ShipMank_WPF.Pages
             (Application.Current.MainWindow as MainWindow)?.MainFrame.Navigate(new Payment(ShipInfo, date));
         }
 
-        // Logic Gambar UI
         private void UpdateMainImage()
         {
             if (_allImages?.Count > 0) try { MainImage.Source = new BitmapImage(new Uri(_allImages[_currentImageIndex], UriKind.RelativeOrAbsolute)); } catch { }

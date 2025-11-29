@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Npgsql;
-using ShipMank_WPF.Components; // Jika OrderHistoryItem ada di namespace lain, sesuaikan
-using ShipMank_WPF.Models;     // Untuk DBHelper
+using ShipMank_WPF.Components;
+using ShipMank_WPF.Models;  
 using Newtonsoft.Json;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -15,7 +15,6 @@ namespace ShipMank_WPF.Models.Services
 {
     public class HistoryService
     {
-        // 1. AUTO COMPLETE (Update status jika tanggal lewat)
         public static void CheckAndProcessCompletions()
         {
             try
@@ -28,10 +27,9 @@ namespace ShipMank_WPF.Models.Services
                     using (var cmd = new NpgsqlCommand(sql, conn)) cmd.ExecuteNonQuery();
                 }
             }
-            catch { /* Ignore background process error */ }
+            catch { }
         }
 
-        // 2. LOAD HISTORY DATA
         public static List<OrderHistoryItem> GetHistoryByUser(int userId)
         {
             var list = new List<OrderHistoryItem>();
@@ -86,10 +84,8 @@ namespace ShipMank_WPF.Models.Services
             return list;
         }
 
-        // 3. SYNC MIDTRANS (Cek Unpaid -> Update ke Paid)
         public static async Task SyncUnpaidBookingsAsync()
         {
-            // Ambil Config Manual disini atau pass dari luar
             var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json");
             var config = builder.Build();
             string serverKey = config["Midtrans:ServerKey"];
@@ -98,7 +94,6 @@ namespace ShipMank_WPF.Models.Services
 
             var unpaidIds = new List<int>();
 
-            // Step A: Get Unpaid IDs
             try
             {
                 using (var conn = new NpgsqlConnection(DBHelper.GetConnectionString()))
@@ -111,7 +106,6 @@ namespace ShipMank_WPF.Models.Services
             }
             catch { return; }
 
-            // Step B: Cek API & Update
             using (var client = new HttpClient())
             {
                 var authString = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(serverKey + ":"));
@@ -157,7 +151,7 @@ namespace ShipMank_WPF.Models.Services
             }
         }
 
-        // 4. RATING LOGIC
+        // Rating Logic
         public static int GetExistingRating(int bookingId)
         {
             try

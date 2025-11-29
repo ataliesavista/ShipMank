@@ -5,7 +5,6 @@ using ShipMank_WPF.Models;
 
 namespace ShipMank_WPF.Models.Services
 {
-    // Interface tetap sama
     public interface ITransactionProcessor
     {
         Task<(bool Success, string Message, string VaNumber)> ProcessBooking(
@@ -43,8 +42,7 @@ namespace ShipMank_WPF.Models.Services
                         string uniqueOrderID = $"BKG-{newBookingID}";
                         vaNumber = await _midtransService.CreateVaAsync(bank, (long)amount, uniqueOrderID, paymentType);
 
-                        // 3. Insert Payment (SEKARANG MENYERTAKAN 'BANK')
-                        // Kita kirim parameter 'bank' (misal 'bca', 'mandiri') ke method insert
+                        // 3. Insert Payment 
                         await InsertPaymentAsync(conn, trans, newBookingID, amount, vaNumber, bank);
 
                         trans.Commit();
@@ -74,10 +72,8 @@ namespace ShipMank_WPF.Models.Services
             }
         }
 
-        // PERUBAHAN DI SINI: Tambah parameter string bankName
         private async Task InsertPaymentAsync(NpgsqlConnection conn, NpgsqlTransaction trans, int bookingId, decimal amount, string vaNumber, string bankName)
         {
-            // PERUBAHAN QUERY: Tambah kolom bankName
             string sql = @"INSERT INTO Payment (bookingID, paymentMethod, jumlah, paymentStatus, datePayment, va_number, bankName)
                            VALUES (@BookingID, 'VirtualAccount', @Jumlah, 'Unpaid', NOW(), @VA, @BankName);";
 
@@ -86,7 +82,7 @@ namespace ShipMank_WPF.Models.Services
                 cmd.Parameters.AddWithValue("BookingID", bookingId);
                 cmd.Parameters.AddWithValue("Jumlah", amount);
                 cmd.Parameters.AddWithValue("VA", vaNumber);
-                cmd.Parameters.AddWithValue("BankName", bankName); // Simpan nama bank (bca/bni/dll)
+                cmd.Parameters.AddWithValue("BankName", bankName);
                 await cmd.ExecuteNonQueryAsync();
             }
         }

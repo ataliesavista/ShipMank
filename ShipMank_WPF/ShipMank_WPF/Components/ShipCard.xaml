@@ -9,7 +9,6 @@
              d:DesignHeight="450" d:DesignWidth="380"
              Width="Auto" Height="Auto">
 
-    <!-- Definisi Warna -->
     <UserControl.Resources>
         <SolidColorBrush x:Key="PrimaryBlue" Color="#1570A6"/>
         <SolidColorBrush x:Key="AccentYellow" Color="#FFC72C"/>
@@ -23,12 +22,10 @@
         </Style>
     </UserControl.Resources>
 
-    <!-- ANIMASI ZOOM GAMBAR SAAT HOVER -->
     <UserControl.Triggers>
         <EventTrigger RoutedEvent="MouseEnter">
             <BeginStoryboard>
                 <Storyboard>
-                    <!-- Scale X membesar ke 1.1 -->
                     <DoubleAnimation Storyboard.TargetName="ShipImage"
                                      Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
                                      To="1.1" Duration="0:0:0.4">
@@ -36,7 +33,6 @@
                             <CubicEase EasingMode="EaseOut"/>
                         </DoubleAnimation.EasingFunction>
                     </DoubleAnimation>
-                    <!-- Scale Y membesar ke 1.1 -->
                     <DoubleAnimation Storyboard.TargetName="ShipImage"
                                      Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
                                      To="1.1" Duration="0:0:0.4">
@@ -51,7 +47,6 @@
         <EventTrigger RoutedEvent="MouseLeave">
             <BeginStoryboard>
                 <Storyboard>
-                    <!-- Kembali ke ukuran normal (1.0) -->
                     <DoubleAnimation Storyboard.TargetName="ShipImage"
                                      Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
                                      To="1.0" Duration="0:0:0.4">
@@ -77,12 +72,9 @@
         </Border.Effect>
 
         <StackPanel>
-            <!-- Bagian Gambar dan Badge Kelas -->
             <Grid>
-                <!-- ClipToBounds="True" Wajib agar zoom tidak keluar dari border -->
                 <Border CornerRadius="15,15,0,0" Height="220" ClipToBounds="True">
 
-                    <!-- Tambahkan x:Name dan RenderTransform -->
                     <Image x:Name="ShipImage" 
                            Source="{Binding ImageSource, RelativeSource={RelativeSource AncestorType=UserControl}}" 
                            Stretch="UniformToFill"
@@ -94,7 +86,6 @@
 
                 </Border>
 
-                <!-- Badge Kelas -->
                 <Border Background="{StaticResource PrimaryBlue}"
                         CornerRadius="10" Padding="15,7" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="15">
                     <TextBlock Text="{Binding ShipClass, RelativeSource={RelativeSource AncestorType=UserControl}}" 
@@ -102,14 +93,11 @@
                 </Border>
             </Grid>
 
-            <!-- Bagian Konten Detail -->
             <StackPanel Margin="20">
 
-                <!-- Nama Kapal -->
                 <TextBlock Text="{Binding ShipName, RelativeSource={RelativeSource AncestorType=UserControl}}" 
                            FontSize="28" FontWeight="ExtraBold" Margin="0,0,0,10"/>
 
-                <!-- Lokasi, Kapasitas, dan Rating -->
                 <Grid Margin="0,0,0,15">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -117,7 +105,6 @@
                     </Grid.ColumnDefinitions>
 
                     <StackPanel Grid.Column="0">
-                        <!-- Lokasi Kapal -->
                         <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
                             <iconPacks:PackIconMaterial Kind="MapMarker" 
                                                         Width="16" Height="16" 
@@ -129,7 +116,6 @@
                                        FontSize="16" Foreground="{StaticResource DarkGrayText}"/>
                         </StackPanel>
 
-                        <!-- Kapasitas Orang -->
                         <StackPanel Orientation="Horizontal">
                             <iconPacks:PackIconMaterial Kind="AccountGroup" 
                                                         Width="18" Height="18" 
@@ -142,7 +128,6 @@
                         </StackPanel>
                     </StackPanel>
 
-                    <!-- Rating Kapal -->
                     <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Right">
                         <iconPacks:PackIconMaterial Kind="Star" 
                                                     Width="18" Height="18" 
@@ -155,7 +140,6 @@
                     </StackPanel>
                 </Grid>
 
-                <!-- Fasilitas Kapal (Amenities) -->
                 <ItemsControl ItemsSource="{Binding Facilities, RelativeSource={RelativeSource AncestorType=UserControl}}" 
                               Margin="0,0,0,20">
                     <ItemsControl.ItemsPanel>
@@ -178,10 +162,8 @@
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
 
-                <!-- Separator -->
                 <Border Height="1" Background="#E5E7EB" Margin="0,0,0,20"/>
 
-                <!-- Harga dan Tombol Booking -->
                 <Grid VerticalAlignment="Center">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -195,7 +177,6 @@
                         </TextBlock>
                     </StackPanel>
 
-                    <!-- Tombol Booking -->
                     <Button Grid.Column="1" Content="Book Now" 
                             Background="{StaticResource PrimaryBlue}" Foreground="White"
                             Padding="25,12" BorderThickness="0" 

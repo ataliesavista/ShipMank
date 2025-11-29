@@ -32,9 +32,6 @@
                 </Grid>
 
                 <Grid VerticalAlignment="Center" Margin="50">
-                    <!-- Hapus ColumnDefinitions agar area teks mengambil seluruh lebar layar -->
-
-                    <!-- Ubah HorizontalAlignment jadi Center, Hapus Grid.Column="0", Hapus Margin kanan -->
                     <StackPanel VerticalAlignment="Center" 
                 HorizontalAlignment="Center">
 
@@ -45,7 +42,6 @@
                            TextWrapping="Wrap"
                            TextAlignment="Center" 
                            LineHeight="65"/>
-                        <!-- Tambah TextAlignment -->
 
                         <TextBlock Text="across Indonesia"
                            FontSize="100"
@@ -54,19 +50,13 @@
                            TextWrapping="Wrap"
                            TextAlignment="Center" 
                            LineHeight="65"/>
-                        <!-- Tambah TextAlignment -->
                     </StackPanel>
                 </Grid>
             </Grid>
 
-            <!-- ================= NEW SECTION: SHIP TYPES ================= -->
             <StackPanel Margin="50,60,50,20">
 
-                <!-- Section Header -->
                 <Grid Margin="0,0,0,30">
-                    <!-- Hapus ColumnDefinitions agar Grid memakai full width -->
-
-                    <!-- Tambahkan HorizontalAlignment="Center" pada StackPanel -->
                     <StackPanel HorizontalAlignment="Center">
 
                         <TextBlock Text="Ship Types we offer"
@@ -76,7 +66,7 @@
                            Margin="0,0,0,10"
                            TextAlignment="Center" 
                            HorizontalAlignment="Center"/>
-                        <!-- Tambah TextAlignment & HorizontalAlignment -->
+                        
 
                         <TextBlock Text="Explore our diverse fleet tailored for your needs. From high-speed boats for quick island transfers to large ferries for logistics, and luxury yachts for leisure."
                            FontSize="16"
@@ -86,25 +76,18 @@
                            HorizontalAlignment="Center" 
                            TextAlignment="Center" 
                            LineHeight="24"/>
-                        <!-- Ganti HorizontalAlignment jadi Center & Tambah TextAlignment -->
                     </StackPanel>
                 </Grid>
 
-                <!-- Cards Grid (Menggunakan ItemsControl untuk Looping Data) -->
                 <ItemsControl ItemsSource="{Binding ShipTypes}">
-                    <!-- Layout Container untuk Items -->
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <!-- WrapPanel agar card turun ke bawah jika layar penuh -->
                             <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center"/>
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
 
-                    <!-- Template untuk setiap Item (Card) -->
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <!-- Memanggil UserControl CardKapalType -->
-                            <!-- Binding ke Properties di Class ShipTypeModel -->
                             <components:CardKapalType 
                                 Width="350"
                                 Margin="15"
@@ -117,7 +100,6 @@
 
             </StackPanel>
 
-            <!-- ================= CALL TO ACTION SECTION ================= -->
             <Border Margin="100,20,100,60"
         CornerRadius="15"
         Height="120">

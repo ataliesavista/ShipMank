@@ -9,7 +9,7 @@ namespace ShipMank_WPF.Components
     public partial class RatingWindow : Window
     {
         public int SelectedRating { get; private set; } = 0;
-        private bool _isReadOnly = false; // Penanda Mode
+        private bool _isReadOnly = false;
 
         private readonly Brush _goldColor = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFD700"));
         private readonly Brush _lightYellow = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFF9C4"));
@@ -19,30 +19,24 @@ namespace ShipMank_WPF.Components
         {
             InitializeComponent();
         }
-
-        // --- METHOD BARU: Untuk Mengaktifkan Mode Read Only ---
         public void SetReadOnlyMode(int existingRating)
         {
             _isReadOnly = true;
             SelectedRating = existingRating;
 
-            // Update UI
             TitleText.Text = "Your Rating";
             SubTitleText.Text = "You have already rated this trip";
-            BtnSubmit.Visibility = Visibility.Collapsed; // Sembunyikan tombol submit
+            BtnSubmit.Visibility = Visibility.Collapsed;
 
-            // Matikan Cursor Hand
             StarsPanel.Cursor = Cursors.Arrow;
             Star1.Cursor = Cursors.Arrow; Star2.Cursor = Cursors.Arrow;
             Star3.Cursor = Cursors.Arrow; Star4.Cursor = Cursors.Arrow; Star5.Cursor = Cursors.Arrow;
 
-            // Tampilkan Bintang Emas sesuai rating
             UpdateStars(SelectedRating, false);
         }
 
         private void Star_MouseEnter(object sender, MouseEventArgs e)
         {
-            // Jika ReadOnly, jangan lakukan apa-apa
             if (_isReadOnly) return;
 
             if (sender is PackIconMaterial icon && int.TryParse(icon.Tag.ToString(), out int hoverRating))
@@ -59,7 +53,7 @@ namespace ShipMank_WPF.Components
 
         private void Star_Click(object sender, MouseButtonEventArgs e)
         {
-            if (_isReadOnly) return; // Tidak bisa diklik jika ReadOnly
+            if (_isReadOnly) return;
 
             if (sender is PackIconMaterial icon && int.TryParse(icon.Tag.ToString(), out int rating))
             {

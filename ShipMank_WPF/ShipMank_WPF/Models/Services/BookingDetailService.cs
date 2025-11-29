@@ -56,9 +56,8 @@ namespace ShipMank_WPF.Models.Services
                             if (reader.Read())
                             {
                                 string bank = reader["bankName"]?.ToString();
-                                string method = reader["paymentMethod"]?.ToString(); // Isinya "VirtualAccount"
+                                string method = reader["paymentMethod"]?.ToString();
 
-                                // LOGIKA PENGGABUNGAN NAMA BANK & METHOD
                                 string displayMethod = "-";
                                 if (!string.IsNullOrEmpty(bank))
                                 {
@@ -69,7 +68,7 @@ namespace ShipMank_WPF.Models.Services
                                 }
                                 else if (!string.IsNullOrEmpty(method))
                                 {
-                                    displayMethod = method; // Fallback jika bank null (transaksi lama)
+                                    displayMethod = method;
                                 }
 
                                 return new BookingDetailInfo
@@ -85,10 +84,10 @@ namespace ShipMank_WPF.Models.Services
                                     BookingDate = Convert.ToDateTime(reader["dateBooking"]),
                                     Status = reader["status"].ToString(),
                                     TotalPaid = Convert.ToDecimal(reader["totalPaid"]),
-                                    PaymentMethod = displayMethod, // SUDAH DIGABUNG DI SINI
+                                    PaymentMethod = displayMethod, 
                                     PaymentDate = reader["datePayment"] as DateTime?,
                                     VaNumber = reader["va_number"]?.ToString(),
-                                    PaymentBank = bank // Tetap disimpan untuk logika lain jika perlu
+                                    PaymentBank = bank 
                                 };
                             }
                         }

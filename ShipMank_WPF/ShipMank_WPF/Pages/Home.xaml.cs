@@ -24,18 +24,14 @@ namespace ShipMank_WPF.Pages
         public Home()
         {
             InitializeComponent();
-
-            // Set default date
             TicketDatePicker.SelectedDate = DateTime.Now;
             UpdateDateDisplay();
 
-            // Subscribe to date changed event
             TicketDatePicker.SelectedDateChanged += TicketDatePicker_SelectedDateChanged;
         }
 
         private void DateBorder_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            // Open the DatePicker calendar
             TicketDatePicker.IsDropDownOpen = true;
         }
 
@@ -48,13 +44,12 @@ namespace ShipMank_WPF.Pages
         {
             if (TicketDatePicker.SelectedDate.HasValue)
             {
-                // Format: "Sen, 32 Feb 25"
                 var date = TicketDatePicker.SelectedDate.Value;
-                var culture = new CultureInfo("id-ID"); // Indonesian culture
+                var culture = new CultureInfo("id-ID")
 
-                string dayOfWeek = date.ToString("ddd", culture); // Sen, Sel, Rab, etc.
+                string dayOfWeek = date.ToString("ddd", culture);
                 string day = date.Day.ToString("00");
-                string month = date.ToString("MMM", culture); // Jan, Feb, Mar, etc.
+                string month = date.ToString("MMM", culture); 
                 string year = date.ToString("yy");
 
                 DateTextBlock.Text = $"{dayOfWeek}, {day} {month} {year}";
@@ -63,30 +58,24 @@ namespace ShipMank_WPF.Pages
 
         private void TicketsTab_Click(object sender, RoutedEventArgs e)
         {
-            // Set Tickets tab active
             TicketsTabButton.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#154D71"));
             TicketsTabButton.Foreground = new SolidColorBrush(Colors.White);
 
-            // Set Rentals tab inactive
             RentalsTabButton.Background = new SolidColorBrush(Colors.Transparent);
             RentalsTabButton.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#888888"));
 
-            // Show Tickets content, hide Rentals content
             TicketsContent.Visibility = Visibility.Visible;
             RentalsContent.Visibility = Visibility.Collapsed;
         }
 
         private void RentalsTab_Click(object sender, RoutedEventArgs e)
         {
-            // Set Rentals tab active
             RentalsTabButton.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#154D71"));
             RentalsTabButton.Foreground = new SolidColorBrush(Colors.White);
 
-            // Set Tickets tab inactive
             TicketsTabButton.Background = new SolidColorBrush(Colors.Transparent);
             TicketsTabButton.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#888888"));
 
-            // Show Rentals content, hide Tickets content
             RentalsContent.Visibility = Visibility.Visible;
             TicketsContent.Visibility = Visibility.Collapsed;
         }

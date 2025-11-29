@@ -9,12 +9,11 @@ using ShipMank_WPF.Models;
 
 namespace ShipMank_WPF.Pages
 {
-    // 1. UPDATE: Tambahkan ImagePath ke model
     public class ShipTypeModel
     {
         public string Title { get; set; }
         public string Description { get; set; }
-        public string ImagePath { get; set; } // Sekarang akan menampung URL dari DB
+        public string ImagePath { get; set; }
     }
 
     public partial class Home2 : Page
@@ -40,8 +39,6 @@ namespace ShipMank_WPF.Pages
                 {
                     conn.Open();
 
-                    // 2. UPDATE: Ambil kolom imagePath dari database
-                    // Kita asumsikan PostgreSQL menyimpannya sebagai huruf kecil
                     string sql = "SELECT typename, description, imagepath FROM shiptype";
 
                     using (var cmd = new NpgsqlCommand(sql, conn))
@@ -50,17 +47,14 @@ namespace ShipMank_WPF.Pages
                         {
                             while (reader.Read())
                             {
-                                // Pastikan nama kolom di sini cocok dengan nama di DB (huruf kecil)
                                 string typeName = reader["typename"].ToString();
                                 string description = reader["description"].ToString();
-                                // Ambil ImagePath (berisi URL Imgur, Supabase, dll.)
                                 string imagePath = reader["imagepath"].ToString();
 
                                 var ship = new ShipTypeModel
                                 {
                                     Title = typeName,
                                     Description = description,
-                                    // 3. UPDATE: Langsung gunakan ImagePath dari DB
                                     ImagePath = imagePath
                                 };
 
@@ -75,8 +69,6 @@ namespace ShipMank_WPF.Pages
                 MessageBox.Show($"Gagal mengambil data kapal: {ex.Message}");
             }
         }
-
-        // 4. UPDATE: Hapus fungsi GetImageForShipType karena ImagePath sudah diambil dari DB
 
         private void BtnBookNow_Click(object sender, RoutedEventArgs e)
         {

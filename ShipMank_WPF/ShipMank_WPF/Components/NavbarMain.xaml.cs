@@ -12,6 +12,7 @@ namespace ShipMank_WPF.Components
             InitializeComponent();
         }
 
+        // komen
         //private void SetActiveButton(Button activeButton)
         //{
         //    // Reset semua button

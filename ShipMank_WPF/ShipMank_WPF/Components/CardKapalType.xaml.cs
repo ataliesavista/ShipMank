@@ -25,9 +25,7 @@ namespace ShipMank_WPF.Components
             InitializeComponent();
         }
 
-        // ==========================================
-        // 1. PROP: ImageSource
-        // ==========================================
+        // Image Source (gambar)
         public ImageSource ImageSource
         {
             get { return (ImageSource)GetValue(ImageSourceProperty); }
@@ -38,9 +36,7 @@ namespace ShipMank_WPF.Components
             DependencyProperty.Register("ImageSource", typeof(ImageSource), typeof(CardKapalType), new PropertyMetadata(null));
 
 
-        // ==========================================
-        // 2. PROP: JudulKapal
-        // ==========================================
+        // Judul Kapal
         public string JudulKapal
         {
             get { return (string)GetValue(JudulKapalProperty); }
@@ -51,9 +47,7 @@ namespace ShipMank_WPF.Components
             DependencyProperty.Register("JudulKapal", typeof(string), typeof(CardKapalType), new PropertyMetadata("Judul Kapal"));
 
 
-        // ==========================================
-        // 3. PROP: DeskripsiKapal
-        // ==========================================
+        // Deskripsi Kapal
         public string DeskripsiKapal
         {
             get { return (string)GetValue(DeskripsiKapalProperty); }
