@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization; // Untuk nama bulan
+using System.Globalization;
 using System.Linq;
 using System.Text;
-using System.Threading; // Untuk CancellationToken
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -21,6 +21,7 @@ using Google.Apis.Oauth2.v2.Data;
 using Google.Apis.Services;
 using Google.Apis.Util.Store;
 using Microsoft.Extensions.Configuration;
+using ShipMank_WPF.Models;
 
 namespace ShipMank_WPF.Components
 {
@@ -29,6 +30,9 @@ namespace ShipMank_WPF.Components
         // Flag untuk melacak mode Edit/Save Personal Info
         private bool isEditing = false;
         public event EventHandler DeleteAccountRequested;
+
+        // Menyimpan data user yang sedang login
+        private User _currentUser;
 
         public SettingsControl()
         {
@@ -47,7 +51,6 @@ namespace ShipMank_WPF.Components
             // 2. Ambil data profil Google
             try
             {
-                // Cek apakah file konfigurasi ada sebelum build (Opsional, untuk safety)
                 var builder = new ConfigurationBuilder()
                     .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
 
@@ -56,7 +59,7 @@ namespace ShipMank_WPF.Components
                 string clientId = configuration["GoogleAuth:ClientId"];
                 string clientSecret = configuration["GoogleAuth:ClientSecret"];
 
-                // Jika config belum diset, skip Google Auth (agar tidak crash saat development)
+                // Jika config belum diset, skip Google Auth
                 if (!string.IsNullOrEmpty(clientId) && !string.IsNullOrEmpty(clientSecret))
                 {
                     string[] scopes = { Oauth2Service.Scope.UserinfoEmail, Oauth2Service.Scope.UserinfoProfile };
@@ -79,40 +82,115 @@ namespace ShipMank_WPF.Components
 
                         Userinfo profile = await oauthService.Userinfo.Get().ExecuteAsync();
 
-                        // 3. Isi data ke UI
-                        FullNameTextBox.Text = profile.Name;
-                        EmailTextBox.Text = profile.Email; // Email utama
+                        // 3. Cari user di database berdasarkan email
+                        _currentUser = User.GetUserByEmail(profile.Email);
 
-                        // Default values
-                        GenderComboBox.SelectedIndex = 0;
+                        // 4. Jika user belum ada, buat user baru (untuk Google Login)
+                        if (_currentUser == null)
+                        {
+                            var newUser = new User();
+                            bool registered = newUser.Register(
+                                username: profile.Email.Split('@')[0], // Username dari email
+                                passwordRaw: Guid.NewGuid().ToString(), // Password random untuk Google login
+                                email: profile.Email,
+                                name: profile.Name
+                            );
+
+                            if (registered)
+                            {
+                                _currentUser = User.GetUserByEmail(profile.Email);
+                                if (_currentUser != null)
+                                {
+                                    _currentUser.IsGoogleLogin = true;
+                                    UpdateIsGoogleLogin(_currentUser.UserID, true);
+                                }
+                            }
+                        }
+
+                        // 5. Load data user ke UI
+                        LoadUserDataToUI();
                     }
                 }
                 else
                 {
                     // Dummy data jika tidak ada Google Auth config
-                    FullNameTextBox.Text = "User Local";
-                    EmailTextBox.Text = "user@local.com";
+                    LoadDummyUserData();
                 }
 
-                // ============================================================
-                // MODIFIKASI: Logic City (Kosongkan jika tidak ada data)
-                // ============================================================
-                //string cityData = null; // Anggap data dari database kosong
-
-                //if (string.IsNullOrEmpty(cityData))
-                //{
-                //    CityTextBox.Text = ""; // Dibuat kosong sesuai permintaan
-                //}
-                //else
-                //{
-                //    CityTextBox.Text = cityData;
-                //}
             }
             catch (Exception ex)
             {
-                // Log error tapi jangan crash aplikasi
-                // MessageBox.Show($"Gagal memuat profil: {ex.Message}...");
-                FullNameTextBox.Text = "Offline User";
+                MessageBox.Show($"Gagal memuat profil: {ex.Message}", "Error",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+
+                // Fallback ke offline user
+                LoadDummyUserData();
+            }
+        }
+
+        /// <summary>
+        /// Load dummy data untuk development tanpa Google Auth
+        /// </summary>
+        private void LoadDummyUserData()
+        {
+            FullNameTextBox.Text = "User Local";
+            EmailTextBox.Text = "user@local.com";
+            GenderComboBox.SelectedIndex = 0;
+            CmbBirthDay.SelectedIndex = 0;
+            CmbBirthMonth.SelectedIndex = 0;
+            CmbBirthYear.SelectedIndex = 0;
+        }
+
+        /// <summary>
+        /// Load data user dari objek _currentUser ke UI
+        /// </summary>
+        private void LoadUserDataToUI()
+        {
+            if (_currentUser == null) return;
+
+            FullNameTextBox.Text = _currentUser.Name ?? "";
+            EmailTextBox.Text = _currentUser.Email ?? "";
+
+            // Load Gender
+            if (!string.IsNullOrEmpty(_currentUser.Gender))
+            {
+                // Cari index berdasarkan value gender
+                for (int i = 0; i < GenderComboBox.Items.Count; i++)
+                {
+                    var item = GenderComboBox.Items[i] as ComboBoxItem;
+                    if (item != null && item.Content.ToString().Equals(_currentUser.Gender, StringComparison.OrdinalIgnoreCase))
+                    {
+                        GenderComboBox.SelectedIndex = i;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                GenderComboBox.SelectedIndex = 0; // Default
+            }
+
+            // Load Birth Date
+            if (_currentUser.TTL.HasValue)
+            {
+                DateTime birthDate = _currentUser.TTL.Value;
+
+                // Set Hari
+                CmbBirthDay.SelectedItem = birthDate.Day.ToString();
+
+                // Set Bulan
+                string monthName = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(birthDate.Month);
+                CmbBirthMonth.SelectedItem = monthName;
+
+                // Set Tahun
+                CmbBirthYear.SelectedItem = birthDate.Year.ToString();
+            }
+            else
+            {
+                // Reset ke default jika tidak ada data
+                CmbBirthDay.SelectedIndex = 0;
+                CmbBirthMonth.SelectedIndex = 0;
+                CmbBirthYear.SelectedIndex = 0;
             }
         }
 
@@ -147,27 +225,196 @@ namespace ShipMank_WPF.Components
             // Balikkan status editing
             isEditing = !isEditing;
 
-            // Terapkan mode baru
-            SetEditMode(isEditing);
-
-            // Jika tombol "Save" baru saja diklik
+            // Jika tombol "Save" baru saja diklik (sekarang mode = false)
             if (!isEditing)
             {
-                // Simpan ke database logic di sini
-                MessageBox.Show("Personal information updated.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                // Validasi dan simpan data
+                if (SaveUserData())
+                {
+                    MessageBox.Show("Personal information updated successfully.", "Success",
+                        MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                else
+                {
+                    // Kembalikan ke mode edit jika gagal save
+                    isEditing = true;
+                }
+            }
+
+            // Terapkan mode baru
+            SetEditMode(isEditing);
+        }
+
+        /// <summary>
+        /// Menyimpan data user ke database PostgreSQL
+        /// </summary>
+        private bool SaveUserData()
+        {
+            try
+            {
+                if (_currentUser == null)
+                {
+                    MessageBox.Show("User data not loaded.", "Error",
+                        MessageBoxButton.OK, MessageBoxImage.Error);
+                    return false;
+                }
+
+                // Validasi input
+                string fullName = FullNameTextBox.Text.Trim();
+                if (string.IsNullOrEmpty(fullName))
+                {
+                    MessageBox.Show("Full name cannot be empty.", "Validation Error",
+                        MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return false;
+                }
+
+                // Ambil Gender
+                string gender = null;
+                if (GenderComboBox.SelectedItem is ComboBoxItem selectedGender)
+                {
+                    string genderValue = selectedGender.Content.ToString();
+                    if (genderValue != "Gender") // Jika bukan placeholder
+                    {
+                        gender = genderValue;
+                    }
+                }
+
+                // Parse Birth Date
+                DateTime? birthDate = ParseBirthDate();
+
+                // Update ke database
+                bool success = UpdateUserInDatabase(_currentUser.UserID, fullName, gender, birthDate);
+
+                if (!success)
+                {
+                    MessageBox.Show("Failed to update user data.", "Error",
+                        MessageBoxButton.OK, MessageBoxImage.Error);
+                    return false;
+                }
+
+                // Update objek _currentUser setelah sukses simpan
+                _currentUser.Name = fullName;
+                _currentUser.Gender = gender;
+                _currentUser.TTL = birthDate;
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error saving data: {ex.Message}", "Error",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Update data user ke database PostgreSQL
+        /// </summary>
+        private bool UpdateUserInDatabase(int userID, string name, string gender, DateTime? ttl)
+        {
+            string sql = @"
+                UPDATE Users 
+                SET name = @name, 
+                    gender = @gender, 
+                    ttl = @ttl
+                WHERE userID = @userID";
+
+            using (var conn = new Npgsql.NpgsqlConnection(DBHelper.GetConnectionString()))
+            {
+                try
+                {
+                    conn.Open();
+                    using (var cmd = new Npgsql.NpgsqlCommand(sql, conn))
+                    {
+                        cmd.Parameters.AddWithValue("userID", userID);
+                        cmd.Parameters.AddWithValue("name", (object)name ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("gender", (object)gender ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("ttl", (object)ttl ?? DBNull.Value);
+
+                        int rowsAffected = cmd.ExecuteNonQuery();
+                        return rowsAffected > 0;
+                    }
+                }
+                catch (Npgsql.NpgsqlException ex)
+                {
+                    System.Diagnostics.Debug.WriteLine($"Update DB Error: {ex.Message}");
+                    return false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Update flag IsGoogleLogin di database
+        /// </summary>
+        private void UpdateIsGoogleLogin(int userID, bool isGoogleLogin)
+        {
+            string sql = "UPDATE Users SET isGoogleLogin = @isGoogleLogin WHERE userID = @userID";
+
+            using (var conn = new Npgsql.NpgsqlConnection(DBHelper.GetConnectionString()))
+            {
+                try
+                {
+                    conn.Open();
+                    using (var cmd = new Npgsql.NpgsqlCommand(sql, conn))
+                    {
+                        cmd.Parameters.AddWithValue("userID", userID);
+                        cmd.Parameters.AddWithValue("isGoogleLogin", isGoogleLogin);
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                catch (Npgsql.NpgsqlException ex)
+                {
+                    System.Diagnostics.Debug.WriteLine($"Update IsGoogleLogin Error: {ex.Message}");
+                }
+            }
+        }
+
+        /// <summary>
+        /// Parse tanggal lahir dari 3 ComboBox
+        /// </summary>
+        private DateTime? ParseBirthDate()
+        {
+            // Cek apakah semua ComboBox sudah dipilih (tidak di placeholder)
+            if (CmbBirthDay.SelectedIndex <= 0 ||
+                CmbBirthMonth.SelectedIndex <= 0 ||
+                CmbBirthYear.SelectedIndex <= 0)
+            {
+                return null; // Tanggal lahir tidak diisi
+            }
+
+            try
+            {
+                int day = int.Parse(CmbBirthDay.SelectedItem.ToString());
+
+                string monthName = CmbBirthMonth.SelectedItem.ToString();
+                int month = DateTime.ParseExact(monthName, "MMMM", CultureInfo.CurrentCulture).Month;
+
+                int year = int.Parse(CmbBirthYear.SelectedItem.ToString());
+
+                // Validasi tanggal
+                DateTime birthDate = new DateTime(year, month, day);
+
+                // Validasi tambahan: tidak boleh tanggal masa depan
+                if (birthDate > DateTime.Now)
+                {
+                    MessageBox.Show("Birth date cannot be in the future.", "Validation Error",
+                        MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return null;
+                }
+
+                return birthDate;
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Invalid birth date selected.", "Validation Error",
+                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                return null;
             }
         }
 
         private void SetEditMode(bool isEnabled)
         {
-            // Kunci/buka kunci semua bidang Personal Info
             FullNameTextBox.IsReadOnly = !isEnabled;
-
-            // Note: Email biasanya dikelola terpisah (sesuai permintaan fitur tombol +Email)
-            // Jadi EmailTextBox di bagian Personal Info/Account Info kita biarkan ReadOnly 
-            // atau ikut logic ini jika fieldnya sama.
-
-            //CityTextBox.IsReadOnly = !isEnabled;
 
             GenderComboBox.IsEnabled = isEnabled;
             CmbBirthDay.IsEnabled = isEnabled;
@@ -190,66 +437,72 @@ namespace ShipMank_WPF.Components
             }
         }
 
-        // ============================================================
-        // MODIFIKASI: LOGIC EMAIL (+ EMAIL, SAVE, CANCEL)
-        // ============================================================
-        //private void BtnAddEmail_Click(object sender, RoutedEventArgs e)
-        //{
-        //    // 1. Sembunyikan tombol "+ Email"
-        //    BtnAddEmail.Visibility = Visibility.Collapsed;
-
-        //    // 2. Munculkan tombol Save & Cancel
-        //    StpEmailActions.Visibility = Visibility.Visible;
-
-        //    // 3. Munculkan Input Email Baru
-        //    StpNewEmailInput.Visibility = Visibility.Visible;
-        //    TxtNewEmail.Text = ""; // Reset input
-        //    TxtNewEmail.Focus();
-        //}
-
-        //private void BtnCancelEmail_Click(object sender, RoutedEventArgs e)
-        //{
-        //    ResetEmailUI();
-        //}
-
-        //private void BtnSaveEmail_Click(object sender, RoutedEventArgs e)
-        //{
-        //    // Validasi dan Simpan Email Baru
-        //    string newEmail = TxtNewEmail.Text;
-
-        //    if (!string.IsNullOrWhiteSpace(newEmail) && newEmail.Contains("@"))
-        //    {
-        //        // Update Tampilan Email Utama (Simulasi)
-        //        EmailTextBox.Text = newEmail;
-
-        //        // TODO: Update ke Database/Google Account di sini
-
-        //        MessageBox.Show("Email updated successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-        //        ResetEmailUI();
-        //    }
-        //    else
-        //    {
-        //        MessageBox.Show("Please enter a valid email address.", "Invalid Email", MessageBoxButton.OK, MessageBoxImage.Warning);
-        //    }
-        //}
-
-        private void ResetEmailUI()
-        {
-            //// Kembalikan ke kondisi awal
-            //BtnAddEmail.Visibility = Visibility.Visible;
-            //StpEmailActions.Visibility = Visibility.Collapsed;
-            //StpNewEmailInput.Visibility = Visibility.Collapsed;
-        }
-
-        // ============================================================
-        // MODIFIKASI: LOGIC DELETE ACCOUNT POPUP
-        // ============================================================
-
-        // 1. Saat tombol "Delete" di Section diklik -> Buka Popup
         private void DeleteAccount_Click(object sender, RoutedEventArgs e)
         {
-            DeleteAccountRequested?.Invoke(this, EventArgs.Empty);
+            // Konfirmasi penghapusan
+            var result = MessageBox.Show(
+                "Are you sure you want to delete your account? This action cannot be undone.",
+                "Confirm Delete",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Warning
+            );
+
+            if (result == MessageBoxResult.Yes)
+            {
+                try
+                {
+                    if (_currentUser != null)
+                    {
+                        bool deleted = DeleteUserFromDatabase(_currentUser.UserID);
+
+                        if (deleted)
+                        {
+                            MessageBox.Show("Account deleted successfully.", "Success",
+                                MessageBoxButton.OK, MessageBoxImage.Information);
+
+                            // Trigger event untuk logout atau navigasi
+                            DeleteAccountRequested?.Invoke(this, EventArgs.Empty);
+                        }
+                        else
+                        {
+                            MessageBox.Show("Failed to delete account.", "Error",
+                                MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error deleting account: {ex.Message}", "Error",
+                        MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
         }
 
+        /// <summary>
+        /// Hapus user dari database PostgreSQL
+        /// </summary>
+        private bool DeleteUserFromDatabase(int userID)
+        {
+            string sql = "DELETE FROM Users WHERE userID = @userID";
+
+            using (var conn = new Npgsql.NpgsqlConnection(DBHelper.GetConnectionString()))
+            {
+                try
+                {
+                    conn.Open();
+                    using (var cmd = new Npgsql.NpgsqlCommand(sql, conn))
+                    {
+                        cmd.Parameters.AddWithValue("userID", userID);
+                        int rowsAffected = cmd.ExecuteNonQuery();
+                        return rowsAffected > 0;
+                    }
+                }
+                catch (Npgsql.NpgsqlException ex)
+                {
+                    System.Diagnostics.Debug.WriteLine($"Delete DB Error: {ex.Message}");
+                    return false;
+                }
+            }
+        }
     }
 }

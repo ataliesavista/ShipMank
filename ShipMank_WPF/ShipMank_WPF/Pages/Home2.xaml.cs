@@ -72,8 +72,27 @@ namespace ShipMank_WPF.Pages
 
         private void BtnBookNow_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Navigasi ke Booking (Fitur belum aktif di kode contoh ini)");
+            // Ambil instance MainWindow (tempat CurrentUser disimpan)
+            MainWindow mw = Application.Current.MainWindow as MainWindow;
+
+            if (mw == null)
+                return;
+
+            // CEK apakah user sudah login
+            if (mw.CurrentUser == null)
+            {
+                MessageBox.Show("Silakan login terlebih dahulu untuk melakukan pemesanan tiket.",
+                                "Belum Login", MessageBoxButton.OK, MessageBoxImage.Warning);
+
+                // Tampilkan popup halaman login
+                mw.ShowPopup(new LoginPage());
+                return;
+            }
+
+            // Jika sudah login → langsung arahkan ke halaman pembelian tiket
+            mw.MainFrame.Navigate(new BeliTiket());
         }
+
 
         private void MainScroll_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
         {
