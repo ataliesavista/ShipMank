@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using ShipMank_WPF.Models.ViewModel; // <--- WAJIB ADA: Karena ShipViewModel ada di sini
+using ShipMank_WPF.Models.ViewModel;
 
 namespace ShipMank_WPF.Models
 {
@@ -100,7 +100,6 @@ namespace ShipMank_WPF.Models
             }
             catch { }
 
-            // Fallback ke gambar default jika kosong
             if (images.Count == 0 && !string.IsNullOrEmpty(defaultImage))
                 images.Add(defaultImage);
 

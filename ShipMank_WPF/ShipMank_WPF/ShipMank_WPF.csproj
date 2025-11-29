@@ -473,6 +473,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\BaseTransaction.cs" />
     <Compile Include="Models\Booking.cs" />
     <Compile Include="Models\DBHelper.cs" />
     <Compile Include="Models\Enum.cs" />
@@ -539,6 +540,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="appsettings.json" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

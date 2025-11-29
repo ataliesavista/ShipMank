@@ -5,12 +5,26 @@ using ShipMank_WPF.Models;
 
 namespace ShipMank_WPF.Models.Services
 {
-    public class TransactionServices
+    // Interface tetap sama
+    public interface ITransactionProcessor
     {
-        public static async Task<(bool Success, string Message, string VaNumber)> ProcessBookingTransaction(
+        Task<(bool Success, string Message, string VaNumber)> ProcessBooking(
             int userId, int kapalId, DateTime date, decimal amount,
-            string bank, string paymentType,
-            MidtransServices midtransService)
+            string bank, string paymentType);
+    }
+
+    public class MidtransTransactionProcessor : ITransactionProcessor
+    {
+        private readonly MidtransServices _midtransService;
+
+        public MidtransTransactionProcessor(MidtransServices midtransService)
+        {
+            _midtransService = midtransService;
+        }
+
+        public async Task<(bool Success, string Message, string VaNumber)> ProcessBooking(
+            int userId, int kapalId, DateTime date, decimal amount,
+            string bank, string paymentType)
         {
             string connString = DBHelper.GetConnectionString();
             string vaNumber = "";
@@ -18,40 +32,20 @@ namespace ShipMank_WPF.Models.Services
             using (var conn = new NpgsqlConnection(connString))
             {
                 await conn.OpenAsync();
-
                 using (var trans = conn.BeginTransaction())
                 {
                     try
                     {
-                        // 1. INSERT BOOKING
-                        string bookingSql = @"INSERT INTO Booking (userID, kapalID, dateBooking, dateBerangkat, status)
-                                              VALUES (@UserID, @KapalID, NOW(), @DateBerangkat, 'Unpaid') 
-                                              RETURNING bookingID;";
+                        // 1. Insert Booking
+                        int newBookingID = await InsertBookingAsync(conn, trans, userId, kapalId, date);
 
-                        int newBookingID;
-                        using (var cmd = new NpgsqlCommand(bookingSql, conn, trans))
-                        {
-                            cmd.Parameters.AddWithValue("UserID", userId);
-                            cmd.Parameters.AddWithValue("KapalID", kapalId);
-                            cmd.Parameters.AddWithValue("DateBerangkat", date);
-                            newBookingID = (int)await cmd.ExecuteScalarAsync();
-                        }
-
-                        // 2. REQUEST MIDTRANS
+                        // 2. Request Midtrans
                         string uniqueOrderID = $"BKG-{newBookingID}";
-                        vaNumber = await midtransService.CreateVaAsync(bank, (long)amount, uniqueOrderID, paymentType);
+                        vaNumber = await _midtransService.CreateVaAsync(bank, (long)amount, uniqueOrderID, paymentType);
 
-                        // 3. INSERT PAYMENT
-                        string paymentSql = @"INSERT INTO Payment (bookingID, paymentMethod, jumlah, paymentStatus, datePayment, va_number)
-                                              VALUES (@BookingID, 'VirtualAccount', @Jumlah, 'Unpaid', NOW(), @VA);";
-
-                        using (var cmd = new NpgsqlCommand(paymentSql, conn, trans))
-                        {
-                            cmd.Parameters.AddWithValue("BookingID", newBookingID);
-                            cmd.Parameters.AddWithValue("Jumlah", amount);
-                            cmd.Parameters.AddWithValue("VA", vaNumber);
-                            await cmd.ExecuteNonQueryAsync();
-                        }
+                        // 3. Insert Payment (SEKARANG MENYERTAKAN 'BANK')
+                        // Kita kirim parameter 'bank' (misal 'bca', 'mandiri') ke method insert
+                        await InsertPaymentAsync(conn, trans, newBookingID, amount, vaNumber, bank);
 
                         trans.Commit();
                         return (true, "Success", vaNumber);
@@ -62,6 +56,38 @@ namespace ShipMank_WPF.Models.Services
                         return (false, ex.Message, null);
                     }
                 }
+            }
+        }
+
+        private async Task<int> InsertBookingAsync(NpgsqlConnection conn, NpgsqlTransaction trans, int userId, int kapalId, DateTime date)
+        {
+            string sql = @"INSERT INTO Booking (userID, kapalID, dateBooking, dateBerangkat, status)
+                           VALUES (@UserID, @KapalID, NOW(), @DateBerangkat, 'Unpaid') 
+                           RETURNING bookingID;";
+
+            using (var cmd = new NpgsqlCommand(sql, conn, trans))
+            {
+                cmd.Parameters.AddWithValue("UserID", userId);
+                cmd.Parameters.AddWithValue("KapalID", kapalId);
+                cmd.Parameters.AddWithValue("DateBerangkat", date);
+                return (int)await cmd.ExecuteScalarAsync();
+            }
+        }
+
+        // PERUBAHAN DI SINI: Tambah parameter string bankName
+        private async Task InsertPaymentAsync(NpgsqlConnection conn, NpgsqlTransaction trans, int bookingId, decimal amount, string vaNumber, string bankName)
+        {
+            // PERUBAHAN QUERY: Tambah kolom bankName
+            string sql = @"INSERT INTO Payment (bookingID, paymentMethod, jumlah, paymentStatus, datePayment, va_number, bankName)
+                           VALUES (@BookingID, 'VirtualAccount', @Jumlah, 'Unpaid', NOW(), @VA, @BankName);";
+
+            using (var cmd = new NpgsqlCommand(sql, conn, trans))
+            {
+                cmd.Parameters.AddWithValue("BookingID", bookingId);
+                cmd.Parameters.AddWithValue("Jumlah", amount);
+                cmd.Parameters.AddWithValue("VA", vaNumber);
+                cmd.Parameters.AddWithValue("BankName", bankName); // Simpan nama bank (bca/bni/dll)
+                await cmd.ExecuteNonQueryAsync();
             }
         }
     }

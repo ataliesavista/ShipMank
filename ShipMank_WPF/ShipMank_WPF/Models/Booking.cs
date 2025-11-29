@@ -1,5 +1,6 @@
 ﻿using Npgsql;
 using NpgsqlTypes;
+using ShipMank_WPF.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,37 +9,40 @@ using System.Threading.Tasks;
 
 namespace ShipMank_WPF.Models
 {
-    public class Booking
+    public class Booking : TransactionBase
     {
-        public int BookingID { get; set; }
-        public int UserID { get; set; }
+        // ENCAPSULATION
+        public int UserID { get; private set; }
         public User User { get; set; }
-        public int KapalID { get; set; }
+        public int KapalID { get; private set; }
         public Kapal Kapal { get; set; }
-        public DateTime DateBooking { get; set; }
-        public DateTime DateBerangkat { get; set; }
-        public BookingStatus Status { get; set; }
+        public DateTime DateBerangkat { get; private set; }
+        public BookingStatus Status { get; private set; }
         public Payment Payment { get; set; }
         public Review Review { get; set; }
+
         public Booking(int userID, int kapalID, DateTime dateBerangkat)
         {
             UserID = userID;
             KapalID = kapalID;
-            DateBooking = DateTime.Now;
             DateBerangkat = dateBerangkat;
             Status = BookingStatus.Unpaid;
+            // ID dan DateCreated diurus oleh base class atau diset saat save DB
+        }
+
+        // POLYMORPHISM: Implementasi proses transaksi untuk Booking (Konfirmasi)
+        public override bool ProcessTransaction()
+        {
+            return KonfirmasiPesanan();
         }
 
         public bool BuatPesanan(int userID, int kapalID, DateTime dateBerangkat)
         {
-            if (dateBerangkat <= DateTime.Now)
-                return false;
-
+            if (dateBerangkat <= DateTime.Now) return false;
             UserID = userID;
             KapalID = kapalID;
             DateBerangkat = dateBerangkat;
             Status = BookingStatus.Unpaid;
-
             return true;
         }
 
@@ -47,10 +51,10 @@ namespace ShipMank_WPF.Models
             if (Status != BookingStatus.Completed && Status != BookingStatus.Cancelled)
             {
                 Status = BookingStatus.Cancelled;
-
-                if (Payment != null && Payment.Status != PaymentStatus.Cancelled)
+                // OOP Interaction: Memanggil method di Payment (jika ada)
+                if (Payment != null)
                 {
-                    Payment.Status = PaymentStatus.Cancelled;
+                    Payment.CancelPayment();
                 }
                 return true;
             }
@@ -67,17 +71,19 @@ namespace ShipMank_WPF.Models
             return false;
         }
 
-        public string GetDetailBooking()
+        // POLYMORPHISM: Override GetDetail
+        public override string GetDetail()
         {
-            return $"Booking ID: {BookingID}\n" +
-                   $"User: {User?.Name ?? "Unknown"}\n" +
-                   $"Kapal: {Kapal?.NamaKapal ?? "Unknown"}\n" +
-                   $"Tgl Booking: {DateBooking:dd/MM/yyyy HH:mm}\n" +
-                   $"Tgl Berangkat: {DateBerangkat:dd/MM/yyyy}\n" +
-                   $"Status: {Status}";
+            return base.GetDetail() +
+                   $"\nType: Booking" +
+                   $"\nUser: {User?.Name ?? "Unknown"}" +
+                   $"\nKapal: {Kapal?.NamaKapal ?? "Unknown"}" +
+                   $"\nStatus: {Status}";
         }
 
         public decimal HitungTotalHarga() => Kapal != null ? Kapal.HargaPerjalanan : 0;
+
+        // Static Method tetap ada untuk utility
         public static bool IsDateBooked(int kapalId, DateTime date)
         {
             try
@@ -85,7 +91,6 @@ namespace ShipMank_WPF.Models
                 using (var conn = new NpgsqlConnection(DBHelper.GetConnectionString()))
                 {
                     conn.Open();
-                    // Query: Hitung booking yang tidak di-cancel
                     string sql = "SELECT COUNT(*) FROM Booking WHERE kapalID = @id AND dateBerangkat = @tgl AND status != 'Cancelled'";
                     using (var cmd = new NpgsqlCommand(sql, conn))
                     {
@@ -95,10 +100,7 @@ namespace ShipMank_WPF.Models
                     }
                 }
             }
-            catch
-            {
-                return true; // Return true (booked/unavailable) jika error demi keamanan
-            }
+            catch { return true; }
         }
     }
 }
