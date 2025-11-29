@@ -238,7 +238,7 @@ namespace ShipMank_WPF.Components
             //// Kembalikan ke kondisi awal
             //BtnAddEmail.Visibility = Visibility.Visible;
             //StpEmailActions.Visibility = Visibility.Collapsed;
-            StpNewEmailInput.Visibility = Visibility.Collapsed;
+            //StpNewEmailInput.Visibility = Visibility.Collapsed;
         }
 
         // ============================================================
