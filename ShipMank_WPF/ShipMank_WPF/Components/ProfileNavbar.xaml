@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ShipMank_WPF.Components"
              mc:Ignorable="d" 
-             d:DesignHeight="320" d:DesignWidth="300"
+             d:DesignHeight="250" d:DesignWidth="300"
              Background="Transparent"
              Loaded="ProfileNavbar_Loaded">
 
@@ -86,13 +86,8 @@
 
             </Border>
 
-            <!-- Bagian Navigasi Utama -->
-            <StackPanel Grid.Row="1" Margin="0,20,0,0">
-                <RadioButton x:Name="PassengerListButton" Content="Passenger Lists" Style="{StaticResource NavButtonStyle}" GroupName="NavMain"/>
-            </StackPanel>
-
             <!-- Bagian Akun & Logout -->
-            <StackPanel Grid.Row="2" Margin="0,0,0,20">
+            <StackPanel Grid.Row="1" Margin="0,0,0,20">
                 <Separator Margin="10"/>
                 <RadioButton x:Name="MyAccountButton" Content="My Account" Style="{StaticResource NavButtonStyle}" GroupName="NavMain" IsChecked="True"/>
                 <RadioButton x:Name="LogoutButton" Content="Logout" Style="{StaticResource NavButtonStyle}" GroupName="NavMain" Checked="LogoutButton_Checked"/>
