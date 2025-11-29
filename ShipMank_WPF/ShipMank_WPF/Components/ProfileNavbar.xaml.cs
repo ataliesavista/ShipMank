@@ -34,7 +34,6 @@ namespace ShipMank_WPF.Components
         {
             InitializeComponent();
 
-            PassengerListButton.Click += (s, e) => NavigatePassengerList?.Invoke(this, e);
             MyAccountButton.Click += (s, e) => NavigateMyAccount?.Invoke(this, e);
 
             this.Loaded += ProfileNavbar_Loaded;
