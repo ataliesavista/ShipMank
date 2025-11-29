@@ -140,7 +140,6 @@
                             <Setter Property="CornerRadius" Value="20"/>
                         </Style>
                     </Button.Resources>
-                    <!-- === DIGANTI === -->
                     <iconPacks:PackIconMaterial Kind="Logout"
                                                 FontSize="16"
                                                 Foreground="Black"

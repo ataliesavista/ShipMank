@@ -22,48 +22,32 @@ namespace ShipMank_WPF
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            // Hanya set tampilan awal, JANGAN hapus token
             ShowInitialState();
         }
 
-        /// <summary>
-        /// Tampilan awal aplikasi (belum login) - TIDAK menghapus token
-        /// </summary>
         public void ShowInitialState()
         {
             CurrentUser = null;
-
-            // Bersihkan navigasi
             if (MainFrame.NavigationService != null && MainFrame.NavigationService.CanGoBack)
             {
                 MainFrame.NavigationService.RemoveBackEntry();
             }
             MainFrame.Content = null;
 
-            // Set tampilan logged out
             NavbarContainer.Content = new NavbarMain();
             MainFrame.Navigate(new Home2());
         }
 
-        /// <summary>
-        /// Logout user - HAPUS token Google dan reset state
-        /// </summary>
         public void Logout()
         {
-            // 1. Hapus data user
             CurrentUser = null;
-
-            // 2. HAPUS TOKEN GOOGLE
             DeleteGoogleToken();
-
-            // 3. Bersihkan frame & history
             if (MainFrame.NavigationService != null && MainFrame.NavigationService.CanGoBack)
             {
                 MainFrame.NavigationService.RemoveBackEntry();
             }
             MainFrame.Content = null;
 
-            // 4. Reset tampilan ke logged out
             NavbarContainer.Content = new NavbarMain();
             MainFrame.Navigate(new Home2());
 
@@ -75,9 +59,6 @@ namespace ShipMank_WPF
             );
         }
 
-        /// <summary>
-        /// Fungsi helper untuk menghapus token Google
-        /// </summary>
         private void DeleteGoogleToken()
         {
             try
@@ -99,9 +80,6 @@ namespace ShipMank_WPF
             }
         }
 
-        /// <summary>
-        /// Tampilan setelah login berhasil
-        /// </summary>
         public void ShowLoggedInState()
         {
             NavbarContainer.Content = new NavbarDash();

@@ -126,7 +126,6 @@ namespace ShipMank_WPF.Components
             set { SetValue(ImageSourceProperty, value); }
         }
 
-        // 2. Facilities DP
         public static readonly DependencyProperty FacilitiesProperty =
             DependencyProperty.Register("Facilities", typeof(List<string>), typeof(ShipCard), new PropertyMetadata(null));
 

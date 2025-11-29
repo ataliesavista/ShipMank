@@ -13,9 +13,7 @@
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <StackPanel Background="#EBF1F5">
 
-            <!-- Hero Section with Search Card -->
             <Grid MinHeight="600">
-                <!-- Background with gradient opacity -->
                 <Grid>
                     <Image Source="/Assets/hero2.jpg"
                            Stretch="UniformToFill"/>
@@ -35,7 +33,6 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
-                    <!-- Left Side - Title (50%) -->
                     <StackPanel VerticalAlignment="Center" HorizontalAlignment="Left" Grid.Column="0" Margin="0,0,40,0">
                         <TextBlock Text="Boat Rentals &amp; Ship"
                                    FontSize="56"
@@ -57,7 +54,6 @@
                                    LineHeight="65"/>
                     </StackPanel>
 
-                    <!-- Right Side - Search Card (50%) -->
                     <Border Background="#F5F5F5"
                             CornerRadius="25"
                             Padding="30"
@@ -70,7 +66,6 @@
                         </Border.Effect>
 
                         <StackPanel>
-                            <!-- Tab Buttons with Border -->
                             <Border BorderBrush="#CCCCCC" 
                                     BorderThickness="2" 
                                     CornerRadius="25" 
@@ -117,9 +112,7 @@
                                 </Grid>
                             </Border>
 
-                            <!-- Tickets Content -->
                             <StackPanel x:Name="TicketsContent" Visibility="Visible">
-                                <!-- From and To Row -->
                                 <Grid Margin="0,0,0,20">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
@@ -127,7 +120,6 @@
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
 
-                                    <!-- From Field -->
                                     <StackPanel Grid.Column="0">
                                         <TextBlock Text="From" 
                                                    FontWeight="Bold" 
@@ -146,7 +138,6 @@
                                         </Border>
                                     </StackPanel>
 
-                                    <!-- Swap Icon -->
                                     <Border Width="40" 
                                             Height="40" 
                                             Background="White"
@@ -157,7 +148,6 @@
                                             BorderBrush="#E0E0E0"
                                             BorderThickness="1"
                                             Cursor="Hand">
-                                        <!-- === EMOTICON DIGANTI === -->
                                         <iconPacks:PackIconMaterial Kind="SwapHorizontal"
                                                                     FontSize="20"
                                                                     HorizontalAlignment="Center"
@@ -165,7 +155,6 @@
                                                                     Foreground="#666"/>
                                     </Border>
 
-                                    <!-- To Field -->
                                     <StackPanel Grid.Column="2">
                                         <TextBlock Text="To" 
                                                    FontWeight="Bold" 
@@ -185,7 +174,6 @@
                                     </StackPanel>
                                 </Grid>
 
-                                <!-- Date and Passenger Row -->
                                 <Grid Margin="0,0,0,25">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
@@ -193,7 +181,6 @@
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
 
-                                    <!-- Date Field -->
                                     <StackPanel Grid.Column="0">
                                         <TextBlock Text="Date" 
                                                    FontWeight="Bold" 
@@ -215,7 +202,6 @@
                                                             Width="0"
                                                             Height="0"/>
                                                 <StackPanel Orientation="Horizontal">
-                                                    <!-- === EMOTICON DIGANTI === -->
                                                     <iconPacks:PackIconMaterial Kind="Calendar"
                                                                                 Margin="0,0,8,0"
                                                                                 Width="16" Height="16"
@@ -231,7 +217,6 @@
                                         </Border>
                                     </StackPanel>
 
-                                    <!-- Passenger Field -->
                                     <StackPanel Grid.Column="2">
                                         <TextBlock Text="Passenger" 
                                                    FontWeight="Bold" 
@@ -245,7 +230,6 @@
                                                 BorderThickness="1"
                                                 Cursor="Hand">
                                             <StackPanel Orientation="Horizontal">
-                                                <!-- === EMOTICON DIGANTI === -->
                                                 <iconPacks:PackIconMaterial Kind="Account" 
                                                                             Margin="0,0,8,0"
                                                                             Width="16" Height="16"
@@ -261,7 +245,6 @@
                                 </Grid>
                             </StackPanel>
 
-                            <!-- Rentals Content -->
                             <StackPanel x:Name="RentalsContent" Visibility="Collapsed">
                                 <Grid Margin="0,0,0,25">
                                     <Grid.ColumnDefinitions>
@@ -270,7 +253,6 @@
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
 
-                                    <!-- Location Field -->
                                     <StackPanel Grid.Column="0">
                                         <TextBlock Text="Location" 
                                                    FontWeight="Bold" 
@@ -299,7 +281,6 @@
                                         </Border>
                                     </StackPanel>
 
-                                    <!-- People Field -->
                                     <StackPanel Grid.Column="2">
                                         <TextBlock Text="People" 
                                                    FontWeight="Bold" 
@@ -313,7 +294,6 @@
                                                 BorderThickness="1"
                                                 Cursor="Hand">
                                             <StackPanel Orientation="Horizontal">
-                                                <!-- === EMOTICON DIGANTI === -->
                                                 <iconPacks:PackIconMaterial Kind="Account" 
                                                                             Margin="0,0,8,0"
                                                                             Width="16" Height="16"
@@ -329,7 +309,6 @@
                                 </Grid>
                             </StackPanel>
 
-                            <!-- Search Button -->
                             <Button Content="Search"
                                     Background="#154D71"
                                     Foreground="White"
@@ -349,7 +328,6 @@
                 </Grid>
             </Grid>
 
-            <!-- Popular Destinations Section -->
             <StackPanel Margin="100,60,100,40">
                 <TextBlock Text="Popular Destinations"
                            FontSize="32"
@@ -366,7 +344,6 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
-                    <!-- Jakarta Card -->
                     <Border Grid.Column="0"
                             CornerRadius="15"
                             Height="200"
@@ -399,7 +376,6 @@
                         </Grid>
                     </Border>
 
-                    <!-- Surabaya Card -->
                     <Border Grid.Column="2"
                             CornerRadius="15"
                             Height="200"
@@ -432,7 +408,6 @@
                         </Grid>
                     </Border>
 
-                    <!-- Medan Card -->
                     <Border Grid.Column="4"
                             CornerRadius="15"
                             Height="200"
@@ -467,7 +442,6 @@
                 </Grid>
             </StackPanel>
 
-            <!-- Popular Routes Section -->
             <StackPanel Margin="100,20,100,40">
                 <TextBlock Text="Popular Routes"
                            FontSize="32"
@@ -484,7 +458,6 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
-                    <!-- Route Card 1 -->
                     <Border Grid.Column="0"
                             Background="White"
                             CornerRadius="12"
@@ -503,7 +476,6 @@
                                 <Run Text="Bangka"/>
                             </TextBlock>
                             <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
-                                <!-- === EMOTICON DIGANTI === -->
                                 <iconPacks:PackIconMaterial Kind="ClockOutline" 
                                                             FontSize="14" 
                                                             Margin="0,0,5,0" 
@@ -518,7 +490,6 @@
                         </StackPanel>
                     </Border>
 
-                    <!-- Route Card 2 -->
                     <Border Grid.Column="2"
                             Background="White"
                             CornerRadius="12"
@@ -537,7 +508,6 @@
                                 <Run Text="Bangka"/>
                             </TextBlock>
                             <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
-                                <!-- === EMOTICON DIGANTI === -->
                                 <iconPacks:PackIconMaterial Kind="ClockOutline" 
                                                             FontSize="14" 
                                                             Margin="0,0,5,0" 
@@ -552,7 +522,6 @@
                         </StackPanel>
                     </Border>
 
-                    <!-- Route Card 3 -->
                     <Border Grid.Column="4"
                             Background="White"
                             CornerRadius="12"
@@ -571,7 +540,6 @@
                                 <Run Text="Bangka"/>
                             </TextBlock>
                             <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
-                                <!-- === EMOTICON DIGANTI === -->
                                 <iconPacks:PackIconMaterial Kind="ClockOutline" 
                                                             FontSize="14" 
                                                             Margin="0,0,5,0" 
@@ -588,7 +556,6 @@
                 </Grid>
             </StackPanel>
 
-            <!-- Call to Action Banner -->
             <Border Margin="100,20,100,60"
                     CornerRadius="15"
                     Height="120">

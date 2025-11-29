@@ -21,9 +21,7 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <!-- Left Section - Logo and Description -->
             <StackPanel Grid.Column="0" VerticalAlignment="Top">
-                <!-- Logo and Brand Name -->
                 <StackPanel Orientation="Horizontal" Margin="0,0,0,15">
                     <Image Source="/Assets/logob.png" 
                            Height="40" 
@@ -37,7 +35,6 @@
                                VerticalAlignment="Center"/>
                 </StackPanel>
 
-                <!-- Description -->
                 <TextBlock Text="Boat rentals and ship tickets across the Indonesian"
                            FontSize="14"
                            Foreground="#555555"
@@ -54,7 +51,6 @@
                            LineHeight="20"/>
             </StackPanel>
 
-            <!-- Middle Section - Explore -->
             <StackPanel Grid.Column="1" VerticalAlignment="Top" Margin="40,0,0,0">
                 <TextBlock Text="Explore"
                            FontSize="16"
@@ -126,7 +122,6 @@
                 </TextBlock>
             </StackPanel>
 
-            <!-- Right Section - Account -->
             <StackPanel Grid.Column="2" VerticalAlignment="Top" Margin="40,0,0,0">
                 <TextBlock Text="Account"
                            FontSize="16"

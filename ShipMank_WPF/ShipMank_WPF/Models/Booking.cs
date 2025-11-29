@@ -11,7 +11,6 @@ namespace ShipMank_WPF.Models
 {
     public class Booking : TransactionBase
     {
-        // ENCAPSULATION
         public int UserID { get; private set; }
         public User User { get; set; }
         public int KapalID { get; private set; }
@@ -27,7 +26,6 @@ namespace ShipMank_WPF.Models
             KapalID = kapalID;
             DateBerangkat = dateBerangkat;
             Status = BookingStatus.Unpaid;
-            // ID dan DateCreated diurus oleh base class atau diset saat save DB
         }
 
         // POLYMORPHISM: Implementasi proses transaksi untuk Booking (Konfirmasi)
@@ -51,7 +49,6 @@ namespace ShipMank_WPF.Models
             if (Status != BookingStatus.Completed && Status != BookingStatus.Cancelled)
             {
                 Status = BookingStatus.Cancelled;
-                // OOP Interaction: Memanggil method di Payment (jika ada)
                 if (Payment != null)
                 {
                     Payment.CancelPayment();
@@ -83,7 +80,6 @@ namespace ShipMank_WPF.Models
 
         public decimal HitungTotalHarga() => Kapal != null ? Kapal.HargaPerjalanan : 0;
 
-        // Static Method tetap ada untuk utility
         public static bool IsDateBooked(int kapalId, DateTime date)
         {
             try

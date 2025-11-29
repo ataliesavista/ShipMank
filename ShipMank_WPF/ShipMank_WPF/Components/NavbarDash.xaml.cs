@@ -144,13 +144,11 @@ namespace ShipMank_WPF.Components
         {
             try
             {
-                // Hapus token Google yang tersimpan
                 var dataStore = new FileDataStore("ShipMank.GoogleAuthStore", true);
                 await dataStore.DeleteAsync<TokenResponse>("google_user");
 
-                // Panggil method Logout dari MainWindow (bukan ShowLoggedOutState)
                 var main = (MainWindow)Application.Current.MainWindow;
-                main.Logout(); // <--- PERBAIKAN: Gunakan Logout() bukan ShowLoggedOutState()
+                main.Logout(); 
             }
             catch (Exception ex)
             {

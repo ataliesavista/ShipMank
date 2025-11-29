@@ -23,7 +23,7 @@ namespace ShipMank_WPF.Pages
             InitializeComponent();
 
             LoadShipTypes();
-            LoadFilterOptions();   // Ini mengisi CapacityComboBox
+            LoadFilterOptions();   
             LoadInitialData();
             InitializePlaceholders();
 
@@ -56,9 +56,6 @@ namespace ShipMank_WPF.Pages
                 if (CapacityComboBox != null)
                 {
                     CapacityComboBox.Items.Clear();
-                    // Kita memasukkan ComboBoxItem (Objek), bukan String biasa.
-                    // Jika IsEditable="True", ComboBoxItem.ToString() akan tampil (salah).
-                    // Jika IsEditable="False", ContentPresenter akan menampilkan Content (benar).
                     CapacityComboBox.Items.Add(new ComboBoxItem { Content = "Any Capacity", IsSelected = true });
                     CapacityComboBox.Items.Add(new ComboBoxItem { Content = "2 - 5 People" });
                     CapacityComboBox.Items.Add(new ComboBoxItem { Content = "5 - 10 People" });

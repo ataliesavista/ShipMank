@@ -20,7 +20,7 @@ namespace ShipMank_WPF.Models
     // Implementasi dasar untuk mengurangi duplikasi kode
     public abstract class TransactionBase : ITransaction
     {
-        // ENCAPSULATION: Protected set agar hanya child yang bisa ubah
+        // ENCAPSULATION: Protected set biar cuma child yang bisa ubah
         public int ID { get; protected set; }
         public DateTime DateCreated { get; protected set; }
 
@@ -34,7 +34,7 @@ namespace ShipMank_WPF.Models
         public abstract bool ProcessTransaction();
 
         // VIRTUAL METHOD (Polymorphism)
-        // Child class BISA override ini jika butuh detail khusus
+        // Child bisa dioveride ini
         public virtual string GetDetail()
         {
             return $"ID: {ID} | Date: {DateCreated:dd/MM/yyyy HH:mm}";

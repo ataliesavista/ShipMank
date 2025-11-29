@@ -21,7 +21,6 @@ namespace ShipMank_WPF.Models
             Jumlah = jumlah;
             Metode = PaymentMethod.VirtualAccount;
             Status = PaymentStatus.Unpaid;
-            // DateCreated diurus oleh base class
         }
 
         // POLYMORPHISM: Implementasi proses transaksi untuk Payment (Bayar)
@@ -40,7 +39,6 @@ namespace ShipMank_WPF.Models
             if (success)
             {
                 Status = PaymentStatus.Completed;
-                // OOP Interaction
                 Booking?.KonfirmasiPesanan();
                 return true;
             }
@@ -50,7 +48,6 @@ namespace ShipMank_WPF.Models
             }
         }
 
-        // Method khusus untuk mendukung encapsulation Booking
         public void CancelPayment()
         {
             if (Status != PaymentStatus.Cancelled)

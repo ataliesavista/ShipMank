@@ -44,7 +44,6 @@ namespace ShipMank_WPF.Pages
                 TxtTotal.Text = $"Rp {_currentDetail.TotalPaid:N0}";
                 TxtStatus.Text = _currentDetail.Status.ToUpper();
 
-                // INI YANG SUDAH UPDATE: PaymentMethod sekarang isinya sudah lengkap (misal "BCA Virtual Account")
                 TxtPaymentMethod.Text = string.IsNullOrEmpty(_currentDetail.PaymentMethod) ? "-" : _currentDetail.PaymentMethod;
 
                 if (_currentDetail.PaymentDate.HasValue)
@@ -55,7 +54,6 @@ namespace ShipMank_WPF.Pages
                     TxtPaymentDate.Foreground = Brushes.OrangeRed;
                 }
 
-                // Pass Method yang sudah diformat ke UpdateUI
                 UpdateUIBasedOnStatus(_currentDetail.Status, _currentDetail.VaNumber, _currentDetail.PaymentMethod);
 
                 GenerateQrCodeForUI(_currentDetail);
@@ -92,14 +90,12 @@ namespace ShipMank_WPF.Pages
                 AlertUnpaid.Visibility = Visibility.Visible;
                 BtnCancel.Visibility = Visibility.Visible;
 
-                // Show VA & Bank Info
                 PanelUnpaidInfo.Visibility = Visibility.Visible;
 
-                // Tampilkan nama Bank/Method yang sudah diformat dari Service
                 TxtBankName.Text = paymentMethodFormatted;
                 TxtVANumberDisplay.Text = string.IsNullOrEmpty(vaNumber) ? "Generating..." : vaNumber;
             }
-            else // Cancelled
+            else
             {
                 StatusBadge.Background = (Brush)brushConverter.ConvertFrom("#FEE2E2");
                 TxtStatus.Foreground = (Brush)brushConverter.ConvertFrom("#991B1B");
