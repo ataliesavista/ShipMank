@@ -284,7 +284,6 @@
                           PreviewMouseWheel="MainScroll_PreviewMouseWheel">
                 <UniformGrid x:Name="ShipCardGrid"
                              Margin="40,5,40,20" 
-                             Rows="2" 
                              Columns="3" 
                              HorizontalAlignment="Stretch">
                 </UniformGrid>
