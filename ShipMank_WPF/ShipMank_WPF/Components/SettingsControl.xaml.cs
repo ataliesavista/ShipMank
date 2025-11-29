@@ -97,16 +97,16 @@ namespace ShipMank_WPF.Components
                 // ============================================================
                 // MODIFIKASI: Logic City (Kosongkan jika tidak ada data)
                 // ============================================================
-                string cityData = null; // Anggap data dari database kosong
+                //string cityData = null; // Anggap data dari database kosong
 
-                if (string.IsNullOrEmpty(cityData))
-                {
-                    CityTextBox.Text = ""; // Dibuat kosong sesuai permintaan
-                }
-                else
-                {
-                    CityTextBox.Text = cityData;
-                }
+                //if (string.IsNullOrEmpty(cityData))
+                //{
+                //    CityTextBox.Text = ""; // Dibuat kosong sesuai permintaan
+                //}
+                //else
+                //{
+                //    CityTextBox.Text = cityData;
+                //}
             }
             catch (Exception ex)
             {
@@ -167,7 +167,7 @@ namespace ShipMank_WPF.Components
             // Jadi EmailTextBox di bagian Personal Info/Account Info kita biarkan ReadOnly 
             // atau ikut logic ini jika fieldnya sama.
 
-            CityTextBox.IsReadOnly = !isEnabled;
+            //CityTextBox.IsReadOnly = !isEnabled;
 
             GenderComboBox.IsEnabled = isEnabled;
             CmbBirthDay.IsEnabled = isEnabled;
@@ -193,51 +193,51 @@ namespace ShipMank_WPF.Components
         // ============================================================
         // MODIFIKASI: LOGIC EMAIL (+ EMAIL, SAVE, CANCEL)
         // ============================================================
-        private void BtnAddEmail_Click(object sender, RoutedEventArgs e)
-        {
-            // 1. Sembunyikan tombol "+ Email"
-            BtnAddEmail.Visibility = Visibility.Collapsed;
+        //private void BtnAddEmail_Click(object sender, RoutedEventArgs e)
+        //{
+        //    // 1. Sembunyikan tombol "+ Email"
+        //    BtnAddEmail.Visibility = Visibility.Collapsed;
 
-            // 2. Munculkan tombol Save & Cancel
-            StpEmailActions.Visibility = Visibility.Visible;
+        //    // 2. Munculkan tombol Save & Cancel
+        //    StpEmailActions.Visibility = Visibility.Visible;
 
-            // 3. Munculkan Input Email Baru
-            StpNewEmailInput.Visibility = Visibility.Visible;
-            TxtNewEmail.Text = ""; // Reset input
-            TxtNewEmail.Focus();
-        }
+        //    // 3. Munculkan Input Email Baru
+        //    StpNewEmailInput.Visibility = Visibility.Visible;
+        //    TxtNewEmail.Text = ""; // Reset input
+        //    TxtNewEmail.Focus();
+        //}
 
-        private void BtnCancelEmail_Click(object sender, RoutedEventArgs e)
-        {
-            ResetEmailUI();
-        }
+        //private void BtnCancelEmail_Click(object sender, RoutedEventArgs e)
+        //{
+        //    ResetEmailUI();
+        //}
 
-        private void BtnSaveEmail_Click(object sender, RoutedEventArgs e)
-        {
-            // Validasi dan Simpan Email Baru
-            string newEmail = TxtNewEmail.Text;
+        //private void BtnSaveEmail_Click(object sender, RoutedEventArgs e)
+        //{
+        //    // Validasi dan Simpan Email Baru
+        //    string newEmail = TxtNewEmail.Text;
 
-            if (!string.IsNullOrWhiteSpace(newEmail) && newEmail.Contains("@"))
-            {
-                // Update Tampilan Email Utama (Simulasi)
-                EmailTextBox.Text = newEmail;
+        //    if (!string.IsNullOrWhiteSpace(newEmail) && newEmail.Contains("@"))
+        //    {
+        //        // Update Tampilan Email Utama (Simulasi)
+        //        EmailTextBox.Text = newEmail;
 
-                // TODO: Update ke Database/Google Account di sini
+        //        // TODO: Update ke Database/Google Account di sini
 
-                MessageBox.Show("Email updated successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-                ResetEmailUI();
-            }
-            else
-            {
-                MessageBox.Show("Please enter a valid email address.", "Invalid Email", MessageBoxButton.OK, MessageBoxImage.Warning);
-            }
-        }
+        //        MessageBox.Show("Email updated successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+        //        ResetEmailUI();
+        //    }
+        //    else
+        //    {
+        //        MessageBox.Show("Please enter a valid email address.", "Invalid Email", MessageBoxButton.OK, MessageBoxImage.Warning);
+        //    }
+        //}
 
         private void ResetEmailUI()
         {
-            // Kembalikan ke kondisi awal
-            BtnAddEmail.Visibility = Visibility.Visible;
-            StpEmailActions.Visibility = Visibility.Collapsed;
+            //// Kembalikan ke kondisi awal
+            //BtnAddEmail.Visibility = Visibility.Visible;
+            //StpEmailActions.Visibility = Visibility.Collapsed;
             StpNewEmailInput.Visibility = Visibility.Collapsed;
         }
 

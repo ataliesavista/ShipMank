@@ -27,7 +27,7 @@ namespace ShipMank_WPF.Components
 {
     public partial class ProfileNavbar : UserControl
     {
-        public event RoutedEventHandler NavigatePassengerList;
+        //public event RoutedEventHandler NavigatePassengerList;
         public event RoutedEventHandler NavigateMyAccount;
 
         public ProfileNavbar()

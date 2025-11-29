@@ -45,7 +45,7 @@ namespace ShipMank_WPF.Pages
             if (TicketDatePicker.SelectedDate.HasValue)
             {
                 var date = TicketDatePicker.SelectedDate.Value;
-                var culture = new CultureInfo("id-ID")
+                var culture = new CultureInfo("id-ID");
 
                 string dayOfWeek = date.ToString("ddd", culture);
                 string day = date.Day.ToString("00");

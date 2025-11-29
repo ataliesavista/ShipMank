@@ -20,7 +20,7 @@ namespace ShipMank_WPF.Pages
 
             // Hubungkan event navigasi NavBar
             SideNavBar.NavigateMyAccount += OnNavigateMyAccount;
-            SideNavBar.NavigatePassengerList += OnNavigatePassengerList;
+            //SideNavBar.NavigatePassengerList += OnNavigatePassengerList;
 
             // ====================================================================
             // TAMBAHAN: Hubungkan event Delete dari settingsPage ke logic Popup di sini
