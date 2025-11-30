@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -27,11 +28,9 @@ namespace ShipMank_WPF.Components
 {
     public partial class SettingsControl : UserControl
     {
-        // Flag untuk melacak mode Edit/Save Personal Info
         private bool isEditing = false;
         public event EventHandler DeleteAccountRequested;
 
-        // Menyimpan data user yang sedang login
         private User _currentUser;
 
         public SettingsControl()
@@ -45,10 +44,7 @@ namespace ShipMank_WPF.Components
 
         private async void SettingsControl_Loaded(object sender, RoutedEventArgs e)
         {
-            // 1. Atur form ke mode ReadOnly saat pertama kali dimuat
             SetEditMode(false);
-
-            // 2. Ambil data profil Google
             try
             {
                 var builder = new ConfigurationBuilder()
@@ -59,7 +55,6 @@ namespace ShipMank_WPF.Components
                 string clientId = configuration["GoogleAuth:ClientId"];
                 string clientSecret = configuration["GoogleAuth:ClientSecret"];
 
-                // Jika config belum diset, skip Google Auth
                 if (!string.IsNullOrEmpty(clientId) && !string.IsNullOrEmpty(clientSecret))
                 {
                     string[] scopes = { Oauth2Service.Scope.UserinfoEmail, Oauth2Service.Scope.UserinfoProfile };
@@ -82,16 +77,14 @@ namespace ShipMank_WPF.Components
 
                         Userinfo profile = await oauthService.Userinfo.Get().ExecuteAsync();
 
-                        // 3. Cari user di database berdasarkan email
                         _currentUser = User.GetUserByEmail(profile.Email);
 
-                        // 4. Jika user belum ada, buat user baru (untuk Google Login)
                         if (_currentUser == null)
                         {
                             var newUser = new User();
                             bool registered = newUser.Register(
-                                username: profile.Email.Split('@')[0], // Username dari email
-                                passwordRaw: Guid.NewGuid().ToString(), // Password random untuk Google login
+                                username: profile.Email.Split('@')[0],
+                                passwordRaw: Guid.NewGuid().ToString(), 
                                 email: profile.Email,
                                 name: profile.Name
                             );
@@ -107,13 +100,11 @@ namespace ShipMank_WPF.Components
                             }
                         }
 
-                        // 5. Load data user ke UI
                         LoadUserDataToUI();
                     }
                 }
                 else
                 {
-                    // Dummy data jika tidak ada Google Auth config
                     LoadDummyUserData();
                 }
 
@@ -123,27 +114,22 @@ namespace ShipMank_WPF.Components
                 MessageBox.Show($"Gagal memuat profil: {ex.Message}", "Error",
                     MessageBoxButton.OK, MessageBoxImage.Error);
 
-                // Fallback ke offline user
                 LoadDummyUserData();
             }
         }
 
-        /// <summary>
-        /// Load dummy data untuk development tanpa Google Auth
-        /// </summary>
         private void LoadDummyUserData()
         {
             FullNameTextBox.Text = "User Local";
             EmailTextBox.Text = "user@local.com";
+            CityTextBox.Text = "Unknown City";
+            PhoneTextBox.Text = "08123456789";
             GenderComboBox.SelectedIndex = 0;
             CmbBirthDay.SelectedIndex = 0;
             CmbBirthMonth.SelectedIndex = 0;
             CmbBirthYear.SelectedIndex = 0;
         }
 
-        /// <summary>
-        /// Load data user dari objek _currentUser ke UI
-        /// </summary>
         private void LoadUserDataToUI()
         {
             if (_currentUser == null) return;
@@ -151,10 +137,11 @@ namespace ShipMank_WPF.Components
             FullNameTextBox.Text = _currentUser.Name ?? "";
             EmailTextBox.Text = _currentUser.Email ?? "";
 
-            // Load Gender
+            CityTextBox.Text = _currentUser.Alamat ?? "";
+            PhoneTextBox.Text = _currentUser.NoTelp ?? "";
+
             if (!string.IsNullOrEmpty(_currentUser.Gender))
             {
-                // Cari index berdasarkan value gender
                 for (int i = 0; i < GenderComboBox.Items.Count; i++)
                 {
                     var item = GenderComboBox.Items[i] as ComboBoxItem;
@@ -167,27 +154,19 @@ namespace ShipMank_WPF.Components
             }
             else
             {
-                GenderComboBox.SelectedIndex = 0; // Default
+                GenderComboBox.SelectedIndex = 0; 
             }
 
-            // Load Birth Date
             if (_currentUser.TTL.HasValue)
             {
                 DateTime birthDate = _currentUser.TTL.Value;
-
-                // Set Hari
                 CmbBirthDay.SelectedItem = birthDate.Day.ToString();
-
-                // Set Bulan
                 string monthName = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(birthDate.Month);
                 CmbBirthMonth.SelectedItem = monthName;
-
-                // Set Tahun
                 CmbBirthYear.SelectedItem = birthDate.Year.ToString();
             }
             else
             {
-                // Reset ke default jika tidak ada data
                 CmbBirthDay.SelectedIndex = 0;
                 CmbBirthMonth.SelectedIndex = 0;
                 CmbBirthYear.SelectedIndex = 0;
@@ -196,12 +175,10 @@ namespace ShipMank_WPF.Components
 
         private void PopulateDateComboBoxes()
         {
-            // Isi Hari
             CmbBirthDay.Items.Add("Hari");
             for (int i = 1; i <= 31; i++) CmbBirthDay.Items.Add(i.ToString());
             CmbBirthDay.SelectedIndex = 0;
 
-            // Isi Bulan
             CmbBirthMonth.Items.Add("Bulan");
             string[] monthNames = DateTimeFormatInfo.CurrentInfo.MonthNames;
             foreach (string month in monthNames)
@@ -210,25 +187,17 @@ namespace ShipMank_WPF.Components
             }
             CmbBirthMonth.SelectedIndex = 0;
 
-            // Isi Tahun
             CmbBirthYear.Items.Add("Tahun");
             int currentYear = DateTime.Now.Year;
             for (int i = currentYear; i >= currentYear - 100; i--) CmbBirthYear.Items.Add(i.ToString());
             CmbBirthYear.SelectedIndex = 0;
         }
 
-        // ============================================================
-        // LOGIC: PERSONAL INFO EDIT
-        // ============================================================
         private void EditSaveButton_Click(object sender, RoutedEventArgs e)
         {
-            // Balikkan status editing
             isEditing = !isEditing;
-
-            // Jika tombol "Save" baru saja diklik (sekarang mode = false)
             if (!isEditing)
             {
-                // Validasi dan simpan data
                 if (SaveUserData())
                 {
                     MessageBox.Show("Personal information updated successfully.", "Success",
@@ -236,18 +205,19 @@ namespace ShipMank_WPF.Components
                 }
                 else
                 {
-                    // Kembalikan ke mode edit jika gagal save
                     isEditing = true;
                 }
             }
 
-            // Terapkan mode baru
             SetEditMode(isEditing);
         }
 
-        /// <summary>
-        /// Menyimpan data user ke database PostgreSQL
-        /// </summary>
+        private void PhoneTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("[^0-9]+");
+            e.Handled = regex.IsMatch(e.Text);
+        }
+
         private bool SaveUserData()
         {
             try
@@ -259,8 +229,10 @@ namespace ShipMank_WPF.Components
                     return false;
                 }
 
-                // Validasi input
                 string fullName = FullNameTextBox.Text.Trim();
+                string address = CityTextBox.Text.Trim();
+                string phoneNumber = PhoneTextBox.Text.Trim();
+
                 if (string.IsNullOrEmpty(fullName))
                 {
                     MessageBox.Show("Full name cannot be empty.", "Validation Error",
@@ -268,22 +240,18 @@ namespace ShipMank_WPF.Components
                     return false;
                 }
 
-                // Ambil Gender
                 string gender = null;
                 if (GenderComboBox.SelectedItem is ComboBoxItem selectedGender)
                 {
                     string genderValue = selectedGender.Content.ToString();
-                    if (genderValue != "Gender") // Jika bukan placeholder
+                    if (genderValue != "Gender") 
                     {
                         gender = genderValue;
                     }
                 }
 
-                // Parse Birth Date
                 DateTime? birthDate = ParseBirthDate();
-
-                // Update ke database
-                bool success = UpdateUserInDatabase(_currentUser.UserID, fullName, gender, birthDate);
+                bool success = UpdateUserInDatabase(_currentUser.UserID, fullName, gender, birthDate, address, phoneNumber);
 
                 if (!success)
                 {
@@ -292,10 +260,11 @@ namespace ShipMank_WPF.Components
                     return false;
                 }
 
-                // Update objek _currentUser setelah sukses simpan
                 _currentUser.Name = fullName;
                 _currentUser.Gender = gender;
                 _currentUser.TTL = birthDate;
+                _currentUser.Alamat = address;
+                _currentUser.NoTelp = phoneNumber;
 
                 return true;
             }
@@ -307,16 +276,15 @@ namespace ShipMank_WPF.Components
             }
         }
 
-        /// <summary>
-        /// Update data user ke database PostgreSQL
-        /// </summary>
-        private bool UpdateUserInDatabase(int userID, string name, string gender, DateTime? ttl)
+        private bool UpdateUserInDatabase(int userID, string name, string gender, DateTime? ttl, string alamat, string noTelp)
         {
             string sql = @"
                 UPDATE Users 
                 SET name = @name, 
                     gender = @gender, 
-                    ttl = @ttl
+                    ttl = @ttl,
+                    alamat = @alamat,
+                    noTelp = @noTelp
                 WHERE userID = @userID";
 
             using (var conn = new Npgsql.NpgsqlConnection(DBHelper.GetConnectionString()))
@@ -330,6 +298,8 @@ namespace ShipMank_WPF.Components
                         cmd.Parameters.AddWithValue("name", (object)name ?? DBNull.Value);
                         cmd.Parameters.AddWithValue("gender", (object)gender ?? DBNull.Value);
                         cmd.Parameters.AddWithValue("ttl", (object)ttl ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("alamat", (object)alamat ?? DBNull.Value);
+                        cmd.Parameters.AddWithValue("noTelp", (object)noTelp ?? DBNull.Value);
 
                         int rowsAffected = cmd.ExecuteNonQuery();
                         return rowsAffected > 0;
@@ -343,9 +313,6 @@ namespace ShipMank_WPF.Components
             }
         }
 
-        /// <summary>
-        /// Update flag IsGoogleLogin di database
-        /// </summary>
         private void UpdateIsGoogleLogin(int userID, bool isGoogleLogin)
         {
             string sql = "UPDATE Users SET isGoogleLogin = @isGoogleLogin WHERE userID = @userID";
@@ -369,17 +336,13 @@ namespace ShipMank_WPF.Components
             }
         }
 
-        /// <summary>
-        /// Parse tanggal lahir dari 3 ComboBox
-        /// </summary>
         private DateTime? ParseBirthDate()
         {
-            // Cek apakah semua ComboBox sudah dipilih (tidak di placeholder)
             if (CmbBirthDay.SelectedIndex <= 0 ||
                 CmbBirthMonth.SelectedIndex <= 0 ||
                 CmbBirthYear.SelectedIndex <= 0)
             {
-                return null; // Tanggal lahir tidak diisi
+                return null;
             }
 
             try
@@ -391,10 +354,8 @@ namespace ShipMank_WPF.Components
 
                 int year = int.Parse(CmbBirthYear.SelectedItem.ToString());
 
-                // Validasi tanggal
                 DateTime birthDate = new DateTime(year, month, day);
 
-                // Validasi tambahan: tidak boleh tanggal masa depan
                 if (birthDate > DateTime.Now)
                 {
                     MessageBox.Show("Birth date cannot be in the future.", "Validation Error",
@@ -415,13 +376,14 @@ namespace ShipMank_WPF.Components
         private void SetEditMode(bool isEnabled)
         {
             FullNameTextBox.IsReadOnly = !isEnabled;
+            CityTextBox.IsReadOnly = !isEnabled;      
+            PhoneTextBox.IsReadOnly = !isEnabled;     
 
             GenderComboBox.IsEnabled = isEnabled;
             CmbBirthDay.IsEnabled = isEnabled;
             CmbBirthMonth.IsEnabled = isEnabled;
             CmbBirthYear.IsEnabled = isEnabled;
 
-            // Ubah tampilan tombol Edit/Save
             if (isEnabled)
             {
                 EditSaveButton.Content = "Save";
@@ -431,7 +393,6 @@ namespace ShipMank_WPF.Components
             else
             {
                 EditSaveButton.Content = "Edit";
-                // Mengambil resource warna biru dari XAML
                 EditSaveButton.Background = Brushes.White;
                 EditSaveButton.Foreground = (Brush)FindResource("PrimaryBlueBrush");
             }
@@ -439,7 +400,6 @@ namespace ShipMank_WPF.Components
 
         private void DeleteAccount_Click(object sender, RoutedEventArgs e)
         {
-            // Konfirmasi penghapusan
             var result = MessageBox.Show(
                 "Are you sure you want to delete your account? This action cannot be undone.",
                 "Confirm Delete",
@@ -460,7 +420,6 @@ namespace ShipMank_WPF.Components
                             MessageBox.Show("Account deleted successfully.", "Success",
                                 MessageBoxButton.OK, MessageBoxImage.Information);
 
-                            // Trigger event untuk logout atau navigasi
                             DeleteAccountRequested?.Invoke(this, EventArgs.Empty);
                         }
                         else
@@ -478,9 +437,6 @@ namespace ShipMank_WPF.Components
             }
         }
 
-        /// <summary>
-        /// Hapus user dari database PostgreSQL
-        /// </summary>
         private bool DeleteUserFromDatabase(int userID)
         {
             string sql = "DELETE FROM Users WHERE userID = @userID";
