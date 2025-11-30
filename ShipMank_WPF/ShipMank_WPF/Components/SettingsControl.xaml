@@ -304,23 +304,16 @@
                                     <Grid>
                                         <TextBlock Text="Email" FontSize="20" FontWeight="Bold" Foreground="White" VerticalAlignment="Center"/>
 
-                                        
-
                                     </Grid>
                                 </Border>
 
                                 <!-- Konten Formulir Email -->
                                 <StackPanel Grid.Row="1" Margin="25">
                                     <StackPanel>
-                                        <TextBlock Text="Current Email Address" Style="{StaticResource FormLabel}" Foreground="Black" FontWeight="Bold"/>
                                         <TextBox x:Name="EmailTextBox" Text="Loading..." Style="{StaticResource FormTextBox}" IsReadOnly="True"/>
                                     </StackPanel>
 
                                     <!-- Input Email Baru (Muncul saat +Email diklik) -->
-                                    <StackPanel x:Name="StpNewEmailInput" Margin="0,20,0,0" Visibility="Collapsed">
-                                        <TextBlock Text="New Email Address" Style="{StaticResource FormLabel}" Foreground="Black" FontWeight="Bold"/>
-                                        <TextBox x:Name="TxtNewEmail"  Style="{StaticResource FormTextBox}" IsReadOnly="False"/>
-                                    </StackPanel>
                                 </StackPanel>
                             </Grid>
                         </Border>
