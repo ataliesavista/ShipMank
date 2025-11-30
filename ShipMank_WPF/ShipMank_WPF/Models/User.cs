@@ -11,9 +11,6 @@ namespace ShipMank_WPF.Models
 {
     public class User
     {
-        // ----------------------------------------------------
-        // 1. Properti Data (Sesuai Skema PostgreSQL)
-        // ----------------------------------------------------
         public int UserID { get; internal set; }
         public string Username { get; set; }
         private string PasswordHash { get; set; }
@@ -30,18 +27,9 @@ namespace ShipMank_WPF.Models
 
         private static string ConnectionString => DBHelper.GetConnectionString();
 
-        // Implementasi HashPassword dan VerifyPassword (dibiarkan placeholder, tapi harus diimplementasikan dengan benar)
         private static string HashPassword(string password) { return password; }
         private static bool VerifyPassword(string passwordRaw, string storedHash) { return passwordRaw == storedHash; }
 
-        // ----------------------------------------------------
-        // 2. Metode Database Access (CRUD)
-        // ----------------------------------------------------
-
-        /// <summary>
-        /// Mendaftarkan User baru ke database. Name sekarang dibuat opsional (null).
-        /// </summary>
-        // MODIFIKASI: Hapus 'name' dari parameter wajib. Name dan lainnya diberi nilai default null.
         public bool Register(string username, string passwordRaw, string email,
                              string name = null, string noTelp = null, string alamat = null,
                              string gender = null, DateTime? ttl = null)
@@ -60,12 +48,10 @@ namespace ShipMank_WPF.Models
                     conn.Open();
                     using (var cmd = new NpgsqlCommand(sql, conn))
                     {
-                        // Parameter wajib: Username, Password, Email
                         cmd.Parameters.AddWithValue("username", username);
                         cmd.Parameters.AddWithValue("password", PasswordHash);
                         cmd.Parameters.AddWithValue("email", email);
 
-                        // Parameter opsional (gunakan DBNull.Value jika null)
                         cmd.Parameters.AddWithValue("name", (object)name ?? DBNull.Value);
                         cmd.Parameters.AddWithValue("noTelp", (object)noTelp ?? DBNull.Value);
                         cmd.Parameters.AddWithValue("alamat", (object)alamat ?? DBNull.Value);
@@ -78,27 +64,22 @@ namespace ShipMank_WPF.Models
                 }
                 catch (NpgsqlException ex)
                 {
-                    // Catch error, misal: duplicate key (username/email sudah ada)
                     System.Diagnostics.Debug.WriteLine($"DB Error: {ex.Message}");
                     return false;
                 }
             }
         }
 
-        /// <summary>
-        /// Mencari dan memuat data user dari database saat login.
-        /// </summary>
         public static User Login(string username, string passwordRaw)
         {
             string sql = "SELECT * FROM Users WHERE username = @username";
 
             using (var conn = new NpgsqlConnection(ConnectionString))
             {
-                // HANYA SEKALI: conn.Open() dan menggunakan NpgsqlCommand
                 try
                 {
                     conn.Open();
-                    using (var cmd = new NpgsqlCommand(sql, conn)) // Baris ini TIDAK diulang
+                    using (var cmd = new NpgsqlCommand(sql, conn)) 
                     {
                         cmd.Parameters.AddWithValue("username", username);
 
@@ -113,11 +94,10 @@ namespace ShipMank_WPF.Models
                                 }
                             }
                         }
-                    } // Penutup using cmd
+                    }
                 }
                 catch (NpgsqlException ex)
                 {
-                    // Tangani error koneksi/DB jika perlu
                     System.Diagnostics.Debug.WriteLine($"Login DB Error: {ex.Message}");
                 }
             }

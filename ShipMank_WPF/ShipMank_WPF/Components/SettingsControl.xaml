@@ -8,11 +8,9 @@
              d:DesignHeight="720" d:DesignWidth="980"
              Padding="40"
              FontFamily="Inter, Segoe UI, sans-serif"
-             Background="Transparent"
-             Loaded="SettingsControl_Loaded">
+             Background="Transparent">
 
     <UserControl.Resources>
-        <!-- Warna -->
         <SolidColorBrush x:Key="PrimaryBlueBrush" Color="#3B99FC"/>
         <SolidColorBrush x:Key="LightGrayBrush" Color="#E5E7EB"/>
         <SolidColorBrush x:Key="MidGrayBrush" Color="#9CA3AF"/>
@@ -145,9 +143,6 @@
             </Style.Triggers>
         </Style>
 
-        <!-- ============================================== -->
-        <!-- MODIFIKASI 1: Padding Kiri Dropdown Readonly = 5 -->
-        <!-- ============================================== -->
         <Style x:Key="FormComboBox" TargetType="ComboBox">
             <Setter Property="FontSize" Value="16"/>
             <Setter Property="Padding" Value="12,10"/>
@@ -160,7 +155,6 @@
                     <Setter Property="BorderThickness" Value="0"/>
                     <Setter Property="Foreground" Value="{StaticResource DarkGrayBrush}"/>
                     <Setter Property="Background" Value="Transparent"/>
-                    <!-- Padding kiri diubah menjadi 5 -->
                     <Setter Property="Padding" Value="5,10,0,10"/>
                 </Trigger>
             </Style.Triggers>
@@ -215,7 +209,6 @@
         </Style>
     </UserControl.Resources>
 
-    <!-- Background utama transparan -->
     <Grid Background="Transparent">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -226,12 +219,10 @@
 
         <TabControl Grid.Row="1" Style="{StaticResource SettingsTabControl}">
 
-            <!-- Tab 1: Account Info -->
             <TabItem Header="Account Information" Style="{StaticResource SettingsTabItem}">
                 <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Padding="0,0,5,0">
                     <StackPanel Margin="0,10,0,20">
 
-                        <!-- Personal Information Section -->
                         <Border Style="{StaticResource SectionContainer}">
                             <Grid>
                                 <Grid.RowDefinitions>
@@ -282,16 +273,28 @@
                                         </StackPanel>
                                     </Grid>
 
-                                    <StackPanel Margin="0,0,0,5">
-                                        <TextBlock Text="City" Style="{StaticResource FormLabel}"  Foreground="Black" FontWeight="Bold"/>
-                                        <!-- CityTextBox nanti dihandle di backend -->
-                                        <TextBox x:Name="CityTextBox" Style="{StaticResource FormTextBox}" IsReadOnly="True"/>
-                                    </StackPanel>
+                                    <Grid Margin="0,0,0,5">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="20"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <StackPanel Grid.Column="0">
+                                            <TextBlock Text="City / Address" Style="{StaticResource FormLabel}" Foreground="Black" FontWeight="Bold"/>
+                                            <TextBox x:Name="CityTextBox" Style="{StaticResource FormTextBox}" IsReadOnly="True" TextWrapping="NoWrap"/>
+                                        </StackPanel>
+
+                                        <StackPanel Grid.Column="2">
+                                            <TextBlock Text="Phone Number" Style="{StaticResource FormLabel}" Foreground="Black" FontWeight="Bold"/>
+                                            <TextBox x:Name="PhoneTextBox" Style="{StaticResource FormTextBox}" IsReadOnly="True" PreviewTextInput="PhoneTextBox_PreviewTextInput" MaxLength="15"/>
+                                        </StackPanel>
+                                    </Grid>
+
                                 </StackPanel>
                             </Grid>
                         </Border>
 
-                        <!-- Email Section -->
                         <Border Style="{StaticResource SectionContainer}">
                             <Grid>
                                 <Grid.RowDefinitions>
@@ -299,21 +302,16 @@
                                     <RowDefinition Height="*"/>
                                 </Grid.RowDefinitions>
 
-                                <!-- Header Email -->
                                 <Border Grid.Row="0" Background="{StaticResource PrimaryBlueBrush}" CornerRadius="15,15,0,0" Padding="25,20">
                                     <Grid>
                                         <TextBlock Text="Email" FontSize="20" FontWeight="Bold" Foreground="White" VerticalAlignment="Center"/>
-
                                     </Grid>
                                 </Border>
 
-                                <!-- Konten Formulir Email -->
                                 <StackPanel Grid.Row="1" Margin="25">
                                     <StackPanel>
                                         <TextBox x:Name="EmailTextBox" Text="Loading..." Style="{StaticResource FormTextBox}" IsReadOnly="True"/>
                                     </StackPanel>
-
-                                    <!-- Input Email Baru (Muncul saat +Email diklik) -->
                                 </StackPanel>
                             </Grid>
                         </Border>
@@ -322,7 +320,6 @@
                 </ScrollViewer>
             </TabItem>
 
-            <!-- Tab 2: Password & Security -->
             <TabItem Header="Password &amp; Security" Style="{StaticResource SettingsTabItem}">
                 <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Padding="0,0,5,0">
                     <StackPanel Margin="0,10,0,20">
